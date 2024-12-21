@@ -1,9 +1,9 @@
-import { sendResponse } from '@/util/response.util';
 import { HttpStatus, NestMiddleware } from '@nestjs/common';
-
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { isValidObjectId } from 'mongoose';
+
+import { sendResponse } from '@/util/response.util';
 
 export interface JWTPayload extends jwt.JwtPayload {
   id: string;

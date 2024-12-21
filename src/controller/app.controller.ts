@@ -1,12 +1,24 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from '@/service/app.service';
+import { Controller, Get, Res } from '@nestjs/common';
+import { Response } from 'express';
 
-@Controller()
+import { Success, Teapot, sendResponse } from '@/util/response.util';
+
+@Controller('/')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor() {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('/')
+  helloWorld(@Res() response: Response) {
+    return sendResponse(response, new Success('Hello World!'));
+  }
+
+  @Get('/ping')
+  pong(@Res() response: Response) {
+    return sendResponse(response, new Success('Pong!'));
+  }
+
+  @Get('/teapot')
+  teapot() {
+    throw new Teapot('I am a teapot!');
   }
 }

@@ -1,8 +1,9 @@
 import { Types } from 'mongoose';
-import { IUser } from './user.interface';
-import { EJournalStatus } from './journal.interface';
 
-export interface IJournalimeline {
+import { EJournalStatus, IJournal } from './journal.interface';
+import { IUser } from './user.interface';
+
+export interface IJournalTimeline {
   /**
    * @property `Unique`, `Index`
    */
@@ -19,7 +20,7 @@ export interface IJournalimeline {
    * @see {@linkcode IUser._id}
    * @property `Nullable`, `Index`
    */
-  userId: Types.ObjectId | null;
+  userId: Types.ObjectId;
 
   /**
    * @default EJournalStatus.DIPROSES

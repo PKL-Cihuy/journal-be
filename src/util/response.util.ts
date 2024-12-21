@@ -1,5 +1,5 @@
-import { Response } from 'express';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
 
 interface IResponseBody<T = any> {
   status: number;
@@ -11,11 +11,7 @@ interface IResponseBody<T = any> {
 // ERROR
 //
 export class CustomError extends HttpException {
-  constructor(
-    status: HttpStatus | number,
-    message: string,
-    data?: Record<string, any>,
-  ) {
+  constructor(status: HttpStatus | number, message: string, data?: any) {
     const validStatus = status || HttpStatus.INTERNAL_SERVER_ERROR;
 
     super(
@@ -30,30 +26,36 @@ export class CustomError extends HttpException {
 }
 
 export class BadRequest extends CustomError {
-  constructor(message: string, errorData?: Record<string, any>) {
+  constructor(message: string, errorData?: any) {
     super(HttpStatus.BAD_REQUEST, message, errorData);
   }
 }
 
 export class Unauthorized extends CustomError {
-  constructor(message: string, errorData?: Record<string, any>) {
+  constructor(message: string, errorData?: any) {
     super(HttpStatus.UNAUTHORIZED, message, errorData);
   }
 }
 
 export class Forbidden extends CustomError {
-  constructor(message: string, errorData?: Record<string, any>) {
+  constructor(message: string, errorData?: any) {
     super(HttpStatus.FORBIDDEN, message, errorData);
   }
 }
 export class NotFound extends CustomError {
-  constructor(message: string, errorData?: Record<string, any>) {
+  constructor(message: string, errorData?: any) {
     super(HttpStatus.NOT_FOUND, message, errorData);
   }
 }
 
+export class Teapot extends CustomError {
+  constructor(message: string, data?: any) {
+    super(HttpStatus.I_AM_A_TEAPOT, message, data);
+  }
+}
+
 export class InternalServerError extends CustomError {
-  constructor(message: string, errorData?: Record<string, any>) {
+  constructor(message: string, errorData?: any) {
     super(HttpStatus.INTERNAL_SERVER_ERROR, message, errorData);
   }
 }
@@ -67,7 +69,7 @@ export class ResponseBody implements IResponseBody {
   data: any;
 
   constructor(statusCode: HttpStatus | number, message: string, data?: any) {
-    this.status = statusCode || 200;
+    this.status = statusCode || HttpStatus.OK;
     this.message = message;
     this.data = data;
   }
@@ -101,7 +103,7 @@ export const errorResponse = (error: {
     );
   }
 
-  throw new CustomError(500, error.message);
+  throw new CustomError(HttpStatus.INTERNAL_SERVER_ERROR, error.message);
 };
 
 export async function sendResponse(res: Response, data: IResponseBody) {

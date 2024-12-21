@@ -1,7 +1,8 @@
 import { Types } from 'mongoose';
-import { IUser } from './user.interface';
+
 import { IFakultas } from './fakultas.interface';
 import { IProgramStudi } from './programStudi.interface';
+import { IUser } from './user.interface';
 
 export interface IMahasiswa {
   /**

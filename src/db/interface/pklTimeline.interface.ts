@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
-import { IPKL, EPKLStatus } from './pkl.interface';
+
+import { EPKLStatus, IPKL } from './pkl.interface';
 import { IUser } from './user.interface';
 
 export interface IPKLTimeline {

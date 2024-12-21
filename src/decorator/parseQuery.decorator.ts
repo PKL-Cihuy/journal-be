@@ -1,6 +1,5 @@
-import 'reflect-metadata';
-
 import { Types } from 'mongoose';
+import 'reflect-metadata';
 
 const parseQueryMetaDataKey = Symbol('parseQuery');
 

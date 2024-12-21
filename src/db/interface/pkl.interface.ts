@@ -1,7 +1,8 @@
 import { Types } from 'mongoose';
-import { IMahasiswa } from './mahasiswa.interface';
+
 import { IDosen } from './dosen.interface';
 import { IFakultas } from './fakultas.interface';
+import { IMahasiswa } from './mahasiswa.interface';
 import { IProgramStudi } from './programStudi.interface';
 
 export enum EPKLStatus {

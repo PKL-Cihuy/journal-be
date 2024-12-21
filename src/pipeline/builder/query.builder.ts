@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker/.';
+
 import { FacetPipelineBuilder } from './facetPipeline.builder';
 
 // Use as fallback value to match any value
