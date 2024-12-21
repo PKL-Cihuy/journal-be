@@ -61,3 +61,7 @@ export class PKLTimeline implements IPKLTimeline {
 
 export type PKLTimelineDocument = HydratedDocument<IPKLTimeline>;
 export const PKLTimelineSchema = SchemaFactory.createForClass(PKLTimeline);
+export const PKLTimelineModel = mongoose.model<IPKLTimeline>(
+  DBCollection.PKL_TIMELINE,
+  PKLTimelineSchema,
+);

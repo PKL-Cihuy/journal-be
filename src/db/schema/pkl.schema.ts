@@ -154,3 +154,4 @@ export class PKL implements IPKL {
 
 export type PKLDocument = HydratedDocument<IPKL>;
 export const PKLSchema = SchemaFactory.createForClass(PKL);
+export const PKLModel = mongoose.model<IPKL>(DBCollection.PKL, PKLSchema);

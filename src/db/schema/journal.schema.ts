@@ -52,3 +52,7 @@ export class Journal implements IJournal {
 
 export type JournalDocument = HydratedDocument<IJournal>;
 export const JournalSchema = SchemaFactory.createForClass(Journal);
+export const JournalModel = mongoose.model<IJournal>(
+  DBCollection.JURNAL,
+  JournalSchema,
+);

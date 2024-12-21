@@ -52,3 +52,7 @@ export class ProgramStudi implements IProgramStudi {
 
 export type ProgramStudiDocument = HydratedDocument<IProgramStudi>;
 export const ProgramStudiSchema = SchemaFactory.createForClass(ProgramStudi);
+export const ProgramStudiModel = mongoose.model<IProgramStudi>(
+  DBCollection.PROGRAM_STUDI,
+  ProgramStudiSchema,
+);

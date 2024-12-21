@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 import { DBCollection } from '@/db/collection.db';
 import { EUserType, IUser } from '@/db/interface';
@@ -63,3 +63,4 @@ export class User implements IUser {
 
 export type UserDocument = HydratedDocument<IUser>;
 export const UserSchema = SchemaFactory.createForClass(User);
+export const UserModel = mongoose.model<IUser>(DBCollection.USER, UserSchema);

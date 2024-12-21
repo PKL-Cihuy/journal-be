@@ -61,3 +61,7 @@ export class JournalTimeline implements IJournalTimeline {
 export type JournalTimelineDocument = HydratedDocument<IJournalTimeline>;
 export const JournalTimelineSchema =
   SchemaFactory.createForClass(JournalTimeline);
+export const JournalTimelineModel = mongoose.model<IJournalTimeline>(
+  DBCollection.JURNAL_TIMELINE,
+  JournalTimelineSchema,
+);

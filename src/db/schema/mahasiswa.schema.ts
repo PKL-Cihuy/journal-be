@@ -66,3 +66,7 @@ export class Mahasiswa implements IMahasiswa {
 
 export type MahasiswaDocument = HydratedDocument<IMahasiswa>;
 export const MahasiswaSchema = SchemaFactory.createForClass(Mahasiswa);
+export const MahasiswaModel = mongoose.model<IMahasiswa>(
+  DBCollection.MAHASISWA,
+  MahasiswaSchema,
+);

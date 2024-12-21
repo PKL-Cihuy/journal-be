@@ -45,3 +45,7 @@ export class Dosen implements IDosen {
 
 export type DosenDocument = HydratedDocument<IDosen>;
 export const DosenSchema = SchemaFactory.createForClass(Dosen);
+export const DosenModel = mongoose.model<IDosen>(
+  DBCollection.DOSEN,
+  DosenSchema,
+);

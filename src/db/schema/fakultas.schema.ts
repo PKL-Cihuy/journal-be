@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 import { DBCollection } from '@/db/collection.db';
 import { IFakultas } from '@/db/interface';
@@ -44,3 +44,7 @@ export class Fakultas implements IFakultas {
 
 export type FakultasDocument = HydratedDocument<IFakultas>;
 export const FakultasSchema = SchemaFactory.createForClass(Fakultas);
+export const FakultasModel = mongoose.model<IFakultas>(
+  DBCollection.FAKULTAS,
+  FakultasSchema,
+);
