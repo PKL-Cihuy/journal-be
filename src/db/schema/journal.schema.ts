@@ -15,9 +15,9 @@ import { EJournalStatus, IJournal } from '@/db/interface';
 export class Journal implements IJournal {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.USER,
     required: true,
     index: true,
-    ref: DBCollection.USER,
   })
   pklId: Types.ObjectId;
 

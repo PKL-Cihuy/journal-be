@@ -15,17 +15,17 @@ import { EPKLStatus, IPKLTimeline } from '@/db/interface';
 export class PKLTimeline implements IPKLTimeline {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.PKL_TIMELINE,
     required: true,
     index: true,
-    ref: DBCollection.PKL_TIMELINE,
   })
   pklId: Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    index: true,
     ref: DBCollection.USER,
+    required: false,
+    index: true,
   })
   userId: Types.ObjectId | null;
 

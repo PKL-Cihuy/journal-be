@@ -15,9 +15,9 @@ import { IDosen } from '@/db/interface';
 export class Dosen implements IDosen {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.USER,
     required: true,
     index: true,
-    ref: DBCollection.USER,
   })
   userId: Types.ObjectId;
 

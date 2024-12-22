@@ -15,17 +15,17 @@ import { IProgramStudi } from '@/db/interface';
 export class ProgramStudi implements IProgramStudi {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.FAKULTAS,
     required: true,
     index: true,
-    ref: DBCollection.FAKULTAS,
   })
   fakultasId: Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.PROGRAM_STUDI,
     required: true,
     index: true,
-    ref: DBCollection.PROGRAM_STUDI,
   })
   kaprodiId: Types.ObjectId;
 

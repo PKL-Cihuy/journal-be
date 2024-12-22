@@ -15,17 +15,17 @@ import { EJournalStatus, IJournalTimeline } from '@/db/interface';
 export class JournalTimeline implements IJournalTimeline {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.JURNAL,
     required: true,
     index: true,
-    ref: DBCollection.JURNAL,
   })
   journalId: Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.USER,
     required: true,
     index: true,
-    ref: DBCollection.USER,
   })
   userId: Types.ObjectId;
 

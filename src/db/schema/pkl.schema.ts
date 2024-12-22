@@ -15,33 +15,33 @@ import { EPKLStatus, IPKL } from '@/db/interface';
 export class PKL implements IPKL {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.USER,
     required: true,
     index: true,
-    ref: DBCollection.USER,
   })
   mahasiswaId: Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.DOSEN,
     required: true,
     index: true,
-    ref: DBCollection.DOSEN,
   })
   koordinatorId: Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.FAKULTAS,
     required: true,
     index: true,
-    ref: DBCollection.FAKULTAS,
   })
   fakultasId: Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: DBCollection.PROGRAM_STUDI,
     required: true,
     index: true,
-    ref: DBCollection.PROGRAM_STUDI,
   })
   prodiId: Types.ObjectId;
 
