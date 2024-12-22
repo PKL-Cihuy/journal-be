@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "1bc494c5-56ea-4b40-b7dc-ad07a4de7e15",
+		"name": "pkl-journal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "40589574-1bc494c5-56ea-4b40-b7dc-ad07a4de7e15"
+	},
+	"item": [
+		{
+			"name": "Hello world",
+			"id": "095c23b1-e593-4cdb-b9bb-a540f186e971",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{origin}}/",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ping",
+			"id": "c66a0c1b-7b2e-479e-8d0a-76f0f1fc42d6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Teapot",
+			"id": "d2ddc8aa-aeb2-46a2-95a9-5decc119000c",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{origin}}/teapot",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"teapot"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				],
+				"id": "72f92643-3d61-4fe4-bbf1-8d4b93932177"
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				],
+				"id": "ae5d477b-2f49-4279-8daa-41907d8a9306"
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "195bdc91-a493-4a42-804f-4f31569280cf",
+			"key": "origin",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
