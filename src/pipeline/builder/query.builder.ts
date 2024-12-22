@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker/.';
+import { faker } from '@faker-js/faker';
 
 import { FacetPipelineBuilder } from './facetPipeline.builder';
 
@@ -131,4 +131,47 @@ export function generateFacetOption(
     .replaceRoot({ newRoot: '$_id' });
 
   return facet.build();
+}
+
+export function generateDateQuery(requestDate?: number[]) {
+  if (!requestDate?.length) {
+    return { $ne: randomStringFallback };
+  }
+
+  if (requestDate[0] >= 0 && requestDate[1] >= 0) {
+    const start = new Date(requestDate[0]);
+
+    const end = new Date(requestDate[1]);
+    end.setTime(end.getTime() + 24 * 60 * 60 * 1000 - 1);
+    return {
+      $gte: start,
+      $lte: end,
+    };
+  }
+  if (requestDate[0] >= 0) {
+    const start = new Date(requestDate[0]);
+    const start2 = new Date(requestDate[0]);
+    start2.setTime(start2.getTime() + 24 * 60 * 60 * 1000 - 1);
+
+    return { $gte: start, $lt: start2 };
+  }
+}
+
+export function generateRangeQuery(filter?: number[]) {
+  if (!filter?.length) {
+    return { $ne: randomStringFallback };
+  }
+  if (typeof filter[0] == 'number' && typeof filter[1] == 'number') {
+    return { $gte: filter[0], $lte: filter[1] };
+  }
+  if (typeof filter[0] == 'number') {
+    return { $gte: filter[0] };
+  }
+  if (typeof filter[1] == 'number') {
+    return { $lte: filter[1] };
+  }
+
+  // Fallback when none of the conditions are met
+  // Ex: both filter[0] and filter[1] are null or undefined
+  return { $ne: randomStringFallback };
 }

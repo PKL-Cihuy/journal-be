@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { AppController } from './controller';
+import { AppController, PKLController } from './controller';
 import {
   Dosen,
   DosenSchema,
@@ -34,6 +34,7 @@ import {
   ProgramStudiRepository,
   UserRepository,
 } from './repository';
+import { FileService, PKLService } from './service';
 import { validateConfig } from './util/validateConfig.util';
 
 @Module({
@@ -57,7 +58,7 @@ import { validateConfig } from './util/validateConfig.util';
       { name: User.name, schema: UserSchema },
     ]),
   ],
-  controllers: [AppController],
+  controllers: [AppController, PKLController],
   providers: [
     DosenRepository,
     FakultasRepository,
@@ -68,6 +69,9 @@ import { validateConfig } from './util/validateConfig.util';
     PKLTimelineRepository,
     ProgramStudiRepository,
     UserRepository,
+
+    PKLService,
+    FileService,
   ],
 })
 export class AppModule {}

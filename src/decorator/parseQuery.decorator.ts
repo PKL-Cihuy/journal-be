@@ -10,7 +10,8 @@ export type ParseQueryType =
   | 'json'
   | 'range'
   | 'objectId'
-  | 'objectIdArr';
+  | 'objectIdArr'
+  | 'sortDirection';
 
 export const ParseQuery = (type: ParseQueryType) => {
   return Reflect.metadata(parseQueryMetaDataKey, type);
@@ -46,6 +47,22 @@ export class QueryParser {
     if (type === 'objectIdArr') {
       const parsedArr: string[] = JSON.parse(value as string);
       return parsedArr.map((s) => new Types.ObjectId(s));
+    }
+
+    if (type === 'sortDirection') {
+      switch (value) {
+        case -1:
+        case '-1':
+        case 'desc':
+        case 'descending':
+          return -1;
+        case 1:
+        case '1':
+        case 'asc':
+        case 'ascending':
+        default:
+          return 1;
+      }
     }
   }
 
