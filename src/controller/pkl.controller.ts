@@ -2,7 +2,7 @@ import { Controller, Get, Query, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { ApiResponseOk } from '@/decorator/response.decorator';
+import { ApiResponsePaginated } from '@/decorator/response.decorator';
 import { PKLListQueryDTO, PKLListResponseDTO } from '@/dto/pkl/pklList.dto';
 import { PKLMessage } from '@/message/pkl.message';
 import { ListQueryPipe } from '@/pipe/listQuery.pipe';
@@ -16,8 +16,7 @@ export class PKLController {
   constructor(private readonly PKLService: PKLService) {}
 
   @Get('/')
-  @ApiResponseOk({
-    responseDTO: PKLListResponseDTO,
+  @ApiResponsePaginated(PKLListResponseDTO, {
     message: PKLMessage.LIST_SUCCESS,
   })
   async listPKL(
