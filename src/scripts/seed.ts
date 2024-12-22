@@ -1,4 +1,5 @@
 import { fakerID_ID as fk } from '@faker-js/faker';
+import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
 import 'minimist-lite';
 import mongoose from 'mongoose';
@@ -161,26 +162,27 @@ async function main() {
   });
 
   let defUser: UserDocument[] = [];
+  const password = await bcrypt.hash('pwd123', 10);
   if (!preDefUserExist) {
     // Insert predefined User for easy testing
     defUser = await UserModel.insertMany([
       {
         email: 'admin@admin.com',
-        password: 'password',
+        password: password,
         namaLengkap: 'Admin',
         nomorHandphone: generatePhoneNumber(),
         type: EUserType.ADMIN,
       },
       {
         email: 'dosen@dosen.com',
-        password: 'password',
+        password: password,
         namaLengkap: 'Dosen',
         nomorHandphone: generatePhoneNumber(),
         type: EUserType.DOSEN,
       },
       {
         email: 'mhs@mhs.com',
-        password: 'password',
+        password: password,
         namaLengkap: 'Mahasiswa',
         nomorHandphone: generatePhoneNumber(),
         type: EUserType.MAHASISWA,
@@ -201,7 +203,7 @@ async function main() {
 
       return {
         email: fk.internet.email(),
-        password: 'password',
+        password: password,
         namaLengkap: fk.person.fullName(),
         nomorHandphone: generatePhoneNumber(),
         type,
