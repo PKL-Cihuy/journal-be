@@ -6,7 +6,7 @@ import { EPKLStatus, IPKLTimeline } from '@/db/interface';
 
 @Schema({
   // Override mongoose pluralization
-  collection: DBCollection.USER,
+  collection: DBCollection.PKL_TIMELINE,
   // Set default collation
   collation: { locale: 'en', strength: 3 },
   autoIndex: true,
