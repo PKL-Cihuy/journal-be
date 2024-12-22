@@ -88,7 +88,7 @@ function generateApprovedAt(statusCategory: EPKLStatusCategory) {
     case EPKLStatusCategory.ONGOING:
     case EPKLStatusCategory.FINISHED:
     case EPKLStatusCategory.FAILED:
-      return fk.date.past();
+      return fk.date.recent();
     case EPKLStatusCategory.REJECTED:
     case EPKLStatusCategory.PENDING:
     default:
@@ -121,7 +121,7 @@ function generateRejectedAtSemester(
 
 function generateRejectedAtDate(statusCategory: EPKLStatusCategory) {
   if (statusCategory === EPKLStatusCategory.REJECTED) {
-    return fk.date.past();
+    return fk.date.recent();
   }
   return null;
 }
@@ -335,7 +335,10 @@ async function main() {
               statusCategory,
               mhs.semester,
             ),
-            finishedAt: statusCategory === 'FINISHED' ? fk.date.past() : null,
+            finishedAt:
+              statusCategory === EPKLStatusCategory.FINISHED
+                ? fk.date.recent()
+                : null,
             dokumenDiterima: fk.system.filePath(),
             dokumenMentor: fk.system.filePath(),
             dokumenPimpinan: fk.system.filePath(),
