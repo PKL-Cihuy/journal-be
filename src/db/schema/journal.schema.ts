@@ -30,10 +30,28 @@ export class Journal implements IJournal {
   status: EJournalStatus;
 
   @Prop({
+    type: String,
+    required: true,
+  })
+  konten: string;
+
+  @Prop({
     type: [String],
     required: true,
   })
   attachments: string[];
+
+  @Prop({
+    type: Date,
+    required: true,
+  })
+  tanggalMulai: Date;
+
+  @Prop({
+    type: Date,
+    required: true,
+  })
+  tanggalSelesai: Date;
 
   @Prop({
     type: Date,

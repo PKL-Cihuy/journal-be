@@ -326,7 +326,7 @@ async function main() {
             fakultasId: mhs.fakultasId,
             prodiId: mhs.prodiId,
             namaInstansi: fk.company.name(),
-            tanggalMulai: fk.date.past(),
+            tanggalMulai: fk.date.recent(),
             tanggalSelesai: fk.date.future(),
             status: status,
             approvedAt: generateApprovedAt(statusCategory),
@@ -399,8 +399,11 @@ async function main() {
           () => {
             return {
               pklId: pkl._id,
-              attachments: [fk.system.filePath()],
               status: fk.helpers.arrayElement(Object.values(EJournalStatus)),
+              konten: fk.lorem.paragraph(),
+              attachments: [fk.system.filePath()],
+              tanggalMulai: fk.date.recent(),
+              tanggalSelesai: fk.date.recent(),
             } as IJournal;
           },
         );

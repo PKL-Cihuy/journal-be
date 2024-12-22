@@ -25,6 +25,8 @@ export interface IJournal {
    */
   status: EJournalStatus;
 
+  konten: string;
+
   /**
    * @description Array of path to file
    * @example
@@ -35,6 +37,10 @@ export interface IJournal {
    * @property `Unique`
    */
   attachments: string[];
+
+  tanggalMulai: Date;
+
+  tanggalSelesai: Date;
 
   createdAt?: Date;
 
