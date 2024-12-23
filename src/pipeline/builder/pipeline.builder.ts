@@ -56,8 +56,12 @@ export class PipelineBuilder<T = any> {
     if (!data.foreignField) delete lookup.$lookup.foreignField;
 
     this.pipelines.push(lookup);
+
     if (data.unwind) {
-      this.unwind(`$${data.as}`);
+      this.unwind({
+        path: `$${data.as}`,
+        preserveNullAndEmptyArrays: true,
+      });
     }
 
     return this;
@@ -238,10 +242,10 @@ export class PipelineBuilder<T = any> {
   /**
    * Get user data. Should only be called inside Mahasiswa or Dosen lookup pipeline
    */
-  getUserData(localField?: string) {
+  getUserData(opts?: { localField?: string; keepType?: boolean }) {
     this.lookup({
       from: DBCollection.USER,
-      localField: localField ?? 'userId',
+      localField: opts?.localField ?? 'userId',
       foreignField: '_id',
       as: 'user',
       unwind: true,
@@ -252,6 +256,12 @@ export class PipelineBuilder<T = any> {
       namaLengkap: '$user.namaLengkap',
       nomorHandphone: '$user.nomorHandphone',
     });
+
+    if (opts?.keepType) {
+      this.addFields({
+        type: '$user.type',
+      });
+    }
 
     this.project({ __v: 0, user: 0, userId: 0, createdAt: 0, updatedAt: 0 });
 

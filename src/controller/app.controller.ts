@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiIAmATeapotResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { ApiResponseOk, GenericResponse } from '@/decorator/response.decorator';
-import { AppMessage } from '@/message/app.message';
+import { AppMessage } from '@/message';
 import { Success, Teapot, sendResponse } from '@/util/response.util';
 
 @Controller('/')

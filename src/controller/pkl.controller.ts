@@ -6,9 +6,13 @@ import {
   ApiResponseOk,
   ApiResponsePaginated,
 } from '@/decorator/response.decorator';
-import { PKLDetailResponseDTO } from '@/dto/pkl/pklDetail.dto';
-import { PKLListQueryDTO, PKLListResponseDTO } from '@/dto/pkl/pklList.dto';
-import { PKLMessage } from '@/message/pkl.message';
+import {
+  PKLDetailResponseDTO,
+  PKLListQueryDTO,
+  PKLListResponseDTO,
+  PKLTimelineListResponseDTO,
+} from '@/dto/pkl';
+import { PKLMessage } from '@/message';
 import { IsValidObjectIdPipe } from '@/pipe/isValidMongoId.pipe';
 import { ListQueryPipe } from '@/pipe/listQuery.pipe';
 import { PKLService } from '@/service';
@@ -41,7 +45,7 @@ export class PKLController {
   @Get('/:pklId')
   @ApiResponseOk({
     responseDTO: PKLDetailResponseDTO,
-    message: PKLMessage.LIST_SUCCESS,
+    message: PKLMessage.DETAIL_SUCCESS,
   })
   async getPKLDetail(
     @Res() response: Response,
@@ -50,26 +54,32 @@ export class PKLController {
     try {
       const data = await this.PKLService.getPKLDetail(pklId);
 
-      return sendResponse(response, new Success(PKLMessage.LIST_SUCCESS, data));
+      return sendResponse(
+        response,
+        new Success(PKLMessage.DETAIL_SUCCESS, data),
+      );
     } catch (error) {
       console.error(error);
       return errorResponse(error);
     }
   }
 
-  @Get('/:pklId')
+  @Get('/:pklId/timeline')
   @ApiResponseOk({
-    responseDTO: PKLDetailResponseDTO,
-    message: PKLMessage.LIST_SUCCESS,
+    responseDTO: PKLTimelineListResponseDTO,
+    message: PKLMessage.TIMELINE_SUCCESS,
   })
-  async getPKLDetail(
+  async listPKLTimeline(
     @Res() response: Response,
     @Param('pklId', IsValidObjectIdPipe) pklId: string,
   ) {
     try {
-      const data = await this.PKLService.getPKLDetail(pklId);
+      const data = await this.PKLService.listPKLTimeline(pklId);
 
-      return sendResponse(response, new Success(PKLMessage.LIST_SUCCESS, data));
+      return sendResponse(
+        response,
+        new Success(PKLMessage.TIMELINE_SUCCESS, data),
+      );
     } catch (error) {
       console.error(error);
       return errorResponse(error);
