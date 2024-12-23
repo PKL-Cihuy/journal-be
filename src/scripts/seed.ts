@@ -19,10 +19,12 @@ import {
   IUser,
 } from '@/db/interface';
 import {
+  DosenDocument,
   DosenModel,
   FakultasModel,
   JournalModel,
   JournalTimelineModel,
+  MahasiswaDocument,
   MahasiswaModel,
   PKLModel,
   PKLTimelineModel,
@@ -366,11 +368,24 @@ async function main() {
 
   await PKLTimelineModel.insertMany(
     pkl.flatMap((pkl) => {
+      const userPick = fk.helpers.arrayElement([
+        { id: pkl.mahasiswaId, type: EUserType.MAHASISWA },
+        { id: pkl.koordinatorId, type: EUserType.DOSEN },
+        { id: null, type: null },
+      ]);
+
+      let user: MahasiswaDocument | DosenDocument | null;
+      if (userPick.type === EUserType.MAHASISWA) {
+        user = mahasiswa.find((mhs) => mhs._id.equals(userPick.id))!;
+      } else if (userPick.type === EUserType.DOSEN) {
+        user = dosens.find((dosen) => dosen._id.equals(userPick.id))!;
+      } else {
+        user = null;
+      }
+
       return {
         pklId: pkl._id,
-        userId: fk.datatype.boolean()
-          ? fk.helpers.arrayElement([pkl.mahasiswaId, pkl.koordinatorId])
-          : null,
+        userId: user ? user.userId : null,
         deskripsi: fk.lorem.sentence(),
         status: fk.helpers.arrayElement(Object.values(EPKLStatus)),
       } as IPKLTimeline;
@@ -430,12 +445,21 @@ async function main() {
     journal.flatMap((journal) => {
       const _pkl = pkl.find((pkl) => pkl._id.equals(journal.pklId));
 
+      const userPick = fk.helpers.arrayElement([
+        { id: _pkl!.mahasiswaId, type: EUserType.MAHASISWA },
+        { id: _pkl!.koordinatorId, type: EUserType.DOSEN },
+      ]);
+
+      let user: MahasiswaDocument | DosenDocument;
+      if (userPick.type === EUserType.MAHASISWA) {
+        user = mahasiswa.find((mhs) => mhs._id.equals(userPick.id))!;
+      } else {
+        user = dosens.find((dosen) => dosen._id.equals(userPick.id))!;
+      }
+
       return {
         journalId: journal._id,
-        userId: fk.helpers.arrayElement([
-          _pkl!.mahasiswaId,
-          _pkl!.koordinatorId,
-        ]),
+        userId: user.userId,
         deskripsi: fk.lorem.sentence(),
         status: fk.helpers.arrayElement(Object.values(EJournalStatus)),
       } as IJournalTimeline;
