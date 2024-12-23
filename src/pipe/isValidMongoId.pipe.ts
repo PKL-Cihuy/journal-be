@@ -5,7 +5,7 @@ import { BadRequest } from '@/util/response.util';
 
 // Pipe to validate mongo id
 @Injectable()
-export class IsValidMongoIdPipe implements PipeTransform {
+export class IsValidObjectIdPipe implements PipeTransform {
   async transform(value: string) {
     const isValid = isValidObjectId(value);
 

@@ -124,42 +124,6 @@ export class PKLListResponseDTO {
   @ApiProperty({ type: String, example: '2024-12-02T14:09:51.489Z' })
   finishedAt: Date;
 
-  @ApiProperty({
-    type: String,
-    example: '/uploads/pkl/676778a37d05098d38b82665_dokumen_diterima.pdf',
-  })
-  dokumenDiterima: string;
-
-  @ApiProperty({
-    type: String,
-    example: '/uploads/pkl/676778a37d05098d38b82665_dokumen_mentor.pdf',
-  })
-  dokumenMentor: string;
-
-  @ApiProperty({
-    type: String,
-    example: '/uploads/pkl/676778a37d05098d38b82665_dokumen_pimpinan.pdf',
-  })
-  dokumenPimpinan: string;
-
-  @ApiProperty({
-    type: String,
-    example: '/uploads/pkl/676778a37d05098d38b82665_dokumen_selesai.pdf',
-  })
-  dokumenSelesai: string;
-
-  @ApiProperty({
-    type: String,
-    example: '/uploads/pkl/676778a37d05098d38b82665_dokumen_laporan.pdf',
-  })
-  dokumenLaporan: string;
-
-  @ApiProperty({
-    type: String,
-    example: '/uploads/pkl/676778a37d05098d38b82665_dokumen_penilaian.pdf',
-  })
-  dokumenPenilaian: string;
-
   @ApiProperty({ type: String, example: '2024-12-02T14:09:51.489Z' })
   createdAt: Date;
 

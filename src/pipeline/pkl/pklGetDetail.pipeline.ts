@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 import { DBCollection } from '@/db/collection.db';
 import {
   IDosen,
@@ -6,36 +8,12 @@ import {
   IPKL,
   IProgramStudi,
 } from '@/db/interface';
-import { PKLListQueryDTO } from '@/dto/pkl/pklList.dto';
 
 import { PipelineBuilder } from '../builder/pipeline.builder';
-import {
-  generateArrayFilter,
-  generateDateQuery,
-  generateRangeQuery,
-} from '../builder/query.builder';
 
-export function PKLListPipeline(query: PKLListQueryDTO) {
-  const {
-    search,
-    limit,
-    page,
-    sortBy,
-    sortOrder,
-
-    createdAt,
-    fakultas,
-    finishedAt,
-    kaprodi,
-    koordinator,
-    mahasiswa,
-    status,
-    tanggalMulai,
-    tanggalSelesai,
-    totalJurnal,
-  } = query;
-
+export function PKLGetDetailPipeline(pklId: Types.ObjectId) {
   const pipelineBuilder = new PipelineBuilder<IPKL>()
+    .match({ _id: pklId })
     .lookup({
       from: DBCollection.MAHASISWA,
       localField: 'mahasiswaId',
@@ -102,52 +80,6 @@ export function PKLListPipeline(query: PKLListQueryDTO) {
       koordinatorId: 0,
       fakultasId: 0,
       prodiId: 0,
-      dokumenDiterima: 0,
-      dokumenMentor: 0,
-      dokumenPimpinan: 0,
-      dokumenSelesai: 0,
-      dokumenLaporan: 0,
-      dokumenPenilaian: 0,
-    })
-    .match({
-      createdAt: generateDateQuery(createdAt),
-      'fakultas._id': generateArrayFilter(fakultas),
-      finishedAt: generateDateQuery(finishedAt),
-      'fakultas.kaprodi._id': generateArrayFilter(kaprodi),
-      'koordinator._id': generateArrayFilter(koordinator),
-      'mahasiswa._id': generateArrayFilter(mahasiswa),
-      status: generateArrayFilter(status),
-      tanggalMulai: generateRangeQuery(tanggalMulai),
-      tanggalSelesai: generateRangeQuery(tanggalSelesai),
-      totalJurnal: generateRangeQuery(totalJurnal),
-    })
-    .toDateString(['createdAt', 'finishedAt', 'tanggalMulai', 'tanggalSelesai'])
-    .search(search, [
-      'namaInstansi',
-      'status',
-      'mahasiswa.namaLengkap',
-      'koordinator.namaLengkap',
-      'fakultas.nama',
-      'fakultas.initial',
-      'programStudi.nama',
-
-      'createdAtString',
-      'finishedAtString',
-      'tanggalMulaiString',
-      'tanggalSelesaiString',
-    ])
-    .project({
-      createdAtString: 0,
-      finishedAtString: 0,
-      tanggalMulaiString: 0,
-      tanggalSelesaiString: 0,
-    })
-    .pagination({
-      limit,
-      page,
-      sortBy,
-      sortOrder,
-      sortObject: { createdAt: -1 },
     });
 
   return pipelineBuilder.build();
