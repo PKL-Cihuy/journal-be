@@ -13,14 +13,14 @@ import { ListQueryDTO } from '../global/listQuery.dto';
 export class JournalListQueryDTO extends ListQueryDTO {
   @ApiPropertyOptional({
     type: String,
-    description: 'Stringified array of KPL Status',
+    description: 'Stringified array of Journal status',
     examples: apiPropertyGenerateExamplesMultiple(
       Object.values(EJournalStatus),
     ),
   })
-  @ParseQuery('string')
+  @ParseQuery('json')
   @IsOptional()
-  status?: string;
+  status?: string[];
 
   @ApiPropertyOptional({
     type: String,

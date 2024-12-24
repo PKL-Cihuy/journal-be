@@ -16,7 +16,7 @@ export class PKLListQueryDTO extends ListQueryDTO {
     description: 'Stringified array of KPL Status',
     examples: apiPropertyGenerateExamplesMultiple(Object.values(EPKLStatus)),
   })
-  @ParseQuery('string')
+  @ParseQuery('json')
   @IsOptional()
   status?: string;
 

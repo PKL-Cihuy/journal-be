@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { AppController, PKLController } from './controller';
+import { AppController, JournalController, PKLController } from './controller';
 import {
   Dosen,
   DosenSchema,
@@ -39,12 +39,11 @@ import { validateConfig } from './util/validateConfig.util';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      cache: true,
-      validate: validateConfig,
-    }),
+    ConfigModule.forRoot({ cache: true, validate: validateConfig }),
+
     // Should already be validated by validateConfig
     MongooseModule.forRoot(process.env.DATABASE_URI as string),
+
     // Register all model and schema
     MongooseModule.forFeature([
       { name: Dosen.name, schema: DosenSchema },
@@ -58,8 +57,9 @@ import { validateConfig } from './util/validateConfig.util';
       { name: User.name, schema: UserSchema },
     ]),
   ],
-  controllers: [AppController, PKLController],
+  controllers: [AppController, PKLController, JournalController],
   providers: [
+    // Repositories
     DosenRepository,
     FakultasRepository,
     JournalRepository,
@@ -70,6 +70,7 @@ import { validateConfig } from './util/validateConfig.util';
     ProgramStudiRepository,
     UserRepository,
 
+    // Services
     PKLService,
     JournalService,
     FileService,
