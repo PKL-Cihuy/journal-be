@@ -2,6 +2,7 @@ import { Injectable, Scope } from '@nestjs/common';
 
 import { JournalListQueryDTO } from '@/dto/journal';
 import {
+  journalDetailPipeline,
   journalListPipeline,
   journalTimelineListPipeline,
 } from '@/pipeline/journal';
@@ -42,6 +43,36 @@ export class JournalService {
 
     // Return formatted pagination response
     return formatPaginationResponse(data);
+  }
+
+  /**
+   * Get Jurnal detail
+   *
+   * @param {string} pklId Used to check if PKL exist
+   * @param {string} journalId Used to check if Journal exist
+   *
+   * @returns Journal data
+   *
+   * @throws {NotFound} PKL with id {pklId} not found
+   * @throws {NotFound} Journal with id {journalId} not found
+   */
+  async getJournalDetail(pklId: string, journalId: string) {
+    // Check if PKL exist
+    const pkl = await this.PKLRepository.getOneOrFail(pklId);
+
+    // Check if Journal exist
+    const journal = await this.JournalRepository.getOneOrFail({
+      _id: journalId,
+      pklId: pkl._id,
+    });
+
+    // Get Journal data
+    const data = await this.JournalRepository.aggregate(
+      journalDetailPipeline(journal._id),
+    );
+
+    // Return first data since aggregation always return array
+    return data[0];
   }
 
   /**

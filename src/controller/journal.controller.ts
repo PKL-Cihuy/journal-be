@@ -1,9 +1,10 @@
 import { Controller, Get, Param, Query, Res } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import {
   ApiResponseList,
+  ApiResponseOk,
   ApiResponsePaginated,
 } from '@/decorator/response.decorator';
 import { JournalListQueryDTO, JournalListResponseDTO } from '@/dto/journal';
@@ -20,6 +21,7 @@ export class JournalController {
   constructor(private readonly JournalService: JournalService) {}
 
   @Get('/')
+  @ApiOperation({ summary: 'List Journal' })
   @ApiResponsePaginated(JournalListResponseDTO, {
     message: JournalMessage.LIST_SUCCESS,
   })
@@ -41,7 +43,32 @@ export class JournalController {
     }
   }
 
+  @Get('/:journalId')
+  @ApiOperation({ summary: 'Get Journal Detail' })
+  @ApiResponseOk({
+    responseDTO: JournalListResponseDTO,
+    message: JournalMessage.DETAIL_SUCCESS,
+  })
+  async getJournalDetail(
+    @Res() response: Response,
+    @Param('pklId', IsValidObjectIdPipe) pklId: string,
+    @Param('journalId', IsValidObjectIdPipe) journalId: string,
+  ) {
+    try {
+      const data = await this.JournalService.getJournalDetail(pklId, journalId);
+
+      return sendResponse(
+        response,
+        new Success(JournalMessage.DETAIL_SUCCESS, data),
+      );
+    } catch (error) {
+      console.error(error);
+      return errorResponse(error);
+    }
+  }
+
   @Get('/:journalId/timeline')
+  @ApiOperation({ summary: 'Get Journal Timeline' })
   @ApiResponseList(JournalListResponseDTO, {
     message: JournalMessage.TIMELINE_SUCCESS,
   })

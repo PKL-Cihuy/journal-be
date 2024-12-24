@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query, Res } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import {
@@ -26,6 +26,7 @@ export class PKLController {
   constructor(private readonly PKLService: PKLService) {}
 
   @Get('/')
+  @ApiOperation({ summary: 'List PKL' })
   @ApiResponsePaginated(PKLListResponseDTO, {
     message: PKLMessage.LIST_SUCCESS,
   })
@@ -44,6 +45,7 @@ export class PKLController {
   }
 
   @Get('/:pklId')
+  @ApiOperation({ summary: 'Get PKL Detail' })
   @ApiResponseOk({
     responseDTO: PKLDetailResponseDTO,
     message: PKLMessage.DETAIL_SUCCESS,
@@ -66,6 +68,7 @@ export class PKLController {
   }
 
   @Get('/:pklId/timeline')
+  @ApiOperation({ summary: 'List PKL Timeline' })
   @ApiResponseList(PKLTimelineListResponseDTO, {
     message: PKLMessage.TIMELINE_SUCCESS,
   })
