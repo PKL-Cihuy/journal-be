@@ -3,26 +3,31 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import {
+  ApiResponseList,
   ApiResponseOk,
   ApiResponsePaginated,
 } from '@/decorator/response.decorator';
+import { JournalListQueryDTO, JournalListResponseDTO } from '@/dto/journal';
 import {
   PKLDetailResponseDTO,
   PKLListQueryDTO,
   PKLListResponseDTO,
   PKLTimelineListResponseDTO,
 } from '@/dto/pkl';
-import { PKLMessage } from '@/message';
+import { JournalMessage, PKLMessage } from '@/message';
 import { IsValidObjectIdPipe } from '@/pipe/isValidMongoId.pipe';
-import { ListQueryPipe } from '@/pipe/listQuery.pipe';
-import { PKLService } from '@/service';
+import { ParseQueryPipe } from '@/pipe/parseQuery.pipe';
+import { JournalService, PKLService } from '@/service';
 import { Success, errorResponse, sendResponse } from '@/util/response.util';
 
 @Controller('/pkl')
 @ApiTags('PKL')
 @ApiBearerAuth('access-token')
 export class PKLController {
-  constructor(private readonly PKLService: PKLService) {}
+  constructor(
+    private readonly PKLService: PKLService,
+    private readonly JournalService: JournalService,
+  ) {}
 
   @Get('/')
   @ApiResponsePaginated(PKLListResponseDTO, {
@@ -30,7 +35,7 @@ export class PKLController {
   })
   async listPKL(
     @Res() response: Response,
-    @Query(new ListQueryPipe(PKLListQueryDTO)) query: PKLListQueryDTO,
+    @Query(new ParseQueryPipe(PKLListQueryDTO)) query: PKLListQueryDTO,
   ) {
     try {
       const data = await this.PKLService.listPKL(query);
@@ -65,8 +70,7 @@ export class PKLController {
   }
 
   @Get('/:pklId/timeline')
-  @ApiResponseOk({
-    responseDTO: PKLTimelineListResponseDTO,
+  @ApiResponseList(PKLTimelineListResponseDTO, {
     message: PKLMessage.TIMELINE_SUCCESS,
   })
   async listPKLTimeline(
@@ -79,6 +83,28 @@ export class PKLController {
       return sendResponse(
         response,
         new Success(PKLMessage.TIMELINE_SUCCESS, data),
+      );
+    } catch (error) {
+      console.error(error);
+      return errorResponse(error);
+    }
+  }
+
+  @Get('/:pklId/jurnal')
+  @ApiResponsePaginated(JournalListResponseDTO, {
+    message: JournalMessage.LIST_SUCCESS,
+  })
+  async listJurnal(
+    @Res() response: Response,
+    @Param('pklId', IsValidObjectIdPipe) pklId: string,
+    @Query(new ParseQueryPipe(JournalListQueryDTO)) query: JournalListQueryDTO,
+  ) {
+    try {
+      const data = await this.JournalService.listJournal(pklId, query);
+
+      return sendResponse(
+        response,
+        new Success(JournalMessage.LIST_SUCCESS, data),
       );
     } catch (error) {
       console.error(error);

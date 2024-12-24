@@ -8,6 +8,7 @@ import {
 } from '@/pipeline/pkl';
 import { PKLRepository, PKLTimelineRepository } from '@/repository';
 import { formatPaginationResponse } from '@/util/formatResponse.util';
+import { NotFound } from '@/util/response.util';
 
 import { FileService } from './file.service';
 
@@ -21,7 +22,7 @@ export class PKLService {
   ) {}
 
   /**
-   * List PKL by query and user type
+   * List PKL by user type and filter by query
    *
    * @param {PKLListQueryDTO} query Query to filter PKL data
    *

@@ -34,7 +34,7 @@ import {
   ProgramStudiRepository,
   UserRepository,
 } from './repository';
-import { FileService, PKLService } from './service';
+import { FileService, JournalService, PKLService } from './service';
 import { validateConfig } from './util/validateConfig.util';
 
 @Module({
@@ -71,6 +71,7 @@ import { validateConfig } from './util/validateConfig.util';
     UserRepository,
 
     PKLService,
+    JournalService,
     FileService,
   ],
 })
