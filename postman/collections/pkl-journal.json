@@ -7,6 +7,893 @@
 	},
 	"item": [
 		{
+			"name": "pkl",
+			"item": [
+				{
+					"name": "List PKL",
+					"id": "f2e41c79-6d42-4c48-8ad1-26612f1a05fc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/pkl",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"pkl"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt",
+									"disabled": true
+								},
+								{
+									"key": "sortOrder",
+									"value": "-1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "b962629c-8e30-43ee-9efd-b3dd61110353",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl?search&limit=10&page=1&sortBy=createdAt&sortOrder=-1",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": null,
+											"uuid": "48d7145d-c94e-4d2a-b3d8-6cde94c1bb73"
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"uuid": "2caed2f2-3679-40eb-894c-ebcfdc5d7481"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"uuid": "f38311e6-867e-47a9-9515-7d9bb82399e6"
+										},
+										{
+											"key": "sortBy",
+											"value": "createdAt",
+											"uuid": "7f8869fe-ceb8-4537-9635-ff5ac2e0a47a"
+										},
+										{
+											"key": "sortOrder",
+											"value": "-1",
+											"uuid": "b86a94da-779d-44ab-b6ee-75fa35dcb493"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "11075"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b43-Os4AwLc9ywqQt8AVOX/E8KvljvA\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 23 Dec 2024 14:56:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"List PKL berhasil didapatkan\",\n    \"data\": {\n        \"totalRecords\": 144,\n        \"data\": [\n            {\n                \"_id\": \"676979f5b599ce0a80433250\",\n                \"namaInstansi\": \"Yayasan Wijayanti Tbk\",\n                \"tanggalMulai\": \"2024-12-22T17:33:29.642Z\",\n                \"tanggalSelesai\": \"2025-04-26T12:24:38.798Z\",\n                \"status\": \"Pengajuan Ditolak\",\n                \"approvedAt\": null,\n                \"rejectedAt\": null,\n                \"rejectedAtSemester\": null,\n                \"finishedAt\": null,\n                \"createdAt\": \"2024-12-23T14:55:49.419Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.419Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331bf\",\n                    \"nim\": \"6119108477\",\n                    \"semester\": 1,\n                    \"email\": \"Sintia12@gmail.com\",\n                    \"namaLengkap\": \"Pangestu Adhiarja\",\n                    \"nomorHandphone\": \"+6227008924767\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a80433151\",\n                    \"nomorInduk\": \"5070994356\",\n                    \"email\": \"Luwes.Purnawati@gmail.com\",\n                    \"namaLengkap\": \"Usamah Rina\",\n                    \"nomorHandphone\": \"+6226846506051\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433154\",\n                    \"nama\": \"Fakultas 2\",\n                    \"initial\": \"F2\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a80433160\",\n                    \"kaprodiId\": \"676979f5b599ce0a80433151\",\n                    \"nama\": \"Program Studi F2 5\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a80433151\",\n                        \"nomorInduk\": \"5070994356\",\n                        \"email\": \"Luwes.Purnawati@gmail.com\",\n                        \"namaLengkap\": \"Usamah Rina\",\n                        \"nomorHandphone\": \"+6226846506051\"\n                    }\n                },\n                \"totalJurnal\": 0\n            },\n            {\n                \"_id\": \"676979f5b599ce0a8043324f\",\n                \"namaInstansi\": \"Yayasan Wastuti Tbk\",\n                \"tanggalMulai\": \"2024-12-22T15:15:58.237Z\",\n                \"tanggalSelesai\": \"2025-07-03T04:50:45.576Z\",\n                \"status\": \"Diterima\",\n                \"approvedAt\": \"2024-12-23T10:53:15.244Z\",\n                \"rejectedAt\": null,\n                \"rejectedAtSemester\": null,\n                \"finishedAt\": null,\n                \"createdAt\": \"2024-12-23T14:55:49.419Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.419Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331bf\",\n                    \"nim\": \"6119108477\",\n                    \"semester\": 1,\n                    \"email\": \"Sintia12@gmail.com\",\n                    \"namaLengkap\": \"Pangestu Adhiarja\",\n                    \"nomorHandphone\": \"+6227008924767\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a80433149\",\n                    \"nomorInduk\": \"6478102505\",\n                    \"email\": \"dosen@dosen.com\",\n                    \"namaLengkap\": \"Dosen\",\n                    \"nomorHandphone\": \"+6274037115568\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433154\",\n                    \"nama\": \"Fakultas 2\",\n                    \"initial\": \"F2\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a80433160\",\n                    \"kaprodiId\": \"676979f5b599ce0a80433151\",\n                    \"nama\": \"Program Studi F2 5\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a80433151\",\n                        \"nomorInduk\": \"5070994356\",\n                        \"email\": \"Luwes.Purnawati@gmail.com\",\n                        \"namaLengkap\": \"Usamah Rina\",\n                        \"nomorHandphone\": \"+6226846506051\"\n                    }\n                },\n                \"totalJurnal\": 0\n            },\n            {\n                \"_id\": \"676979f5b599ce0a80433253\",\n                \"namaInstansi\": \"Yayasan Namaga Tbk\",\n                \"tanggalMulai\": \"2024-12-23T14:45:18.902Z\",\n                \"tanggalSelesai\": \"2025-05-25T00:40:30.653Z\",\n                \"status\": \"Menunggu Verifikasi\",\n                \"approvedAt\": null,\n                \"rejectedAt\": null,\n                \"rejectedAtSemester\": null,\n                \"finishedAt\": null,\n                \"createdAt\": \"2024-12-23T14:55:49.419Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.419Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331c2\",\n                    \"nim\": \"5125626704\",\n                    \"semester\": 7,\n                    \"email\": \"Luthfi.Amanta73@yahoo.co.id\",\n                    \"namaLengkap\": \"Nainggolan Ganjaran\",\n                    \"nomorHandphone\": \"+6266805666307\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a80433149\",\n                    \"nomorInduk\": \"6478102505\",\n                    \"email\": \"dosen@dosen.com\",\n                    \"namaLengkap\": \"Dosen\",\n                    \"nomorHandphone\": \"+6274037115568\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433154\",\n                    \"nama\": \"Fakultas 2\",\n                    \"initial\": \"F2\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a8043315a\",\n                    \"kaprodiId\": \"676979f5b599ce0a8043314b\",\n                    \"nama\": \"Program Studi F1 4\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a8043314b\",\n                        \"nomorInduk\": \"8072023705\",\n                        \"email\": \"Aisyah.Suartini1@yahoo.com\",\n                        \"namaLengkap\": \"Lazuardi Nasrullah\",\n                        \"nomorHandphone\": \"+6293753018493\"\n                    }\n                },\n                \"totalJurnal\": 0\n            },\n            {\n                \"_id\": \"676979f5b599ce0a80433251\",\n                \"namaInstansi\": \"Perum Rajasa Tbk\",\n                \"tanggalMulai\": \"2024-12-23T04:39:29.375Z\",\n                \"tanggalSelesai\": \"2024-12-31T19:11:54.357Z\",\n                \"status\": \"Diterima\",\n                \"approvedAt\": \"2024-12-23T06:57:21.743Z\",\n                \"rejectedAt\": null,\n                \"rejectedAtSemester\": null,\n                \"finishedAt\": null,\n                \"createdAt\": \"2024-12-23T14:55:49.419Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.419Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331c0\",\n                    \"nim\": \"1265724205\",\n                    \"semester\": 4,\n                    \"email\": \"Kenari73@yahoo.com\",\n                    \"namaLengkap\": \"Maria Kusuma\",\n                    \"nomorHandphone\": \"+627713813517\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a8043314e\",\n                    \"nomorInduk\": \"4239086911\",\n                    \"email\": \"Nilam91@yahoo.co.id\",\n                    \"namaLengkap\": \"Uyainah Wulandari\",\n                    \"nomorHandphone\": \"+6292780985734\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433155\",\n                    \"nama\": \"Fakultas 3\",\n                    \"initial\": \"F3\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a80433162\",\n                    \"kaprodiId\": \"676979f5b599ce0a80433151\",\n                    \"nama\": \"Program Studi F3 2\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a80433151\",\n                        \"nomorInduk\": \"5070994356\",\n                        \"email\": \"Luwes.Purnawati@gmail.com\",\n                        \"namaLengkap\": \"Usamah Rina\",\n                        \"nomorHandphone\": \"+6226846506051\"\n                    }\n                },\n                \"totalJurnal\": 0\n            },\n            {\n                \"_id\": \"676979f5b599ce0a8043324d\",\n                \"namaInstansi\": \"Yayasan Santoso (Persero) Tbk\",\n                \"tanggalMulai\": \"2024-12-23T12:59:50.645Z\",\n                \"tanggalSelesai\": \"2025-03-09T02:38:52.917Z\",\n                \"status\": \"Menunggu Verifikasi\",\n                \"approvedAt\": null,\n                \"rejectedAt\": null,\n                \"rejectedAtSemester\": null,\n                \"finishedAt\": null,\n                \"createdAt\": \"2024-12-23T14:55:49.419Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.419Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331be\",\n                    \"nim\": \"2436357003\",\n                    \"semester\": 2,\n                    \"email\": \"Jayeng7@yahoo.com\",\n                    \"namaLengkap\": \"Zulaikha Andini\",\n                    \"nomorHandphone\": \"+627887878426\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a8043314a\",\n                    \"nomorInduk\": \"7488856287\",\n                    \"email\": \"Dono_Perdana@gmail.com\",\n                    \"namaLengkap\": \"Empluk Empluk Nababan\",\n                    \"nomorHandphone\": \"+6249550491043\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433155\",\n                    \"nama\": \"Fakultas 3\",\n                    \"initial\": \"F3\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a8043315c\",\n                    \"kaprodiId\": \"676979f5b599ce0a8043314f\",\n                    \"nama\": \"Program Studi F2 1\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a8043314f\",\n                        \"nomorInduk\": \"1101981430\",\n                        \"email\": \"Wardaya_Hutasoit@gmail.co.id\",\n                        \"namaLengkap\": \"Harini Nadia\",\n                        \"nomorHandphone\": \"+6250258288388\"\n                    }\n                },\n                \"totalJurnal\": 0\n            },\n            {\n                \"_id\": \"676979f5b599ce0a80433252\",\n                \"namaInstansi\": \"Yayasan Kahyang Tbk\",\n                \"tanggalMulai\": \"2024-12-23T10:18:13.041Z\",\n                \"tanggalSelesai\": \"2025-06-29T00:36:29.219Z\",\n                \"status\": \"Proses Finalisasi\",\n                \"approvedAt\": \"2024-12-23T13:38:49.955Z\",\n                \"rejectedAt\": null,\n                \"rejectedAtSemester\": null,\n                \"finishedAt\": null,\n                \"createdAt\": \"2024-12-23T14:55:49.419Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.419Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331c2\",\n                    \"nim\": \"5125626704\",\n                    \"semester\": 7,\n                    \"email\": \"Luthfi.Amanta73@yahoo.co.id\",\n                    \"namaLengkap\": \"Nainggolan Ganjaran\",\n                    \"nomorHandphone\": \"+6266805666307\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a8043314c\",\n                    \"nomorInduk\": \"6310100449\",\n                    \"email\": \"Kamidin18@yahoo.com\",\n                    \"namaLengkap\": \"Wirda Melani\",\n                    \"nomorHandphone\": \"+629686348304\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433154\",\n                    \"nama\": \"Fakultas 2\",\n                    \"initial\": \"F2\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a8043315a\",\n                    \"kaprodiId\": \"676979f5b599ce0a8043314b\",\n                    \"nama\": \"Program Studi F1 4\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a8043314b\",\n                        \"nomorInduk\": \"8072023705\",\n                        \"email\": \"Aisyah.Suartini1@yahoo.com\",\n                        \"namaLengkap\": \"Lazuardi Nasrullah\",\n                        \"nomorHandphone\": \"+6293753018493\"\n                    }\n                },\n                \"totalJurnal\": 0\n            },\n            {\n                \"_id\": \"676979f5b599ce0a80433254\",\n                \"namaInstansi\": \"KKB Farida\",\n                \"tanggalMulai\": \"2024-12-23T04:49:11.825Z\",\n                \"tanggalSelesai\": \"2025-07-02T14:20:14.418Z\",\n                \"status\": \"Selesai\",\n                \"approvedAt\": \"2024-12-23T12:09:37.512Z\",\n                \"rejectedAt\": null,\n                \"rejectedAtSemester\": null,\n                \"finishedAt\": \"2024-12-23T06:51:30.837Z\",\n                \"createdAt\": \"2024-12-23T14:55:49.419Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.419Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331c2\",\n                    \"nim\": \"5125626704\",\n                    \"semester\": 7,\n                    \"email\": \"Luthfi.Amanta73@yahoo.co.id\",\n                    \"namaLengkap\": \"Nainggolan Ganjaran\",\n                    \"nomorHandphone\": \"+6266805666307\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a8043314a\",\n                    \"nomorInduk\": \"7488856287\",\n                    \"email\": \"Dono_Perdana@gmail.com\",\n                    \"namaLengkap\": \"Empluk Empluk Nababan\",\n                    \"nomorHandphone\": \"+6249550491043\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433154\",\n                    \"nama\": \"Fakultas 2\",\n                    \"initial\": \"F2\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a8043315a\",\n                    \"kaprodiId\": \"676979f5b599ce0a8043314b\",\n                    \"nama\": \"Program Studi F1 4\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a8043314b\",\n                        \"nomorInduk\": \"8072023705\",\n                        \"email\": \"Aisyah.Suartini1@yahoo.com\",\n                        \"namaLengkap\": \"Lazuardi Nasrullah\",\n                        \"nomorHandphone\": \"+6293753018493\"\n                    }\n                },\n                \"totalJurnal\": 0\n            },\n            {\n                \"_id\": \"676979f5b599ce0a8043324e\",\n                \"namaInstansi\": \"Widodo Tbk\",\n                \"tanggalMulai\": \"2024-12-23T02:13:50.000Z\",\n                \"tanggalSelesai\": \"2025-06-06T06:53:49.129Z\",\n                \"status\": \"Selesai\",\n                \"approvedAt\": \"2024-12-22T20:27:11.676Z\",\n                \"rejectedAt\": null,\n                \"rejectedAtSemester\": null,\n                \"finishedAt\": \"2024-12-22T20:10:54.229Z\",\n                \"createdAt\": \"2024-12-23T14:55:49.419Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.419Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331bf\",\n                    \"nim\": \"6119108477\",\n                    \"semester\": 1,\n                    \"email\": \"Sintia12@gmail.com\",\n                    \"namaLengkap\": \"Pangestu Adhiarja\",\n                    \"nomorHandphone\": \"+6227008924767\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a8043314b\",\n                    \"nomorInduk\": \"8072023705\",\n                    \"email\": \"Aisyah.Suartini1@yahoo.com\",\n                    \"namaLengkap\": \"Lazuardi Nasrullah\",\n                    \"nomorHandphone\": \"+6293753018493\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433154\",\n                    \"nama\": \"Fakultas 2\",\n                    \"initial\": \"F2\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a80433160\",\n                    \"kaprodiId\": \"676979f5b599ce0a80433151\",\n                    \"nama\": \"Program Studi F2 5\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a80433151\",\n                        \"nomorInduk\": \"5070994356\",\n                        \"email\": \"Luwes.Purnawati@gmail.com\",\n                        \"namaLengkap\": \"Usamah Rina\",\n                        \"nomorHandphone\": \"+6226846506051\"\n                    }\n                },\n                \"totalJurnal\": 0\n            },\n            {\n                \"_id\": \"676979f5b599ce0a8043324c\",\n                \"namaInstansi\": \"Pradana Tbk\",\n                \"tanggalMulai\": \"2024-12-23T03:32:41.379Z\",\n                \"tanggalSelesai\": \"2025-04-02T00:28:29.562Z\",\n                \"status\": \"Selesai\",\n                \"approvedAt\": \"2024-12-23T01:10:56.783Z\",\n                \"rejectedAt\": null,\n                \"rejectedAtSemester\": null,\n                \"finishedAt\": \"2024-12-23T11:10:32.672Z\",\n                \"createdAt\": \"2024-12-23T14:55:49.419Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.419Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331bd\",\n                    \"nim\": \"9565407553\",\n                    \"semester\": 7,\n                    \"email\": \"Warji_Kurniawan@yahoo.co.id\",\n                    \"namaLengkap\": \"Kalim Herlambang\",\n                    \"nomorHandphone\": \"+62226719409\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a80433150\",\n                    \"nomorInduk\": \"8365793752\",\n                    \"email\": \"Paramita.Ardiyanti@yahoo.com\",\n                    \"namaLengkap\": \"Galang Firmansyah\",\n                    \"nomorHandphone\": \"+6290808107020\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433153\",\n                    \"nama\": \"Fakultas 1\",\n                    \"initial\": \"F1\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a80433164\",\n                    \"kaprodiId\": \"676979f5b599ce0a8043314d\",\n                    \"nama\": \"Program Studi F3 4\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a8043314d\",\n                        \"nomorInduk\": \"9903680571\",\n                        \"email\": \"Paramita.Damanik20@yahoo.com\",\n                        \"namaLengkap\": \"Agustina Halima\",\n                        \"nomorHandphone\": \"+6293770917389\"\n                    }\n                },\n                \"totalJurnal\": 0\n            },\n            {\n                \"_id\": \"676979f5b599ce0a80433249\",\n                \"namaInstansi\": \"Permata (Persero) Tbk\",\n                \"tanggalMulai\": \"2024-12-23T05:12:19.824Z\",\n                \"tanggalSelesai\": \"2025-03-12T00:06:54.758Z\",\n                \"status\": \"Ditolak\",\n                \"approvedAt\": null,\n                \"rejectedAt\": \"2024-12-22T19:04:44.860Z\",\n                \"rejectedAtSemester\": 3,\n                \"finishedAt\": null,\n                \"createdAt\": \"2024-12-23T14:55:49.418Z\",\n                \"updatedAt\": \"2024-12-23T14:55:49.418Z\",\n                \"mahasiswa\": {\n                    \"_id\": \"676979f5b599ce0a804331ba\",\n                    \"nim\": \"6317008937\",\n                    \"semester\": 5,\n                    \"email\": \"Rini97@gmail.co.id\",\n                    \"namaLengkap\": \"Danang Danang Sihotang\",\n                    \"nomorHandphone\": \"+6260485385546\"\n                },\n                \"koordinator\": {\n                    \"_id\": \"676979f5b599ce0a8043314f\",\n                    \"nomorInduk\": \"1101981430\",\n                    \"email\": \"Wardaya_Hutasoit@gmail.co.id\",\n                    \"namaLengkap\": \"Harini Nadia\",\n                    \"nomorHandphone\": \"+6250258288388\"\n                },\n                \"fakultas\": {\n                    \"_id\": \"676979f5b599ce0a80433153\",\n                    \"nama\": \"Fakultas 1\",\n                    \"initial\": \"F1\"\n                },\n                \"programStudi\": {\n                    \"_id\": \"676979f5b599ce0a8043315f\",\n                    \"kaprodiId\": \"676979f5b599ce0a8043314e\",\n                    \"nama\": \"Program Studi F2 4\",\n                    \"kaprodi\": {\n                        \"_id\": \"676979f5b599ce0a8043314e\",\n                        \"nomorInduk\": \"4239086911\",\n                        \"email\": \"Nilam91@yahoo.co.id\",\n                        \"namaLengkap\": \"Uyainah Wulandari\",\n                        \"nomorHandphone\": \"+6292780985734\"\n                    }\n                },\n                \"totalJurnal\": 0\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get PKL detail",
+					"id": "f170d54c-1b6f-461e-953e-94923f64ba24",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"pkl",
+								"67697c4ece2a4f39e4dce210"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "c59bae3f-1c5d-4b9e-99c8-29f51a05a4e5",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"67697c4ece2a4f39e4dce210"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1325"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"52d-Ydc9Sd8VuKcprKRngkLKwRwRPY8\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 23 Dec 2024 14:56:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"Detail PKL berhasil didapatkan\",\n    \"data\": {\n        \"_id\": \"676979f5b599ce0a804331c5\",\n        \"namaInstansi\": \"KKB Pradana\",\n        \"tanggalMulai\": \"2024-12-22T23:05:26.969Z\",\n        \"tanggalSelesai\": \"2025-06-07T23:29:55.054Z\",\n        \"status\": \"Verifikasi Gagal\",\n        \"approvedAt\": null,\n        \"rejectedAt\": null,\n        \"rejectedAtSemester\": null,\n        \"finishedAt\": null,\n        \"dokumenDiterima\": \"/opt/sbin/tankful.rtf\",\n        \"dokumenMentor\": \"/var/ouch_ravel.map\",\n        \"dokumenPimpinan\": \"/home/user/till_ew.ts\",\n        \"dokumenSelesai\": null,\n        \"dokumenLaporan\": null,\n        \"dokumenPenilaian\": null,\n        \"createdAt\": \"2024-12-23T14:55:49.387Z\",\n        \"updatedAt\": \"2024-12-23T14:55:49.387Z\",\n        \"mahasiswa\": {\n            \"_id\": \"676979f5b599ce0a80433168\",\n            \"nim\": \"6381024258\",\n            \"semester\": 1,\n            \"email\": \"Gandewa_Wulandari62@yahoo.com\",\n            \"namaLengkap\": \"Hariyah Kartika\",\n            \"nomorHandphone\": \"+6285618653346\"\n        },\n        \"koordinator\": {\n            \"_id\": \"676979f5b599ce0a80433151\",\n            \"nomorInduk\": \"5070994356\",\n            \"email\": \"Luwes.Purnawati@gmail.com\",\n            \"namaLengkap\": \"Usamah Rina\",\n            \"nomorHandphone\": \"+6226846506051\"\n        },\n        \"fakultas\": {\n            \"_id\": \"676979f5b599ce0a80433155\",\n            \"nama\": \"Fakultas 3\",\n            \"initial\": \"F3\"\n        },\n        \"programStudi\": {\n            \"_id\": \"676979f5b599ce0a80433163\",\n            \"kaprodiId\": \"676979f5b599ce0a8043314c\",\n            \"nama\": \"Program Studi F3 3\",\n            \"kaprodi\": {\n                \"_id\": \"676979f5b599ce0a8043314c\",\n                \"nomorInduk\": \"6310100449\",\n                \"email\": \"Kamidin18@yahoo.com\",\n                \"namaLengkap\": \"Wirda Melani\",\n                \"nomorHandphone\": \"+629686348304\"\n            }\n        },\n        \"totalJurnal\": 0\n    }\n}"
+						},
+						{
+							"id": "18ef1ad8-b7af-4ec5-95cf-1790fa2d3193",
+							"name": "Invalid id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"67697c4ece2a4f39e4dce210"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "58"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3a-dPcVuZlBLbGqnc9CY4l6ZVBvv3M\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 23 Dec 2024 14:56:41 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 400,\n    \"message\": \"invalid is not a valid mongo id\"\n}"
+						},
+						{
+							"id": "188b27c3-36dd-4c64-9da9-12c60f5252d0",
+							"name": "Not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl/67697921007746d33d5175b9",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"67697921007746d33d5175b9"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "46"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2e-iNbPdAQhgeRbrKhT1FR627/bPnk\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 23 Dec 2024 14:56:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 404,\n    \"message\": \"PKL tidak ditemukan\"\n}"
+						}
+					]
+				},
+				{
+					"name": "List PKL Timeline",
+					"id": "6846dc19-722a-4971-8825-384390d86e5f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/timeline",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"pkl",
+								"67697c4ece2a4f39e4dce210",
+								"timeline"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "a8f32a2e-385d-4639-8e11-75b7b98e8b72",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/timeline",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"67697c4ece2a4f39e4dce210",
+										"timeline"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "737"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2e1-2aZhEc3z0JCHE9NJtR4XoBnNjEE\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 23 Dec 2024 15:08:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"Timeline PKL berhasil didapatkan\",\n    \"data\": [\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce2a1\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Adflicto ubi usque attollo adeo.\",\n            \"createdAt\": \"2024-12-23T15:05:50.362Z\",\n            \"user\": null\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce2a2\",\n            \"status\": \"Menunggu Verifikasi\",\n            \"deskripsi\": \"Amissio utique abscido dedecor venustas debeo.\",\n            \"createdAt\": \"2024-12-23T15:05:50.362Z\",\n            \"user\": null\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce2a3\",\n            \"status\": \"Menunggu Verifikasi\",\n            \"deskripsi\": \"Curvo validus veniam conitor xiphias tamquam villa vulgus arbor.\",\n            \"createdAt\": \"2024-12-23T15:05:50.362Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce166\",\n                \"email\": \"Nilam91@yahoo.co.id\",\n                \"type\": \"Dosen\",\n                \"namaLengkap\": \"Uyainah Wulandari\",\n                \"nomorHandphone\": \"+6292780985734\"\n            }\n        }\n    ]\n}"
+						},
+						{
+							"id": "b0fa850f-62a7-4a0b-881f-7a03a3979eab",
+							"name": "PKL not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl/676979f5b599ce0a804331c5/timeline",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"676979f5b599ce0a804331c5",
+										"timeline"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "46"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2e-iNbPdAQhgeRbrKhT1FR627/bPnk\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 23 Dec 2024 15:06:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 404,\n    \"message\": \"PKL tidak ditemukan\"\n}"
+						},
+						{
+							"id": "260484a1-4edf-45f1-a600-2680582cddc9",
+							"name": "Get PKL Timeline",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/timeline",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"67697c4ece2a4f39e4dce210",
+										"timeline"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "854"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"356-w4+7sEIm3AtRNWZoMNoDBkmSEY0\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 23 Dec 2024 15:07:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"Timeline PKL berhasil didapatkan\",\n    \"data\": [\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce2a1\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Adflicto ubi usque attollo adeo.\",\n            \"createdAt\": \"2024-12-23T15:05:50.362Z\",\n            \"updatedAt\": \"2024-12-23T15:05:50.362Z\",\n            \"user\": null\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce2a2\",\n            \"status\": \"Menunggu Verifikasi\",\n            \"deskripsi\": \"Amissio utique abscido dedecor venustas debeo.\",\n            \"createdAt\": \"2024-12-23T15:05:50.362Z\",\n            \"updatedAt\": \"2024-12-23T15:05:50.362Z\",\n            \"user\": null\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce2a3\",\n            \"status\": \"Menunggu Verifikasi\",\n            \"deskripsi\": \"Curvo validus veniam conitor xiphias tamquam villa vulgus arbor.\",\n            \"createdAt\": \"2024-12-23T15:05:50.362Z\",\n            \"updatedAt\": \"2024-12-23T15:05:50.362Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce166\",\n                \"email\": \"Nilam91@yahoo.co.id\",\n                \"type\": \"Dosen\",\n                \"namaLengkap\": \"Uyainah Wulandari\",\n                \"nomorHandphone\": \"+6292780985734\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"id": "8003ac81-9066-4883-b9ec-609f6e38a461"
+		},
+		{
+			"name": "journal",
+			"item": [
+				{
+					"name": "List Journal",
+					"id": "70f7b439-d514-4ac3-a10e-7d58998b5da0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/jurnal",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"pkl",
+								"67697c4ece2a4f39e4dce210",
+								"jurnal"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt",
+									"disabled": true
+								},
+								{
+									"key": "sortOrder",
+									"value": "-1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "7b4326c9-cc27-4b4c-85ca-5ea3c5bf6335",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/jurnal",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"67697c4ece2a4f39e4dce210",
+										"jurnal"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": null,
+											"uuid": "c16ca5d1-b3f6-4d2e-bbfb-051a2463aac2",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"uuid": "9e7e6802-f084-41c8-941e-ee092a074c7c",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"uuid": "7335a115-41ce-4f95-b9f2-798cc852fd20",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "createdAt",
+											"uuid": "90272e8e-5f0e-4ff7-af3a-978afc5ef46b",
+											"disabled": true
+										},
+										{
+											"key": "sortOrder",
+											"value": "-1",
+											"uuid": "2ebf6546-4594-4558-bd76-46c7f985df21",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "3461"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d85-NXY6M94QdOVBx9h+YSESLX0kwAQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 24 Dec 2024 06:09:24 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"List Jurnal berhasil didapatkan\",\n    \"data\": {\n        \"totalRecords\": 8,\n        \"data\": [\n            {\n                \"_id\": \"67697c4ece2a4f39e4dce434\",\n                \"status\": \"Diproses\",\n                \"konten\": \"Laboriosam truculenter venustas cogito cohaero curso demonstro apostolus arma odio. Argumentum ater confero sto. Supra adsidue beatae certe verecundia cerno.\",\n                \"attachments\": [\n                    \"/private/var/exaggerate_until_colon.pptx\"\n                ],\n                \"tanggalMulai\": \"2024-12-23T02:40:37.975Z\",\n                \"tanggalSelesai\": \"2024-12-23T01:06:09.853Z\",\n                \"createdAt\": \"2024-12-23T15:05:50.486Z\",\n                \"updatedAt\": \"2024-12-23T15:05:50.486Z\"\n            },\n            {\n                \"_id\": \"67697c4ece2a4f39e4dce435\",\n                \"status\": \"Diproses\",\n                \"konten\": \"Ex harum vito spoliatio adopto amo. Appello turbo adinventitias. Curo tenax cubicularis comptus subiungo acerbitas pecus.\",\n                \"attachments\": [\n                    \"/var/yp/boohoo.woff2\"\n                ],\n                \"tanggalMulai\": \"2024-12-22T15:53:50.321Z\",\n                \"tanggalSelesai\": \"2024-12-23T00:16:59.545Z\",\n                \"createdAt\": \"2024-12-23T15:05:50.486Z\",\n                \"updatedAt\": \"2024-12-23T15:05:50.486Z\"\n            },\n            {\n                \"_id\": \"67697c4ece2a4f39e4dce436\",\n                \"status\": \"Diproses\",\n                \"konten\": \"Commodo cito arguo umquam clibanus vivo. Turpis aetas carmen combibo demens turpis patria autem cito amissio. Terreo pax terreo.\",\n                \"attachments\": [\n                    \"/rescue/er_sit.css\"\n                ],\n                \"tanggalMulai\": \"2024-12-23T07:36:52.782Z\",\n                \"tanggalSelesai\": \"2024-12-22T20:13:34.857Z\",\n                \"createdAt\": \"2024-12-23T15:05:50.486Z\",\n                \"updatedAt\": \"2024-12-23T15:05:50.486Z\"\n            },\n            {\n                \"_id\": \"67697c4ece2a4f39e4dce437\",\n                \"status\": \"Diproses\",\n                \"konten\": \"Corrumpo conservo blanditiis tempus damno. Cena in compono attollo antea. Vulgus curatio desparatus ager exercitationem quia degusto advoco.\",\n                \"attachments\": [\n                    \"/usr/src/once_haversack_nor.gif\"\n                ],\n                \"tanggalMulai\": \"2024-12-22T18:43:13.410Z\",\n                \"tanggalSelesai\": \"2024-12-22T17:38:58.569Z\",\n                \"createdAt\": \"2024-12-23T15:05:50.486Z\",\n                \"updatedAt\": \"2024-12-23T15:05:50.486Z\"\n            },\n            {\n                \"_id\": \"67697c4ece2a4f39e4dce438\",\n                \"status\": \"Diterima\",\n                \"konten\": \"Triumphus contego aer taedium. Cado ascit atavus vereor conturbo caries. Vinculum auctor quam amet tabula aedificium abstergo.\",\n                \"attachments\": [\n                    \"/usr/bin/definite_merrily_thunderbolt.abw\"\n                ],\n                \"tanggalMulai\": \"2024-12-22T20:53:02.889Z\",\n                \"tanggalSelesai\": \"2024-12-23T03:40:21.806Z\",\n                \"createdAt\": \"2024-12-23T15:05:50.486Z\",\n                \"updatedAt\": \"2024-12-23T15:05:50.486Z\"\n            },\n            {\n                \"_id\": \"67697c4ece2a4f39e4dce439\",\n                \"status\": \"Diterima\",\n                \"konten\": \"Aegre subnecto depopulo defaeco adeptio volaticus conscendo ut. Tubineus pel denique deludo. Calculus ubi vinum vivo odio aspernatur tenax soluta.\",\n                \"attachments\": [\n                    \"/usr/ports/lava.png\"\n                ],\n                \"tanggalMulai\": \"2024-12-23T04:04:09.529Z\",\n                \"tanggalSelesai\": \"2024-12-23T13:58:24.940Z\",\n                \"createdAt\": \"2024-12-23T15:05:50.486Z\",\n                \"updatedAt\": \"2024-12-23T15:05:50.486Z\"\n            },\n            {\n                \"_id\": \"67697c4ece2a4f39e4dce43a\",\n                \"status\": \"Diterima\",\n                \"konten\": \"Torqueo avaritia amplexus aiunt enim autem vestrum vado vinculum. Assumenda bellicus earum copia credo. Arca esse apud paens antea dicta error copiose sopor inflammatio.\",\n                \"attachments\": [\n                    \"/sbin/vein_aggravating.3gp\"\n                ],\n                \"tanggalMulai\": \"2024-12-23T03:42:37.564Z\",\n                \"tanggalSelesai\": \"2024-12-22T16:03:55.754Z\",\n                \"createdAt\": \"2024-12-23T15:05:50.486Z\",\n                \"updatedAt\": \"2024-12-23T15:05:50.486Z\"\n            },\n            {\n                \"_id\": \"67697c4ece2a4f39e4dce433\",\n                \"status\": \"Diterima\",\n                \"konten\": \"Strenuus asperiores spero magni congregatio expedita. Tracto currus correptius. Maxime contego absconditus demitto totam teneo deputo tricesimus compello.\",\n                \"attachments\": [\n                    \"/opt/cruelly_likewise_modulo.pps\"\n                ],\n                \"tanggalMulai\": \"2024-12-22T18:06:40.652Z\",\n                \"tanggalSelesai\": \"2024-12-23T01:27:45.918Z\",\n                \"createdAt\": \"2024-12-23T15:05:50.485Z\",\n                \"updatedAt\": \"2024-12-23T15:05:50.485Z\"\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Journal Detail",
+					"id": "9dcf532c-0660-4a49-a1a7-d51de500ea7d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/jurnal/67697c4ece2a4f39e4dce433",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"pkl",
+								"67697c4ece2a4f39e4dce210",
+								"jurnal",
+								"67697c4ece2a4f39e4dce433"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "1d384b5a-340d-4045-a96c-fe637aafd2dc",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/jurnal/67697c4ece2a4f39e4dce434",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"67697c4ece2a4f39e4dce210",
+										"jurnal",
+										"67697c4ece2a4f39e4dce434"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "514"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"202-CPiq8x6ptZ1QW0Shwgwk166VNR4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 24 Dec 2024 12:37:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"Detail Jurnal berhasil didapatkan\",\n    \"data\": {\n        \"_id\": \"67697c4ece2a4f39e4dce434\",\n        \"status\": \"Diproses\",\n        \"konten\": \"Laboriosam truculenter venustas cogito cohaero curso demonstro apostolus arma odio. Argumentum ater confero sto. Supra adsidue beatae certe verecundia cerno.\",\n        \"attachments\": [\n            \"/private/var/exaggerate_until_colon.pptx\"\n        ],\n        \"tanggalMulai\": \"2024-12-23T02:40:37.975Z\",\n        \"tanggalSelesai\": \"2024-12-23T01:06:09.853Z\",\n        \"createdAt\": \"2024-12-23T15:05:50.486Z\",\n        \"updatedAt\": \"2024-12-23T15:05:50.486Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "List Journal Timeline",
+					"id": "a0f0388a-3234-4edd-a0c8-cf68c6bda9f2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/jurnal/67697c4ece2a4f39e4dce433/timeline",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"pkl",
+								"67697c4ece2a4f39e4dce210",
+								"jurnal",
+								"67697c4ece2a4f39e4dce433",
+								"timeline"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "121d84bb-6e87-43dd-8314-022f7aa3611a",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/jurnal/67697c4ece2a4f39e4dce434/timeline",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"67697c4ece2a4f39e4dce210",
+										"jurnal",
+										"67697c4ece2a4f39e4dce434",
+										"timeline"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1486"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5ce-nXUxmfcrmrsKcEH0cP3r/VI5h2E\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 24 Dec 2024 12:25:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"Timeline Jurnal berhasil didapatkan\",\n    \"data\": [\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce792\",\n            \"journalId\": \"67697c4ece2a4f39e4dce434\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Argentum fugiat vobis consequuntur speciosus virgo adinventitias auditor denuo versus.\",\n            \"createdAt\": \"2024-12-23T15:05:50.685Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce12f\",\n                \"email\": \"Nasrullah8@gmail.co.id\",\n                \"type\": \"Mahasiswa\",\n                \"namaLengkap\": \"Endah Endah Ardiyanti\",\n                \"nomorHandphone\": \"+6257055116365\"\n            }\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce793\",\n            \"journalId\": \"67697c4ece2a4f39e4dce434\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Perspiciatis vorago volo aliquam doloremque aegre.\",\n            \"createdAt\": \"2024-12-23T15:05:50.685Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce166\",\n                \"email\": \"Nilam91@yahoo.co.id\",\n                \"type\": \"Dosen\",\n                \"namaLengkap\": \"Uyainah Wulandari\",\n                \"nomorHandphone\": \"+6292780985734\"\n            }\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce794\",\n            \"journalId\": \"67697c4ece2a4f39e4dce434\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Vitium sufficio administratio.\",\n            \"createdAt\": \"2024-12-23T15:05:50.685Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce166\",\n                \"email\": \"Nilam91@yahoo.co.id\",\n                \"type\": \"Dosen\",\n                \"namaLengkap\": \"Uyainah Wulandari\",\n                \"nomorHandphone\": \"+6292780985734\"\n            }\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce795\",\n            \"journalId\": \"67697c4ece2a4f39e4dce434\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Laborum tametsi timor deorsum.\",\n            \"createdAt\": \"2024-12-23T15:05:50.685Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce166\",\n                \"email\": \"Nilam91@yahoo.co.id\",\n                \"type\": \"Dosen\",\n                \"namaLengkap\": \"Uyainah Wulandari\",\n                \"nomorHandphone\": \"+6292780985734\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"id": "19754975-b4c9-469e-b390-53f5d32fee55"
+		},
+		{
 			"name": "Hello world",
 			"id": "095c23b1-e593-4cdb-b9bb-a540f186e971",
 			"protocolProfileBehavior": {
@@ -25,7 +912,68 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"id": "b1775f0a-7089-48f4-905e-101b97d029ba",
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"27-pWslaDCM1tNf78/GQXy3rD7pk90\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 24 Dec 2024 12:25:32 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"message\": \"Hello World!\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Ping",
@@ -37,13 +985,80 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "{{origin}}/ping",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"ping"
+					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"id": "857ef187-a259-4857-8507-1a803e2dadd6",
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/ping",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"ping"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "32"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"20-9iKmRpXC+NTijHYAjdohrDi2TaI\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 24 Dec 2024 12:25:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 200,\n    \"message\": \"Pong!\"\n}"
+				}
+			]
 		},
 		{
-			"name": "Teapot",
+			"name": "I am a teapot!",
 			"id": "d2ddc8aa-aeb2-46a2-95a9-5decc119000c",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -61,39 +1076,115 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"id": "491bc01a-fdc8-4562-8663-dc634bcbe83e",
+					"name": "I am a teapot!",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/teapot",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"teapot"
+							]
+						}
+					},
+					"status": "I'm a Teapot",
+					"code": 418,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "41"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"29-GFAJfr93oL34fsv5fmHQbAcPgfE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 24 Dec 2024 12:25:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 418,\n    \"message\": \"I am a teapot!\"\n}"
+				}
+			]
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
+				"id": "8f097b7d-e74f-4b4f-8147-32f463297a04",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
 					""
-				],
-				"id": "72f92643-3d61-4fe4-bbf1-8d4b93932177"
+				]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
+				"id": "9a709369-2637-4e7a-9bb7-cdb42155b16f",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
 					""
-				],
-				"id": "ae5d477b-2f49-4279-8daa-41907d8a9306"
+				]
 			}
 		}
 	],
 	"variable": [
 		{
-			"id": "195bdc91-a493-4a42-804f-4f31569280cf",
+			"id": "784508fb-1c35-40a5-b479-9b6d22756b40",
 			"key": "origin",
 			"value": "http://localhost:3000",
-			"type": "string"
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"id": "69fb0ffa-c212-4883-8013-ab7ef6c271c8",
+			"key": "pklId",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"id": "bf573ac3-22ef-43fb-823d-19161a00a1b8",
+			"key": "journalId",
+			"value": "",
+			"type": "string",
+			"disabled": true
 		}
 	]
 }
