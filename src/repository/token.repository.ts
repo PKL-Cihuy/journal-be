@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { Model, Types } from 'mongoose';
 
 import { IToken } from '@/db/interface/token.interface';
@@ -24,7 +24,7 @@ export class TokenRepository extends BaseRepository<IToken> {
     if (!t) throw new Forbidden(this.TOKEN_NOT_FOUND);
 
     try {
-      jwt.verify(t.token, process.env.JWT_KEY!, (err) => {
+      jwt.verify(t.token, process.env.JWT_SECRET!, (err) => {
         if (err) throw new Forbidden(this.TOKEN_INVALID);
       });
     } catch (error) {

@@ -1,12 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
+import { Types } from 'mongoose';
 
+import { EUserType } from '@/db/interface';
 import { LoginDTO } from '@/dto/auth.dto';
-import { PKLRepository, UserRepository } from '@/repository';
-import { TokenRepository } from '@/repository/token.repository';
-import { TokenPayload } from '@/repository/user.repository';
+import {
+  DosenRepository,
+  MahasiswaRepository,
+  PKLRepository,
+  TokenRepository,
+  UserRepository,
+} from '@/repository';
 import { BadRequest } from '@/util/response.util';
+
+export interface TokenPayload {
+  id?: Types.ObjectId;
+  type?: EUserType;
+  mhsId?: Types.ObjectId | null;
+  dosenId?: Types.ObjectId | null;
+}
 
 @Injectable()
 export class AuthService {
@@ -16,6 +29,8 @@ export class AuthService {
 
   constructor(
     private userRepo: UserRepository,
+    private dosenRepo: DosenRepository,
+    private mhsRepo: MahasiswaRepository,
     private tokenRepo: TokenRepository,
     private pklService: PKLRepository,
   ) {}
@@ -27,17 +42,20 @@ export class AuthService {
 
     if (!passwordIsValid) throw new BadRequest(this.INVALID_CREDENTIALS);
 
-    const tokenPayload: TokenPayload = await this.userRepo.getTokenPayload(
+    const tokenPayload: TokenPayload = await this.generateTokenPayload(
       user._id,
     );
 
     const { accessToken, refreshToken } = this.generateTokens(tokenPayload);
 
-    const statusPKL = await this.pklService.getStatus(tokenPayload.mhsId!);
+    const statusPKL = await this.pklService.findOne({
+      mahasiswaId: tokenPayload.mhsId,
+    });
 
     await this.tokenRepo.saveToken(user._id, refreshToken);
 
     return {
+      rft: refreshToken,
       jwt: accessToken,
       user: {
         statusPKL,
@@ -48,14 +66,43 @@ export class AuthService {
   }
 
   private generateTokens(payload: TokenPayload) {
-    const accessToken = jwt.sign(payload, process.env.JWT_KEY!, {
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: this.ACCESS_TOKEN_TTL,
     });
 
-    const refreshToken = jwt.sign(payload, process.env.JWT_KEY!, {
+    const refreshToken = jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: this.REFRESH_TOKEN_TTL,
     });
 
     return { accessToken, refreshToken };
+  }
+
+  private async generateTokenPayload(
+    userId: string | Types.ObjectId,
+  ): Promise<TokenPayload> {
+    const [user, dosen, mhs] = await Promise.all([
+      this.userRepo.findOne({ _id: userId }),
+      this.dosenRepo.findOne({ userId }),
+      this.mhsRepo.findOne({ userId }),
+    ]);
+
+    return {
+      dosenId: dosen?._id,
+      id: userId as Types.ObjectId,
+      mhsId: mhs?._id,
+      type: user?.type,
+    };
+  }
+
+  public async getAccessToken(rft: string) {
+    const payload = jwt.decode(rft) as jwt.JwtPayload;
+
+    await this.tokenRepo.checkToken(payload.id, rft);
+
+    const newPayload = await this.generateTokenPayload(payload.id);
+
+    return jwt.sign(newPayload, process.env.JWT_SECRET!, {
+      expiresIn: this.ACCESS_TOKEN_TTL,
+    });
   }
 }

@@ -1,20 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 
 import { IUser } from '@/db/interface';
 import { User } from '@/db/schema';
-import { getTokenPayloadPipeline } from '@/pipeline/user/getTokenPayload.pipeline';
 import { NotFound } from '@/util/response.util';
 
 import { BaseRepository } from './base.repository';
-
-export interface TokenPayload {
-  id?: string;
-  type?: 'Mahasiwa' | 'Dosen' | 'Admin';
-  mhsId?: string | null;
-  dosenId?: string | null;
-}
 
 @Injectable()
 export class UserRepository extends BaseRepository<IUser> {
@@ -34,12 +26,5 @@ export class UserRepository extends BaseRepository<IUser> {
     if (!user) throw new NotFound(this.GET_ONE_OR_FAIL_MESSAGE);
 
     return user;
-  }
-
-  public async getTokenPayload(_id: Types.ObjectId): Promise<TokenPayload> {
-    const pipeline = getTokenPayloadPipeline(_id);
-    const [payload] = await this.aggregate(pipeline);
-
-    return payload as TokenPayload;
   }
 }
