@@ -54,6 +54,7 @@ export class PKLService {
    * @returns Populated PKL data
    *
    * @throws {NotFound} PKL with id {pklId} not found
+   * @throws {NotFound} User does not have access to PKL with id {pklId}
    */
   async getPKLDetail(pklId: string) {
     const { mhsId, dosenId } = this.req.user!;
@@ -81,6 +82,7 @@ export class PKLService {
    * @returns List of populated PKL timeline data
    *
    * @throws {NotFound} PKL with id {pklId} not found
+   * @throws {NotFound} User does not have access to PKL with id {pklId}
    */
   async listPKLTimeline(pklId: string) {
     const { mhsId, dosenId } = this.req.user!;

@@ -1,4 +1,6 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 
 import { JournalListQueryDTO } from '@/dto/journal';
 import {
@@ -18,6 +20,8 @@ import { FileService } from './file.service';
 @Injectable({ scope: Scope.REQUEST })
 export class JournalService {
   constructor(
+    @Inject(REQUEST)
+    private readonly req: Request,
     private readonly PKLRepository: PKLRepository,
     private readonly JournalRepository: JournalRepository,
     private readonly JournalTimelineRepository: JournalTimelineRepository,
@@ -31,10 +35,17 @@ export class JournalService {
    * @param {JournalListQueryDTO} query Query to filter journal data
    *
    * @returns List of journal data
+   *
+   * @throws {NotFound} User does not have access to PKL with id {pklId}
    */
   async listJournal(pklId: string, query: JournalListQueryDTO) {
+    const { mhsId, dosenId } = this.req.user!;
+
     // Check if PKL exist
-    const pkl = await this.PKLRepository.getOneOrFail(pklId);
+    const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
+      mhsId,
+      dosenId,
+    });
 
     // List all populated PKL data or by filter
     const data = await this.JournalRepository.aggregate(
@@ -55,10 +66,16 @@ export class JournalService {
    *
    * @throws {NotFound} PKL with id {pklId} not found
    * @throws {NotFound} Journal with id {journalId} not found
+   * @throws {NotFound} User does not have access to PKL with id {pklId}
    */
   async getJournalDetail(pklId: string, journalId: string) {
+    const { mhsId, dosenId } = this.req.user!;
+
     // Check if PKL exist
-    const pkl = await this.PKLRepository.getOneOrFail(pklId);
+    const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
+      mhsId,
+      dosenId,
+    });
 
     // Check if Journal exist
     const journal = await this.JournalRepository.getOneOrFail({
@@ -85,10 +102,16 @@ export class JournalService {
    *
    * @throws {NotFound} PKL with id {pklId} not found
    * @throws {NotFound} Journal with id {journalId} not found
+   * @throws {NotFound} User does not have access to PKL with id {pklId}
    */
   async listJournalTimeline(pklId: string, journalId: string) {
+    const { mhsId, dosenId } = this.req.user!;
+
     // Check if PKL exist
-    const pkl = await this.PKLRepository.getOneOrFail(pklId);
+    const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
+      mhsId,
+      dosenId,
+    });
 
     // Check if Journal exist
     const journal = await this.JournalRepository.getOneOrFail({
