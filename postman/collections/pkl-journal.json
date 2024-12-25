@@ -155,13 +155,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210",
+							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce212",
 							"host": [
 								"{{origin}}"
 							],
 							"path": [
 								"pkl",
-								"67697c4ece2a4f39e4dce210"
+								"67697c4ece2a4f39e4dce212"
 							]
 						}
 					},
@@ -562,7 +562,31 @@
 					]
 				}
 			],
-			"id": "8003ac81-9066-4883-b9ec-609f6e38a461"
+			"id": "8003ac81-9066-4883-b9ec-609f6e38a461",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3acd1e54-5c9c-485b-9323-16ef202e6551",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a60574f0-4430-4c84-8586-652db90279dc",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "journal",
@@ -577,13 +601,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/jurnal",
+							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce212/jurnal",
 							"host": [
 								"{{origin}}"
 							],
 							"path": [
 								"pkl",
-								"67697c4ece2a4f39e4dce210",
+								"67697c4ece2a4f39e4dce212",
 								"jurnal"
 							],
 							"query": [
@@ -722,13 +746,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/jurnal/67697c4ece2a4f39e4dce433",
+							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce212/jurnal/67697c4ece2a4f39e4dce433",
 							"host": [
 								"{{origin}}"
 							],
 							"path": [
 								"pkl",
-								"67697c4ece2a4f39e4dce210",
+								"67697c4ece2a4f39e4dce212",
 								"jurnal",
 								"67697c4ece2a4f39e4dce433"
 							]
@@ -810,13 +834,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/jurnal/67697c4ece2a4f39e4dce433/timeline",
+							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce212/jurnal/67697c4ece2a4f39e4dce433/timeline",
 							"host": [
 								"{{origin}}"
 							],
 							"path": [
 								"pkl",
-								"67697c4ece2a4f39e4dce210",
+								"67697c4ece2a4f39e4dce212",
 								"jurnal",
 								"67697c4ece2a4f39e4dce433",
 								"timeline"
@@ -892,6 +916,382 @@
 				}
 			],
 			"id": "19754975-b4c9-469e-b390-53f5d32fee55"
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "67e9d754-29cc-4505-9635-87f41d72c761",
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.collectionVariables.set(\"jwt\", responseData.data.jwt)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "7fa2b5d7-a101-44e2-969f-69060836ffc9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"pwd123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{origin}}/auth/login",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "216e4f86-15c5-4bfa-ab57-8d267fb6c57f",
+							"name": "Success (admin)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"pwd123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{origin}}/auth/login",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "rft=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Njk3YzRlY2UyYTRmMzllNGRjZTEyYSIsInR5cGUiOiJBZG1pbiIsImlhdCI6MTczNTEzNzUwNywiZXhwIjoxNzM1MjIzOTA3fQ.Bzf6PzXhYoPYII6elfivZ0pErpxopiCpsBW5SGFyqqE; Path=/; HttpOnly"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "295"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"127-0ERaG1MWiSM8A6Po8Zf6xAJTRRI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Dec 2024 14:38:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"Login successful\",\n    \"data\": {\n        \"jwt\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Njk3YzRlY2UyYTRmMzllNGRjZTEyYSIsInR5cGUiOiJBZG1pbiIsImlhdCI6MTczNTEzNzUwNywiZXhwIjoxNzM1MTM4NDA3fQ.Ufqdedg_BdQydmJsVudj1zZRa93Pu8mrUu-ROV4e27w\",\n        \"user\": {\n            \"fullName\": \"Admin\",\n            \"type\": \"Admin\"\n        }\n    }\n}"
+						},
+						{
+							"id": "1326326c-39e0-4845-a49e-f6c5a96e3b67",
+							"name": "Success (dosen)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"pwd123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{origin}}/auth/login",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "rft=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Njk3YzRlY2UyYTRmMzllNGRjZTE5MSIsInR5cGUiOiJEb3NlbiIsImRvc2VuSWQiOiI2NzY5N2M0ZWNlMmE0ZjM5ZTRkY2UxOWIiLCJpYXQiOjE3MzUxMzc0NzMsImV4cCI6MTczNTIyMzg3M30.w5igh4eDdULaQGEoSgFIyKM-a7WbA50gZMOPz94N1AE; Path=/; HttpOnly"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "350"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15e-4M7itcNLB8Yuez46XfSLqt0Jztc\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Dec 2024 14:37:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"Login successful\",\n    \"data\": {\n        \"jwt\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Njk3YzRlY2UyYTRmMzllNGRjZTE5MSIsInR5cGUiOiJEb3NlbiIsImRvc2VuSWQiOiI2NzY5N2M0ZWNlMmE0ZjM5ZTRkY2UxOWIiLCJpYXQiOjE3MzUxMzc0NzMsImV4cCI6MTczNTEzODM3M30.ddts0eK0DjTCK2atLoXQiAZRhM4EaNHB8sEk6d05QlY\",\n        \"user\": {\n            \"fullName\": \"Usamah Rina\",\n            \"type\": \"Dosen\"\n        }\n    }\n}"
+						},
+						{
+							"id": "df6a00a7-a722-44f4-9c4c-549cb33f68dd",
+							"name": "Success (mahasiswa)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"pwd123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{origin}}/auth/login",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "rft=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Njk3YzRlY2UyYTRmMzllNGRjZTEyZSIsInR5cGUiOiJNYWhhc2lzd2EiLCJtaHNJZCI6IjY3Njk3YzRlY2UyYTRmMzllNGRjZTFiMiIsImlhdCI6MTczNTEzNzQ4NiwiZXhwIjoxNzM1MjIzODg2fQ.zGIZ06rGf6BOuvq8mfvGwx9UQwGcNPtt5H-qdcTwOec; Path=/; HttpOnly"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "392"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"188-0QY0X534zbmOCuryIbh68k7orWE\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Dec 2024 14:38:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"Login successful\",\n    \"data\": {\n        \"jwt\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Njk3YzRlY2UyYTRmMzllNGRjZTEyZSIsInR5cGUiOiJNYWhhc2lzd2EiLCJtaHNJZCI6IjY3Njk3YzRlY2UyYTRmMzllNGRjZTFiMiIsImlhdCI6MTczNTEzNzQ4NiwiZXhwIjoxNzM1MTM4Mzg2fQ.3yV8lsGcOWgJ6enibcSRMiDmR1BN_UTsdQNgpnKprf0\",\n        \"user\": {\n            \"statusPKL\": \"Verifikasi Gagal\",\n            \"fullName\": \"Hariyah Kartika\",\n            \"type\": \"Mahasiswa\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Refresh token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b56ef52c-dd98-4ba0-bb5a-a7eb445308ee",
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.collectionVariables.set(\"jwt\", responseData.data)\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "991e4542-68a3-4cc7-97ac-54e0a7d45207",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/auth/token",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"auth",
+								"token"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "986deb34-dc7a-4a1c-8a90-155f092b7b4f",
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{origin}}/auth/token",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"auth",
+										"token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "249"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f9-IV7Qt7RqFmLWK3VQhopKV3fkEvs\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 25 Dec 2024 14:38:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"message\": \"Access token acquired\",\n    \"data\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Njk3YzRlY2UyYTRmMzllNGRjZTEyYSIsInR5cGUiOiJBZG1pbiIsImlhdCI6MTczNTEzNzUzNiwiZXhwIjoxNzM1MTM4NDM2fQ.tMjhlSUr7Hko_jBLC-8cUNQfWeITucx1KEqTMD50XUo\"\n}"
+						}
+					]
+				}
+			],
+			"id": "9cb08c2a-9829-46b0-97f1-6896739e813c"
 		},
 		{
 			"name": "Hello world",
@@ -1140,11 +1540,21 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "8f097b7d-e74f-4b4f-8147-32f463297a04",
+				"id": "f45a9090-2db3-44e4-9cd5-6c2a10ac00ed",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1155,7 +1565,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "9a709369-2637-4e7a-9bb7-cdb42155b16f",
+				"id": "2e9c1036-3907-433e-96df-9504f6eee530",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1166,25 +1576,27 @@
 	],
 	"variable": [
 		{
-			"id": "784508fb-1c35-40a5-b479-9b6d22756b40",
+			"id": "e39a05fa-ee1f-4282-b455-21a1178161c2",
 			"key": "origin",
 			"value": "http://localhost:3000",
-			"type": "string",
-			"disabled": true
+			"type": "string"
 		},
 		{
-			"id": "69fb0ffa-c212-4883-8013-ab7ef6c271c8",
+			"id": "8508f18f-dd7e-4311-b748-43832f0593b0",
 			"key": "pklId",
 			"value": "",
-			"type": "string",
-			"disabled": true
+			"type": "string"
 		},
 		{
-			"id": "bf573ac3-22ef-43fb-823d-19161a00a1b8",
+			"id": "cd585bd3-25d5-443c-a0b7-5e1987852b5e",
 			"key": "journalId",
 			"value": "",
-			"type": "string",
-			"disabled": true
+			"type": "string"
+		},
+		{
+			"id": "65d4ad5e-9733-4b30-8b46-30eefd49057a",
+			"key": "jwt",
+			"value": ""
 		}
 	]
 }
