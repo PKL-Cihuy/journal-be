@@ -41,12 +41,11 @@ import { validateConfig } from '@/util/validateConfig.util';
 @Global()
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      cache: true,
-      validate: validateConfig,
-    }),
+    ConfigModule.forRoot({ cache: true, validate: validateConfig }),
+
     // Should already be validated by validateConfig
     MongooseModule.forRoot(process.env.DATABASE_URI as string),
+
     // Register all model and schema
     MongooseModule.forFeature([
       { name: Dosen.name, schema: DosenSchema },
@@ -61,6 +60,7 @@ import { validateConfig } from '@/util/validateConfig.util';
       { name: Token.name, schema: TokenSchema },
     ]),
   ],
+  // Register repository to module...
   providers: [
     TokenRepository,
     DosenRepository,
@@ -73,6 +73,7 @@ import { validateConfig } from '@/util/validateConfig.util';
     ProgramStudiRepository,
     UserRepository,
   ],
+  // ...And export them for use in other module
   exports: [
     TokenRepository,
     DosenRepository,
@@ -86,4 +87,4 @@ import { validateConfig } from '@/util/validateConfig.util';
     UserRepository,
   ],
 })
-export class GlobalModule {}
+export class DatabaseModule {}

@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { isValidObjectId } from 'mongoose';
 
+import { AuthMessage } from '@/message';
 import { sendResponse } from '@/util/response.util';
 
 export interface JWTPayload extends jwt.JwtPayload {
@@ -20,13 +21,13 @@ export class AuthMiddleware implements NestMiddleware {
     if (!token || bearer !== 'Bearer') {
       return sendResponse(res, {
         status: HttpStatus.UNAUTHORIZED,
-        message: 'No token provided!',
+        message: AuthMessage.NO_TOKEN_PROVIDED,
       });
     }
 
     jwt.verify(
       token,
-      process.env.JWT_KEY!,
+      process.env.JWT_SECRET!,
       (err: jwt.VerifyErrors | null, decoded: JWTPayload) => {
         // Check if there's an error
         if (err) return this.catchError(err, res);
@@ -43,7 +44,7 @@ export class AuthMiddleware implements NestMiddleware {
         ) {
           return sendResponse(res, {
             status: HttpStatus.UNAUTHORIZED,
-            message: 'Invalid jwt',
+            message: AuthMessage.INVALID_JWT,
           });
         }
 
@@ -61,10 +62,10 @@ export class AuthMiddleware implements NestMiddleware {
   }
 
   private catchError(err: jwt.VerifyErrors, res: Response) {
-    let message = 'Unauthorized';
+    let message = AuthMessage.UNAUTHORIZED;
 
     if (err instanceof jwt.TokenExpiredError) {
-      message = 'Access token expired';
+      message = AuthMessage.ACCESS_TOKEN_EXPIRED;
     }
 
     return sendResponse(res, {

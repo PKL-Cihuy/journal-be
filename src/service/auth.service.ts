@@ -24,15 +24,15 @@ export interface TokenPayload {
 @Injectable()
 export class AuthService {
   protected INVALID_CREDENTIALS = 'Email atau Password salah';
-  private ACCESS_TOKEN_TTL = '15m';
-  private REFRESH_TOKEN_TTL = '24h';
+  private readonly ACCESS_TOKEN_TTL = '15m';
+  private readonly REFRESH_TOKEN_TTL = '24h';
 
   constructor(
-    private userRepo: UserRepository,
-    private dosenRepo: DosenRepository,
-    private mhsRepo: MahasiswaRepository,
-    private tokenRepo: TokenRepository,
-    private pklService: PKLRepository,
+    private readonly userRepo: UserRepository,
+    private readonly dosenRepo: DosenRepository,
+    private readonly mhsRepo: MahasiswaRepository,
+    private readonly tokenRepo: TokenRepository,
+    private readonly pklService: PKLRepository,
   ) {}
 
   public async login(cred: LoginDTO) {
@@ -87,10 +87,10 @@ export class AuthService {
     ]);
 
     return {
-      dosenId: dosen?._id,
       id: userId as Types.ObjectId,
-      mhsId: mhs?._id,
       type: user?.type,
+      mhsId: mhs?._id || null,
+      dosenId: dosen?._id || null,
     };
   }
 

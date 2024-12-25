@@ -11,8 +11,8 @@ import { BaseRepository } from './base.repository';
 
 @Injectable()
 export class TokenRepository extends BaseRepository<IToken> {
-  protected TOKEN_NOT_FOUND = 'Tidak ada token ditemukan';
-  protected TOKEN_INVALID = 'Token Sudah Tidak Valid';
+  protected TOKEN_NOT_FOUND = 'Token tidak ditemukan';
+  protected TOKEN_INVALID = 'Token sudah tidak valid';
 
   constructor(@InjectModel(Token.name) model: Model<IToken>) {
     super(model);
@@ -23,13 +23,9 @@ export class TokenRepository extends BaseRepository<IToken> {
 
     if (!t) throw new Forbidden(this.TOKEN_NOT_FOUND);
 
-    try {
-      jwt.verify(t.token, process.env.JWT_SECRET!, (err) => {
-        if (err) throw new Forbidden(this.TOKEN_INVALID);
-      });
-    } catch (error) {
-      throw error;
-    }
+    jwt.verify(t.token, process.env.JWT_SECRET!, (err: jwt.VerifyErrors) => {
+      if (err) throw new Forbidden(this.TOKEN_INVALID);
+    });
   }
 
   public async saveToken(userId: string | Types.ObjectId, token: string) {
