@@ -23,9 +23,16 @@ export class TokenRepository extends BaseRepository<IToken> {
 
     if (!t) throw new Forbidden(this.TOKEN_NOT_FOUND);
 
-    jwt.verify(t.token, process.env.JWT_SECRET!, (err: jwt.VerifyErrors) => {
-      if (err) throw new Forbidden(this.TOKEN_INVALID);
-    });
+    jwt.verify(
+      t.token,
+      process.env.JWT_SECRET!,
+      async (err: jwt.VerifyErrors) => {
+        if (err) {
+          await this.deleteOne({ _id: t._id });
+          throw new Forbidden(this.TOKEN_INVALID);
+        }
+      },
+    );
   }
 
   public async saveToken(userId: string | Types.ObjectId, token: string) {
