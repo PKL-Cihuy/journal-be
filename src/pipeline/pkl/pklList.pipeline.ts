@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 import { DBCollection } from '@/db/collection.db';
 import {
   IDosen,
@@ -15,7 +17,28 @@ import {
   generateRangeQuery,
 } from '../builder/query.builder';
 
-export function PKLListPipeline(query: PKLListQueryDTO) {
+function generateUserFilter(userData?: {
+  mahasiswaId?: string;
+  koordinatorId?: string;
+}) {
+  const { mahasiswaId, koordinatorId } = userData || {};
+
+  if (mahasiswaId) {
+    return { mahasiswaId: new Types.ObjectId(mahasiswaId) };
+  }
+  if (koordinatorId) {
+    return { koordinatorId: new Types.ObjectId(koordinatorId) };
+  }
+  return {};
+}
+
+export function PKLListPipeline(
+  query: PKLListQueryDTO,
+  userData?: {
+    mahasiswaId?: string;
+    koordinatorId?: string;
+  },
+) {
   const {
     search,
     limit,
@@ -35,7 +58,9 @@ export function PKLListPipeline(query: PKLListQueryDTO) {
     totalJurnal,
   } = query;
 
+  console.log(generateUserFilter(userData));
   const pipelineBuilder = new PipelineBuilder<IPKL>()
+    .match(generateUserFilter(userData))
     .lookup({
       from: DBCollection.MAHASISWA,
       localField: 'mahasiswaId',

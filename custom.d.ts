@@ -3,8 +3,8 @@ declare namespace Express {
     user?: {
       id?: string;
       type?: 'Mahasiwa' | 'Dosen' | 'Admin';
-      mhsId?: string | null;
-      dosenId?: string | null;
+      mhsId?: string;
+      dosenId?: string;
     };
   }
 }

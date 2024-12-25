@@ -58,7 +58,7 @@ export class AuthService {
       rft: refreshToken,
       jwt: accessToken,
       user: {
-        statusPKL,
+        statusPKL: statusPKL?.status,
         fullName: user.namaLengkap,
         type: user.type,
       },
@@ -89,8 +89,8 @@ export class AuthService {
     return {
       id: userId as Types.ObjectId,
       type: user?.type,
-      mhsId: mhs?._id || null,
-      dosenId: dosen?._id || null,
+      mhsId: mhs?._id,
+      dosenId: dosen?._id,
     };
   }
 

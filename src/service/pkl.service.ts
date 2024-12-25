@@ -1,4 +1,6 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 
 import { PKLListQueryDTO } from '@/dto/pkl';
 import {
@@ -14,6 +16,8 @@ import { FileService } from './file.service';
 @Injectable({ scope: Scope.REQUEST })
 export class PKLService {
   constructor(
+    @Inject(REQUEST)
+    private readonly req: Request,
     private readonly PKLRepository: PKLRepository,
     private readonly PKLTimelineRepository: PKLTimelineRepository,
 
@@ -28,10 +32,15 @@ export class PKLService {
    * @returns List of populated PKL data
    */
   async listPKL(query: PKLListQueryDTO) {
-    // TODO: Filter by user type
+    const { mhsId, dosenId } = this.req.user!;
 
     // List all populated PKL data or by filter
-    const data = await this.PKLRepository.aggregate(PKLListPipeline(query));
+    const data = await this.PKLRepository.aggregate(
+      PKLListPipeline(query, {
+        mahasiswaId: mhsId,
+        koordinatorId: dosenId,
+      }),
+    );
 
     // Return formatted pagination response
     return formatPaginationResponse(data);
@@ -47,8 +56,13 @@ export class PKLService {
    * @throws {NotFound} PKL with id {pklId} not found
    */
   async getPKLDetail(pklId: string) {
+    const { mhsId, dosenId } = this.req.user!;
+
     // Check if PKL exist
-    const pkl = await this.PKLRepository.getOneOrFail(pklId);
+    const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
+      mhsId,
+      dosenId,
+    });
 
     // Get populated PKL data
     const data = await this.PKLRepository.aggregate(
@@ -69,8 +83,14 @@ export class PKLService {
    * @throws {NotFound} PKL with id {pklId} not found
    */
   async listPKLTimeline(pklId: string) {
+    const { mhsId, dosenId } = this.req.user!;
+
     // Check if PKL exist
-    const pkl = await this.PKLRepository.getOneOrFail(pklId);
+    // Prevent unauthorized access
+    const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
+      mhsId,
+      dosenId,
+    });
 
     // Get populated PKL timeline data
     const timeline = await this.PKLTimelineRepository.aggregate(

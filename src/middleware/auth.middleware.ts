@@ -39,8 +39,8 @@ export class AuthMiddleware implements NestMiddleware {
           !id ||
           !type ||
           !isValidObjectId(id) ||
-          (mhsId !== null && !isValidObjectId(mhsId)) ||
-          (dosenId !== null && !isValidObjectId(dosenId))
+          (mhsId && !isValidObjectId(mhsId)) ||
+          (dosenId && !isValidObjectId(dosenId))
         ) {
           return sendResponse(res, {
             status: HttpStatus.UNAUTHORIZED,
