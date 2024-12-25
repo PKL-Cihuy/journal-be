@@ -11,4 +11,6 @@ export const enum DBCollection {
 
   JURNAL = 'jurnal',
   JURNAL_TIMELINE = 'jurnal_timeline',
+
+  TOKEN = 'tokens',
 }

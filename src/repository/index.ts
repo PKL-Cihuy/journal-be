@@ -7,3 +7,4 @@ export { PKLRepository } from './pkl.repository';
 export { PKLTimelineRepository } from './pklTimeline.repository';
 export { ProgramStudiRepository } from './programStudi.repository';
 export { UserRepository } from './user.repository';
+export { TokenRepository } from './token.repository';

@@ -37,3 +37,4 @@ export {
   ProgramStudiModel,
 } from './programStudi.schema';
 export { User, UserDocument, UserSchema, UserModel } from './user.schema';
+export { Token, TokenModel, TokenSchema } from './token.schema';

@@ -24,17 +24,7 @@ export class PipelineBuilder<T = any> {
     return this;
   }
 
-  lookup(data: {
-    from: string;
-    as: string;
-    localField?: string;
-    foreignField?: string;
-    pipeline?: Exclude<
-      mongoose.PipelineStage,
-      mongoose.PipelineStage.Merge | mongoose.PipelineStage.Out
-    >[];
-    let?: Record<string, any>;
-  }) {
+  lookup(data: mongoose.PipelineStage.Lookup['$lookup']) {
     const lookup = {
       $lookup: {
         from: data.from,
