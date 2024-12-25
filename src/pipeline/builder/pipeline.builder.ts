@@ -1,5 +1,8 @@
 import { SortDirection } from 'mongodb';
-import mongoose from 'mongoose';
+import mongoose, { FilterQuery } from 'mongoose';
+
+import { DBCollection } from '@/db/collection.db';
+import { mongoDateToString } from '@/util/mongoDateToString.util';
 
 import { FacetPipelineBuilder } from './facetPipeline.builder';
 
@@ -24,7 +27,18 @@ export class PipelineBuilder<T = any> {
     return this;
   }
 
-  lookup(data: mongoose.PipelineStage.Lookup['$lookup']) {
+  lookup(data: {
+    from: string;
+    as: string;
+    localField?: string;
+    foreignField?: string;
+    pipeline?: Exclude<
+      mongoose.PipelineStage,
+      mongoose.PipelineStage.Merge | mongoose.PipelineStage.Out
+    >[];
+    let?: Record<string, any>;
+    unwind?: boolean;
+  }) {
     const lookup = {
       $lookup: {
         from: data.from,
@@ -42,6 +56,13 @@ export class PipelineBuilder<T = any> {
     if (!data.foreignField) delete lookup.$lookup.foreignField;
 
     this.pipelines.push(lookup);
+
+    if (data.unwind) {
+      this.unwind({
+        path: `$${data.as}`,
+        preserveNullAndEmptyArrays: true,
+      });
+    }
 
     return this;
   }
@@ -181,6 +202,68 @@ export class PipelineBuilder<T = any> {
 
     this.unwind('$totalRecords');
     this.addFields({ totalRecords: '$totalRecords.total' });
+
+    return this;
+  }
+
+  toDateString(fieldsWithoutDollar: string[]) {
+    this.addFields(
+      fieldsWithoutDollar.reduce(
+        (acc, field) => {
+          acc[`${field}String`] = mongoDateToString(`$${field}`);
+
+          return acc;
+        },
+        {} as Record<string, any>,
+      ),
+    );
+
+    return this;
+  }
+
+  search(keyword: string | undefined, fields: string[]) {
+    if (keyword) {
+      this.match({
+        $or: fields.map(
+          (field) =>
+            ({
+              [field]: {
+                $regex: keyword,
+                $options: 'i',
+              },
+            }) as FilterQuery<T>,
+        ),
+      });
+    }
+
+    return this;
+  }
+
+  /**
+   * Get user data. Should only be called inside Mahasiswa or Dosen lookup pipeline
+   */
+  getUserData(opts?: { localField?: string; keepType?: boolean }) {
+    this.lookup({
+      from: DBCollection.USER,
+      localField: opts?.localField ?? 'userId',
+      foreignField: '_id',
+      as: 'user',
+      unwind: true,
+    });
+
+    this.addFields({
+      email: '$user.email',
+      namaLengkap: '$user.namaLengkap',
+      nomorHandphone: '$user.nomorHandphone',
+    });
+
+    if (opts?.keepType) {
+      this.addFields({
+        type: '$user.type',
+      });
+    }
+
+    this.project({ __v: 0, user: 0, userId: 0, createdAt: 0, updatedAt: 0 });
 
     return this;
   }

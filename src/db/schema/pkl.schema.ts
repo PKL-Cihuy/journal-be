@@ -52,13 +52,13 @@ export class PKL implements IPKL {
   namaInstansi: string;
 
   @Prop({
-    type: String,
+    type: Date,
     required: true,
   })
   tanggalMulai: Date;
 
   @Prop({
-    type: String,
+    type: Date,
     required: true,
   })
   tanggalSelesai: Date;

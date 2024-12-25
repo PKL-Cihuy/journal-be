@@ -28,7 +28,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth(
       {
-        description: "Input JWT Token (without 'Bearer' prefix)",
+        description: "Input JWT token (without 'Bearer' prefix)",
         name: 'Authorization',
         bearerFormat: 'Bearer',
         scheme: 'Bearer',
@@ -40,19 +40,6 @@ async function bootstrap() {
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, config);
-
-  if (process.env.ENVIRONMENT == 'dev') {
-    app.setGlobalPrefix('/v1');
-  }
-  const pathKeys = Object.keys(swaggerDocument.paths);
-  const pathValues = Object.values(swaggerDocument.paths);
-  const newPathKeys = pathKeys.map((path) => `/v1${path}`);
-
-  const newPaths: { [key: string]: any } = {};
-  for (const [index, path] of newPathKeys.entries()) {
-    newPaths[path] = pathValues[index];
-  }
-
   SwaggerModule.setup('docs', app, swaggerDocument);
 
   await app.listen(process.env.PORT ?? 3000);
