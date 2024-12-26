@@ -4,15 +4,13 @@ import { Request } from 'express';
 import { Types } from 'mongoose';
 
 import { EPKLStatus, EUserType } from '@/db/interface';
-import { PaginatedDTO } from '@/dto/global/paginated.dto';
 import {
   PKLCreateDTO,
   PKLCreateFilesDTO,
-  PKLDetailResponseDTO,
   PKLGetCreateDataResponseDTO,
   PKLListQueryDTO,
-  PKLListResponseDTO,
-  PKLTimelineListResponseDTO,
+  PKLUpdateDTO,
+  PKLUpdateFilesDTO,
 } from '@/dto/pkl';
 import { PKLMessage } from '@/message';
 import {
@@ -27,7 +25,12 @@ import {
   PKLTimelineRepository,
 } from '@/repository';
 import { formatPaginationResponse } from '@/util/formatResponse.util';
-import { Forbidden, InternalServerError, NotFound } from '@/util/response.util';
+import {
+  BadRequest,
+  Forbidden,
+  InternalServerError,
+  NotFound,
+} from '@/util/response.util';
 
 import { FileService } from './file.service';
 
@@ -50,9 +53,7 @@ export class PKLService {
    *
    * @returns List of populated PKL data
    */
-  async listPKL(
-    query: PKLListQueryDTO,
-  ): Promise<PaginatedDTO<PKLListResponseDTO>> {
+  async listPKL(query: PKLListQueryDTO) {
     const { mhsId, dosenId } = this.req.user!;
 
     // List all populated PKL data or by filter
@@ -122,8 +123,9 @@ export class PKLService {
       });
 
     try {
+      // TODO: add address field
       // Create PKL
-      await this.PKLRepository.create({
+      const created = await this.PKLRepository.create({
         _id: newPKLId,
         mahasiswaId: pklCreateData.mahasiswa._id as any,
         koordinatorId: pklCreateData.koordinator._id as any,
@@ -145,6 +147,8 @@ export class PKLService {
         deskripsi: 'PKL diajukan',
         status: EPKLStatus.MENUNGGU_PERSETUJUAN,
       });
+
+      return created;
     } catch (error) {
       // Rollback if failed to create PKL
       console.error(error);
@@ -154,13 +158,98 @@ export class PKLService {
 
       // Delete uploaded files
       this.fileService.deleteFiles(this.fileService.PKL_FOLDER_NAME, [
-        dokumenDiterima?.split(/[\\/]/)?.pop(),
-        dokumenMentor?.split(/[\\/]/)?.pop(),
-        dokumenPimpinan?.split(/[\\/]/)?.pop(),
+        dokumenDiterima?.split('/')?.pop(),
+        dokumenMentor?.split('/')?.pop(),
+        dokumenPimpinan?.split('/')?.pop(),
       ]);
 
       throw new InternalServerError(
         PKLMessage.FAIL_CREATE_GENERIC,
+        error.message,
+      );
+    }
+  }
+
+  /**
+   * Update PKL by id
+   *
+   * @param {PKLCreateDTO} data PKL data
+   * @param {PKLCreateFilesDTO} files PKL files
+   *
+   * @throws {Forbidden} User is not Mahasiswa
+   * @throws {NotFound} Mahasiswa not found
+   * @throws {InternalServerError} Failed to update PKL, likely from FileService errors
+   */
+  async updatePKL(pklId: string, data: PKLUpdateDTO, files: PKLUpdateFilesDTO) {
+    // Get data for creating PKL for the current user mahasiswa
+    const pklCreateData = await this.getCreateData();
+
+    // Check if PKL exist
+    const pkl = await this.PKLRepository.getOneOrFail(pklId);
+
+    // Throw BadRequest if PKL status is not correct
+    if (
+      pkl.status !== EPKLStatus.PENGAJUAN_DITOLAK &&
+      pkl.status !== EPKLStatus.VERIFIKASI_GAGAL
+    ) {
+      throw new BadRequest(PKLMessage.FAIL_PKL_UPDATE_INCORRECT_STATUS);
+    }
+
+    // Upload dokumen awal
+    const { dokumenDiterima, dokumenMentor, dokumenPimpinan } =
+      this.fileService.uploadDokumenAwal(pkl.id, {
+        dokumenDiterima: files.dokumenDiterima,
+        dokumenMentor: files.dokumenMentor,
+        dokumenPimpinan: files.dokumenPimpinan,
+      });
+
+    try {
+      // TODO: add address field
+      // Update PKL
+      const updated = await this.PKLRepository.findOneAndUpdate(
+        { _id: pkl.id },
+        {
+          namaInstansi: data.namaInstansi,
+          tanggalMulai: data.tanggalMulai
+            ? new Date(data.tanggalMulai)
+            : pkl.tanggalMulai,
+          tanggalSelesai: data.tanggalSelesai
+            ? new Date(data.tanggalSelesai)
+            : pkl.tanggalSelesai,
+          dokumenDiterima: dokumenDiterima ?? pkl.dokumenDiterima,
+          dokumenMentor: dokumenMentor ?? pkl.dokumenMentor,
+          dokumenPimpinan: dokumenPimpinan ?? pkl.dokumenPimpinan,
+          status: EPKLStatus.MENUNGGU_PERSETUJUAN,
+        },
+      );
+
+      // Create PKL timeline
+      await this.PKLTimelineRepository.create({
+        pklId: 'asd' as any,
+        // pklId: pkl.id,
+        userId: pklCreateData.mahasiswa.userId as any,
+        deskripsi: 'PKL diajukan ulang',
+        status: EPKLStatus.MENUNGGU_PERSETUJUAN,
+      });
+
+      return updated;
+    } catch (error) {
+      // Rollback if failed to update PKL
+      console.error(error);
+
+      // TODO: override timetstamp
+      // Delete created PKL
+      await this.PKLRepository.updateOne({ _id: pkl.id }, pkl);
+
+      // Delete uploaded files
+      this.fileService.deleteFiles(this.fileService.PKL_FOLDER_NAME, [
+        dokumenDiterima?.split('/')?.pop(),
+        dokumenMentor?.split('/')?.pop(),
+        dokumenPimpinan?.split('/')?.pop(),
+      ]);
+
+      throw new InternalServerError(
+        PKLMessage.FAIL_UPDATE_GENERIC,
         error.message,
       );
     }
@@ -176,7 +265,7 @@ export class PKLService {
    * @throws {NotFound} PKL with id {pklId} not found
    * @throws {NotFound} User does not have access to PKL with id {pklId}
    */
-  async getPKLDetail(pklId: string): Promise<PKLDetailResponseDTO> {
+  async getPKLDetail(pklId: string) {
     const { mhsId, dosenId } = this.req.user!;
 
     // Check if PKL exist
@@ -204,7 +293,7 @@ export class PKLService {
    * @throws {NotFound} PKL with id {pklId} not found
    * @throws {NotFound} User does not have access to PKL with id {pklId}
    */
-  async listPKLTimeline(pklId: string): Promise<PKLTimelineListResponseDTO[]> {
+  async listPKLTimeline(pklId: string) {
     const { mhsId, dosenId } = this.req.user!;
 
     // Check if PKL exist

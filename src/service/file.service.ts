@@ -256,7 +256,13 @@ export class FileService {
       );
       writeFileSync(filePath, file.buffer);
 
-      return filePath.replaceAll(this.getUploadsDir(), '');
+      return (
+        filePath
+          // Remove the base directory from the file path
+          .replaceAll(this.getUploadsDir(), '')
+          // Replace backslashes with forward slashes
+          .replaceAll('\\', '/')
+      );
     } catch (error) {
       console.error(error);
       throw new InternalServerError(FileMessage.FAIL_SAVE_FILE, error.message);

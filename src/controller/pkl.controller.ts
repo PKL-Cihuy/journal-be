@@ -5,6 +5,7 @@ import {
   Param,
   ParseFilePipeBuilder,
   Post,
+  Put,
   Query,
   Res,
   UploadedFiles,
@@ -20,6 +21,7 @@ import {
 import { Response } from 'express';
 
 import {
+  ApiResponseBadRequest,
   ApiResponseCreated,
   ApiResponseForbidden,
   ApiResponseInternalServerError,
@@ -30,12 +32,14 @@ import {
 import {
   PKLCreateDTO,
   PKLCreateFilesDTO,
+  PKLCreateResponseDTO,
   PKLDetailResponseDTO,
   PKLGetCreateDataResponseDTO,
   PKLListQueryDTO,
   PKLListResponseDTO,
   PKLTimelineListResponseDTO,
 } from '@/dto/pkl';
+import { PKLUpdateResponseDTO } from '@/dto/pkl/pklUpdate.dto';
 import { PKLMessage } from '@/message';
 import { IsValidObjectIdPipe } from '@/pipe/isValidMongoId.pipe';
 import { ParseFilesPipe } from '@/pipe/parseFiles.pipe';
@@ -108,6 +112,7 @@ export class PKLController {
   @ApiOperation({ summary: 'Submit a new PKL for approval' })
   @ApiConsumes('multipart/form-data')
   @ApiResponseCreated({
+    responseDTO: PKLCreateResponseDTO,
     message: PKLMessage.SUCCESS_CREATE,
   })
   @ApiResponseForbidden({
@@ -128,7 +133,7 @@ export class PKLController {
           })
           .addMaxSizeValidator({
             // Size: 10 MiB
-            maxSize: 1024 * 1024 * 10,
+            maxSize: 1024 * 1024 * 5,
           })
           .build(),
       ),
@@ -169,6 +174,70 @@ export class PKLController {
       return sendResponse(
         response,
         new Success(PKLMessage.SUCCESS_DETAIL, data),
+      );
+    } catch (error) {
+      console.error(error);
+      return errorResponse(error);
+    }
+  }
+
+  @Put('/:pklId')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'dokumenDiterima', maxCount: 1 },
+      { name: 'dokumenMentor', maxCount: 1 },
+      { name: 'dokumenPimpinan', maxCount: 1 },
+    ]),
+  )
+  @ApiOperation({ summary: 'Resubmit PKL (due to rejection) for approval' })
+  @ApiConsumes('multipart/form-data')
+  @ApiResponseCreated({
+    responseDTO: PKLUpdateResponseDTO,
+    message: PKLMessage.SUCCESS_UPDATE,
+  })
+  @ApiResponseBadRequest({
+    message: PKLMessage.FAIL_PKL_UPDATE_INCORRECT_STATUS,
+  })
+  @ApiResponseForbidden({
+    message: PKLMessage.FAIL_CREATE_PKL_NOT_MAHASISWA,
+  })
+  @ApiResponseInternalServerError({
+    message: PKLMessage.FAIL_CREATE_GENERIC,
+  })
+  async updatePKL(
+    @Res() response: Response,
+    @Param('pklId', IsValidObjectIdPipe) pklId: string,
+    @Body()
+    body: PKLCreateDTO,
+    @UploadedFiles(
+      new ParseFilesPipe(
+        new ParseFilePipeBuilder()
+          .addFileTypeValidator({
+            fileType: /(pdf)/,
+          })
+          .addMaxSizeValidator({
+            // Size: 5 MiB
+            maxSize: 1024 * 1024 * 5,
+          })
+          .build({
+            // Allow empty files for resubmission
+            fileIsRequired: false,
+          }),
+      ),
+      new ParseSingleFilePositionPipe([
+        'dokumenDiterima',
+        'dokumenMentor',
+        'dokumenPimpinan',
+      ]),
+    )
+    files: PKLCreateFilesDTO,
+  ) {
+    try {
+      const data = await this.PKLService.updatePKL(pklId, body, files);
+
+      return sendResponse(
+        response,
+        new Created(PKLMessage.SUCCESS_CREATE, data),
       );
     } catch (error) {
       console.error(error);

@@ -58,7 +58,10 @@ export class BaseRepository<T> {
   // Reference:
   // - https://stackoverflow.com/questions/16726330/mongoose-mongodb-batch-insert/24848148#24848148
   // - https://github.com/Automattic/mongoose/issues/723#issuecomment-178866230
-  async insertMany(body: Array<T>, options: InsertManyOptions = {}) {
+  async insertMany(
+    body: Array<T> | Array<Partial<T>>,
+    options: InsertManyOptions = {},
+  ) {
     return await this._model.insertMany(body, options);
   }
 
