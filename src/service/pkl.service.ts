@@ -225,7 +225,7 @@ export class PKLService {
 
       // Create PKL timeline
       await this.PKLTimelineRepository.create({
-        pklId: 'asd' as any,
+        pklId: pkl.id,
         // pklId: pkl.id,
         userId: pklCreateData.mahasiswa.userId as any,
         deskripsi: 'PKL diajukan ulang',

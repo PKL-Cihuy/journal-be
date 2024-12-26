@@ -39,7 +39,11 @@ import {
   PKLListResponseDTO,
   PKLTimelineListResponseDTO,
 } from '@/dto/pkl';
-import { PKLUpdateResponseDTO } from '@/dto/pkl/pklUpdate.dto';
+import {
+  PKLUpdateDTO,
+  PKLUpdateFilesDTO,
+  PKLUpdateResponseDTO,
+} from '@/dto/pkl/pklUpdate.dto';
 import { PKLMessage } from '@/message';
 import { IsValidObjectIdPipe } from '@/pipe/isValidMongoId.pipe';
 import { ParseFilesPipe } from '@/pipe/parseFiles.pipe';
@@ -208,7 +212,7 @@ export class PKLController {
     @Res() response: Response,
     @Param('pklId', IsValidObjectIdPipe) pklId: string,
     @Body()
-    body: PKLCreateDTO,
+    body: PKLUpdateDTO,
     @UploadedFiles(
       new ParseFilesPipe(
         new ParseFilePipeBuilder()
@@ -230,14 +234,14 @@ export class PKLController {
         'dokumenPimpinan',
       ]),
     )
-    files: PKLCreateFilesDTO,
+    files: PKLUpdateFilesDTO,
   ) {
     try {
       const data = await this.PKLService.updatePKL(pklId, body, files);
 
       return sendResponse(
         response,
-        new Created(PKLMessage.SUCCESS_CREATE, data),
+        new Created(PKLMessage.SUCCESS_UPDATE, data),
       );
     } catch (error) {
       console.error(error);
