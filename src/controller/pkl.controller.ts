@@ -58,7 +58,7 @@ export class PKLController {
   @Get('/')
   @ApiOperation({ summary: 'List PKL' })
   @ApiResponsePaginated(PKLListResponseDTO, {
-    message: PKLMessage.LIST_SUCCESS,
+    message: PKLMessage.SUCCESS_LIST,
   })
   async listPKL(
     @Res() response: Response,
@@ -67,7 +67,7 @@ export class PKLController {
     try {
       const data = await this.PKLService.listPKL(query);
 
-      return sendResponse(response, new Success(PKLMessage.LIST_SUCCESS, data));
+      return sendResponse(response, new Success(PKLMessage.SUCCESS_LIST, data));
     } catch (error) {
       console.error(error);
       return errorResponse(error);
@@ -78,10 +78,10 @@ export class PKLController {
   @ApiOperation({ summary: 'Get data for creating PKL (intended for UI data)' })
   @ApiResponseOk({
     responseDTO: PKLGetCreateDataResponseDTO,
-    message: PKLMessage.GET_CREATE_DATA_SUCCESS,
+    message: PKLMessage.SUCCESS_GET_CREATE_DATA,
   })
   @ApiResponseForbidden({
-    message: PKLMessage.CREATE_PKL_NOT_MAHASISWA,
+    message: PKLMessage.FAIL_CREATE_PKL_NOT_MAHASISWA,
   })
   async getCreateData(@Res() response: Response) {
     try {
@@ -89,7 +89,7 @@ export class PKLController {
 
       return sendResponse(
         response,
-        new Success(PKLMessage.GET_CREATE_DATA_SUCCESS, data),
+        new Success(PKLMessage.SUCCESS_GET_CREATE_DATA, data),
       );
     } catch (error) {
       console.error(error);
@@ -108,13 +108,13 @@ export class PKLController {
   @ApiOperation({ summary: 'Submit a new PKL for approval' })
   @ApiConsumes('multipart/form-data')
   @ApiResponseCreated({
-    message: PKLMessage.CREATE_SUCCESS,
+    message: PKLMessage.SUCCESS_CREATE,
   })
   @ApiResponseForbidden({
-    message: PKLMessage.CREATE_PKL_NOT_MAHASISWA,
+    message: PKLMessage.FAIL_CREATE_PKL_NOT_MAHASISWA,
   })
   @ApiResponseInternalServerError({
-    message: PKLMessage.CREATE_FAIL_GENERIC,
+    message: PKLMessage.FAIL_CREATE_GENERIC,
   })
   async createPKL(
     @Res() response: Response,
@@ -145,7 +145,7 @@ export class PKLController {
 
       return sendResponse(
         response,
-        new Created(PKLMessage.CREATE_SUCCESS, data),
+        new Created(PKLMessage.SUCCESS_CREATE, data),
       );
     } catch (error) {
       console.error(error);
@@ -157,7 +157,7 @@ export class PKLController {
   @ApiOperation({ summary: 'Get PKL Detail' })
   @ApiResponseOk({
     responseDTO: PKLDetailResponseDTO,
-    message: PKLMessage.DETAIL_SUCCESS,
+    message: PKLMessage.SUCCESS_DETAIL,
   })
   async getPKLDetail(
     @Res() response: Response,
@@ -168,7 +168,7 @@ export class PKLController {
 
       return sendResponse(
         response,
-        new Success(PKLMessage.DETAIL_SUCCESS, data),
+        new Success(PKLMessage.SUCCESS_DETAIL, data),
       );
     } catch (error) {
       console.error(error);
@@ -179,7 +179,7 @@ export class PKLController {
   @Get('/:pklId/timeline')
   @ApiOperation({ summary: 'List PKL Timeline' })
   @ApiResponseList(PKLTimelineListResponseDTO, {
-    message: PKLMessage.TIMELINE_SUCCESS,
+    message: PKLMessage.SUCCESS_TIMELINE,
   })
   async listPKLTimeline(
     @Res() response: Response,
@@ -190,7 +190,7 @@ export class PKLController {
 
       return sendResponse(
         response,
-        new Success(PKLMessage.TIMELINE_SUCCESS, data),
+        new Success(PKLMessage.SUCCESS_TIMELINE, data),
       );
     } catch (error) {
       console.error(error);

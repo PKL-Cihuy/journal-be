@@ -1,11 +1,11 @@
 export enum PKLMessage {
-  LIST_SUCCESS = 'List PKL berhasil didapatkan',
-  DETAIL_SUCCESS = 'Detail PKL berhasil didapatkan',
-  TIMELINE_SUCCESS = 'Timeline PKL berhasil didapatkan',
-  GET_CREATE_DATA_SUCCESS = 'Data pembuatan PKL berhasil didapatkan',
-  CREATE_SUCCESS = 'PKL berhasil dibuat',
+  SUCCESS_LIST = 'List PKL berhasil didapatkan',
+  SUCCESS_DETAIL = 'Detail PKL berhasil didapatkan',
+  SUCCESS_TIMELINE = 'Timeline PKL berhasil didapatkan',
+  SUCCESS_GET_CREATE_DATA = 'Data pembuatan PKL berhasil didapatkan',
+  SUCCESS_CREATE = 'PKL berhasil dibuat',
 
-  CREATE_PKL_NOT_MAHASISWA = 'Hanya mahasiswa yang dapat membuat PKL',
+  FAIL_CREATE_GENERIC = 'Gagal membuat PKL',
 
-  CREATE_FAIL_GENERIC = 'Gagal membuat PKL',
+  FAIL_CREATE_PKL_NOT_MAHASISWA = 'Hanya mahasiswa yang dapat membuat PKL',
 }

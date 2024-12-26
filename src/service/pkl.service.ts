@@ -80,7 +80,7 @@ export class PKLService {
 
     // Check if user is Mahasiswa
     if ((type as EUserType) !== EUserType.MAHASISWA || !mhsId) {
-      throw new Forbidden(PKLMessage.CREATE_PKL_NOT_MAHASISWA);
+      throw new Forbidden(PKLMessage.FAIL_CREATE_PKL_NOT_MAHASISWA);
     }
 
     // Check if Mahasiswa exist
@@ -160,7 +160,7 @@ export class PKLService {
       ]);
 
       throw new InternalServerError(
-        PKLMessage.CREATE_FAIL_GENERIC,
+        PKLMessage.FAIL_CREATE_GENERIC,
         error.message,
       );
     }

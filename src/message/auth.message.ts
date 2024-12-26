@@ -1,6 +1,6 @@
 export enum AuthMessage {
-  LOGIN_SUCCESS = 'Login successful',
-  ACCESS_TOKEN_SUCCESS = 'Access token acquired',
+  SUCCESS_LOGIN = 'Login successful',
+  SUCCESS_ACCESS_TOKEN = 'Access token acquired',
 
   NO_TOKEN_PROVIDED = 'No token provided',
   UNAUTHORIZED = 'Unauthorized',

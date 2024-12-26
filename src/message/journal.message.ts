@@ -1,5 +1,5 @@
 export enum JournalMessage {
-  LIST_SUCCESS = 'List Jurnal berhasil didapatkan',
-  DETAIL_SUCCESS = 'Detail Jurnal berhasil didapatkan',
-  TIMELINE_SUCCESS = 'Timeline Jurnal berhasil didapatkan',
+  SUCCESS_LIST = 'List Jurnal berhasil didapatkan',
+  SUCCESS_DETAIL = 'Detail Jurnal berhasil didapatkan',
+  SUCCESS_TIMELINE = 'Timeline Jurnal berhasil didapatkan',
 }

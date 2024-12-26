@@ -28,17 +28,17 @@ export class AuthController {
   @ApiOperation({ summary: 'Login' })
   @ApiResponseOk(
     {
-      message: AuthMessage.LOGIN_SUCCESS,
+      message: AuthMessage.SUCCESS_LOGIN,
       description: 'Login as Admin',
       data: LoginResponseAdminData,
     },
     {
-      message: AuthMessage.LOGIN_SUCCESS,
+      message: AuthMessage.SUCCESS_LOGIN,
       description: 'Login as Dosen',
       data: LoginResponseDosenData,
     },
     {
-      message: AuthMessage.LOGIN_SUCCESS,
+      message: AuthMessage.SUCCESS_LOGIN,
       description: 'Login as Mahasiswa',
       data: LoginResponseMahasiswaData,
     },
@@ -51,7 +51,7 @@ export class AuthController {
 
       res.cookie('rft', rft, { httpOnly: true });
 
-      return sendResponse(res, new Success(AuthMessage.LOGIN_SUCCESS, data));
+      return sendResponse(res, new Success(AuthMessage.SUCCESS_LOGIN, data));
     } catch (error) {
       console.error(error);
       return errorResponse(error);
@@ -61,7 +61,7 @@ export class AuthController {
   @Get('/token')
   @ApiOperation({ summary: 'Get or refresh short-lived access token' })
   @ApiResponseOk({
-    message: AuthMessage.ACCESS_TOKEN_SUCCESS,
+    message: AuthMessage.SUCCESS_ACCESS_TOKEN,
     data: AccessTokenResponseData,
   })
   async getAccessToken(@Res() res: Response, @Req() req: Request) {
@@ -74,7 +74,7 @@ export class AuthController {
 
       return sendResponse(
         res,
-        new Success(AuthMessage.ACCESS_TOKEN_SUCCESS, accessToken),
+        new Success(AuthMessage.SUCCESS_ACCESS_TOKEN, accessToken),
       );
     } catch (error) {
       console.error(error);

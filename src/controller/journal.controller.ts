@@ -23,7 +23,7 @@ export class JournalController {
   @Get('/')
   @ApiOperation({ summary: 'List Journal' })
   @ApiResponsePaginated(JournalListResponseDTO, {
-    message: JournalMessage.LIST_SUCCESS,
+    message: JournalMessage.SUCCESS_LIST,
   })
   async listJournal(
     @Res() response: Response,
@@ -35,7 +35,7 @@ export class JournalController {
 
       return sendResponse(
         response,
-        new Success(JournalMessage.LIST_SUCCESS, data),
+        new Success(JournalMessage.SUCCESS_LIST, data),
       );
     } catch (error) {
       console.error(error);
@@ -47,7 +47,7 @@ export class JournalController {
   @ApiOperation({ summary: 'Get Journal Detail' })
   @ApiResponseOk({
     responseDTO: JournalListResponseDTO,
-    message: JournalMessage.DETAIL_SUCCESS,
+    message: JournalMessage.SUCCESS_DETAIL,
   })
   async getJournalDetail(
     @Res() response: Response,
@@ -59,7 +59,7 @@ export class JournalController {
 
       return sendResponse(
         response,
-        new Success(JournalMessage.DETAIL_SUCCESS, data),
+        new Success(JournalMessage.SUCCESS_DETAIL, data),
       );
     } catch (error) {
       console.error(error);
@@ -70,7 +70,7 @@ export class JournalController {
   @Get('/:journalId/timeline')
   @ApiOperation({ summary: 'Get Journal Timeline' })
   @ApiResponseList(JournalListResponseDTO, {
-    message: JournalMessage.TIMELINE_SUCCESS,
+    message: JournalMessage.SUCCESS_TIMELINE,
   })
   async listJournalTimeline(
     @Res() response: Response,
@@ -85,7 +85,7 @@ export class JournalController {
 
       return sendResponse(
         response,
-        new Success(JournalMessage.TIMELINE_SUCCESS, data),
+        new Success(JournalMessage.SUCCESS_TIMELINE, data),
       );
     } catch (error) {
       console.error(error);
