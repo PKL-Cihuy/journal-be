@@ -3,12 +3,14 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import {
+  ApiResponseForbidden,
   ApiResponseList,
   ApiResponseOk,
   ApiResponsePaginated,
 } from '@/decorator/response.decorator';
 import {
   PKLDetailResponseDTO,
+  PKLGetCreateDataResponseDTO,
   PKLListQueryDTO,
   PKLListResponseDTO,
   PKLTimelineListResponseDTO,
@@ -38,6 +40,29 @@ export class PKLController {
       const data = await this.PKLService.listPKL(query);
 
       return sendResponse(response, new Success(PKLMessage.LIST_SUCCESS, data));
+    } catch (error) {
+      console.error(error);
+      return errorResponse(error);
+    }
+  }
+
+  @Get('/create')
+  @ApiOperation({
+    summary: 'Get data for creating PKL (intended for UI data)',
+  })
+  @ApiResponseOk({
+    responseDTO: PKLGetCreateDataResponseDTO,
+    message: PKLMessage.GET_CREATE_DATA_SUCCESS,
+  })
+  @ApiResponseForbidden({ message: PKLMessage.CREATE_PKL_NOT_MAHASISWA })
+  async getCreateData(@Res() response: Response) {
+    try {
+      const data = await this.PKLService.getCreateData();
+
+      return sendResponse(
+        response,
+        new Success(PKLMessage.GET_CREATE_DATA_SUCCESS, data),
+      );
     } catch (error) {
       console.error(error);
       return errorResponse(error);

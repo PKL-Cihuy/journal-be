@@ -3,10 +3,12 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiExtraModels,
+  ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiResponse,
+  ApiUnauthorizedResponse,
   getSchemaPath,
 } from '@nestjs/swagger';
 import {
@@ -55,15 +57,25 @@ function defaultMessageAndStatus(data?: TCoreData) {
         description: 'Created',
         message: 'Created',
       };
-    case HttpStatus.NOT_FOUND:
+    case HttpStatus.UNAUTHORIZED:
       return {
-        description: 'Not Found',
-        message: 'Not Found',
+        description: 'Unauthorized',
+        message: 'Unauthorized',
+      };
+    case HttpStatus.FORBIDDEN:
+      return {
+        description: 'Forbidden',
+        message: 'Forbidden',
       };
     case HttpStatus.BAD_REQUEST:
       return {
         description: 'Bad Request',
         message: 'Bad Request',
+      };
+    case HttpStatus.NOT_FOUND:
+      return {
+        description: 'Not Found',
+        message: 'Not Found',
       };
     case HttpStatus.INTERNAL_SERVER_ERROR:
       return {
@@ -286,18 +298,6 @@ export function ApiResponseCreated<T extends Type<any>>(
 //
 // 4xx
 //
-export function ApiResponseNotFound<T extends Type<any>>(
-  ...opts: TResponseOptions<T>[]
-) {
-  return GenericResponse(
-    {
-      _ApiResponseClass: ApiNotFoundResponse,
-      status: HttpStatus.NOT_FOUND,
-    },
-    ...opts,
-  );
-}
-
 export function ApiResponseBadRequest<T extends Type<any>>(
   ...opts: TResponseOptions<T>[]
 ) {
@@ -305,6 +305,42 @@ export function ApiResponseBadRequest<T extends Type<any>>(
     {
       _ApiResponseClass: ApiBadRequestResponse,
       status: HttpStatus.BAD_REQUEST,
+    },
+    ...opts,
+  );
+}
+
+export function ApiResponseUnauthorized<T extends Type<any>>(
+  ...opts: TResponseOptions<T>[]
+) {
+  return GenericResponse(
+    {
+      _ApiResponseClass: ApiUnauthorizedResponse,
+      status: HttpStatus.UNAUTHORIZED,
+    },
+    ...opts,
+  );
+}
+
+export function ApiResponseForbidden<T extends Type<any>>(
+  ...opts: TResponseOptions<T>[]
+) {
+  return GenericResponse(
+    {
+      _ApiResponseClass: ApiForbiddenResponse,
+      status: HttpStatus.FORBIDDEN,
+    },
+    ...opts,
+  );
+}
+
+export function ApiResponseNotFound<T extends Type<any>>(
+  ...opts: TResponseOptions<T>[]
+) {
+  return GenericResponse(
+    {
+      _ApiResponseClass: ApiNotFoundResponse,
+      status: HttpStatus.NOT_FOUND,
     },
     ...opts,
   );

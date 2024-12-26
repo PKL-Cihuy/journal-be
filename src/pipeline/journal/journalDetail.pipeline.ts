@@ -4,6 +4,9 @@ import { IJournal } from '@/db/interface';
 
 import { PipelineBuilder } from '../builder/pipeline.builder';
 
+/**
+ * Collection: Journal
+ */
 export function journalDetailPipeline(journalId: Types.ObjectId) {
   const pipelineBuilder = new PipelineBuilder<IJournal>()
     .match({ _id: journalId })

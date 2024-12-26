@@ -11,6 +11,9 @@ import {
 
 import { PipelineBuilder } from '../builder/pipeline.builder';
 
+/**
+ * Collection: PKL
+ */
 export function PKLGetDetailPipeline(pklId: Types.ObjectId) {
   const pipelineBuilder = new PipelineBuilder<IPKL>()
     .match({ _id: pklId })

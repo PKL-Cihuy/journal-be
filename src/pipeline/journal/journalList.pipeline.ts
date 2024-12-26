@@ -10,6 +10,9 @@ import {
   generateRangeQuery,
 } from '../builder/query.builder';
 
+/**
+ * Collection: Journal
+ */
 export function journalListPipeline(
   pklId: Types.ObjectId,
   query: JournalListQueryDTO,

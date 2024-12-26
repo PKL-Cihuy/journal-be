@@ -59,7 +59,7 @@ export class AuthController {
   }
 
   @Get('/token')
-  @ApiOperation({ summary: 'Get short-lived access token' })
+  @ApiOperation({ summary: 'Get or refresh short-lived access token' })
   @ApiResponseOk({
     message: AuthMessage.ACCESS_TOKEN_SUCCESS,
     data: AccessTokenResponseData,

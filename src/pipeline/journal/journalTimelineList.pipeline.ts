@@ -5,6 +5,9 @@ import { IPKL, IUser } from '@/db/interface';
 
 import { PipelineBuilder } from '../builder/pipeline.builder';
 
+/**
+ * Collection: JournalTimeline
+ */
 export function journalTimelineListPipeline(journalId: Types.ObjectId) {
   const pipelineBuilder = new PipelineBuilder<IPKL>()
     .match({ journalId: journalId })

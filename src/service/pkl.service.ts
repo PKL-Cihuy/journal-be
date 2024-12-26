@@ -2,14 +2,22 @@ import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 
+import { EUserType } from '@/db/interface';
 import { PKLListQueryDTO } from '@/dto/pkl';
+import { PKLMessage } from '@/message';
 import {
+  PKLGetCreateDataPipeline,
   PKLGetDetailPipeline,
   PKLListPipeline,
   PKLTimelineListPipeline,
 } from '@/pipeline/pkl';
-import { PKLRepository, PKLTimelineRepository } from '@/repository';
+import {
+  MahasiswaRepository,
+  PKLRepository,
+  PKLTimelineRepository,
+} from '@/repository';
 import { formatPaginationResponse } from '@/util/formatResponse.util';
+import { Forbidden, NotFound } from '@/util/response.util';
 
 import { FileService } from './file.service';
 
@@ -20,6 +28,7 @@ export class PKLService {
     private readonly req: Request,
     private readonly PKLRepository: PKLRepository,
     private readonly PKLTimelineRepository: PKLTimelineRepository,
+    private readonly mahasiswaRepository: MahasiswaRepository,
 
     private readonly fileService: FileService,
   ) {}
@@ -44,6 +53,35 @@ export class PKLService {
 
     // Return formatted pagination response
     return formatPaginationResponse(data);
+  }
+
+  /**
+   * Get data for creating PKL (intended for Mahasiswa)
+   *
+   * @returns Data for creating PKL
+   *
+   * @throws {Forbidden} User is not Mahasiswa
+   * @throws {NotFound} Mahasiswa not found
+   */
+  async getCreateData() {
+    const { type, mhsId } = this.req.user!;
+
+    // Check if user is Mahasiswa
+    if ((type as EUserType) !== EUserType.MAHASISWA || !mhsId) {
+      throw new Forbidden(PKLMessage.CREATE_PKL_NOT_MAHASISWA);
+    }
+
+    // Check if Mahasiswa exist
+    const mhs = await this.mahasiswaRepository.getOneOrFail(mhsId, {
+      projection: { _id: 1 },
+    });
+
+    // Get Mahasiswa data with populated Fakultas, Program Studi, and Dosen koordinator
+    const data = await this.mahasiswaRepository.aggregate(
+      PKLGetCreateDataPipeline(mhs._id),
+    );
+
+    return data[0];
   }
 
   /**
