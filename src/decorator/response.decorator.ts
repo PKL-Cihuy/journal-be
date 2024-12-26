@@ -36,7 +36,7 @@ type TCoreData = {
 
 type TResponseOptions<T extends Type<any>> = {
   responseDTO?: T;
-  data?: SchemaObject | ReferenceObject;
+  data?: SchemaObject | ReferenceObject | object;
   description?: string;
   message?: string;
 };
@@ -143,7 +143,8 @@ export function GenericResponse<T extends Type<any>>(
       examples[exampleKey] = {
         value: {
           statusCode: coreData?.status ?? HttpStatus.OK,
-          message: opt.message ?? _default.message,
+          message: opt?.message ?? _default.message,
+          data: opt?.data,
         },
       };
     });

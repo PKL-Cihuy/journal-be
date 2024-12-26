@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
 
 import { EUserType } from '@/db/interface';
-import { LoginDTO } from '@/dto/auth.dto';
+import { LoginDTO } from '@/dto/auth';
 import {
   DosenRepository,
   MahasiswaRepository,

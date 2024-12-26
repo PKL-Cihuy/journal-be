@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { DBCollection } from '../collection.db';
 import { IToken } from '../interface/token.interface';
 
-@Schema()
+@Schema({ collection: DBCollection.TOKEN })
 export class Token implements IToken {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

@@ -2,7 +2,14 @@ import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
-import { LoginDTO } from '@/dto/auth.dto';
+import { ApiResponseOk } from '@/decorator/response.decorator';
+import {
+  AccessTokenResponseData,
+  LoginDTO,
+  LoginResponseAdminData,
+  LoginResponseDosenData,
+  LoginResponseMahasiswaData,
+} from '@/dto/auth';
 import { AuthMessage } from '@/message';
 import { AuthService } from '@/service';
 import {
@@ -19,6 +26,23 @@ export class AuthController {
 
   @Post('/login')
   @ApiOperation({ summary: 'Login' })
+  @ApiResponseOk(
+    {
+      message: AuthMessage.LOGIN_SUCCESS,
+      description: 'Login as Admin',
+      data: LoginResponseAdminData,
+    },
+    {
+      message: AuthMessage.LOGIN_SUCCESS,
+      description: 'Login as Dosen',
+      data: LoginResponseDosenData,
+    },
+    {
+      message: AuthMessage.LOGIN_SUCCESS,
+      description: 'Login as Mahasiswa',
+      data: LoginResponseMahasiswaData,
+    },
+  )
   async login(@Res() res: Response, @Body() body: LoginDTO) {
     try {
       const credentials = await this.service.login(body);
@@ -36,6 +60,10 @@ export class AuthController {
 
   @Get('/token')
   @ApiOperation({ summary: 'Get short-lived access token' })
+  @ApiResponseOk({
+    message: AuthMessage.ACCESS_TOKEN_SUCCESS,
+    data: AccessTokenResponseData,
+  })
   async getAccessToken(@Res() res: Response, @Req() req: Request) {
     try {
       const cookie = req.cookies;
