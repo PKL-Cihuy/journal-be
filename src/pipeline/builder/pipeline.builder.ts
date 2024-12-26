@@ -242,7 +242,11 @@ export class PipelineBuilder<T = any> {
   /**
    * Get user data. Should only be called inside Mahasiswa or Dosen lookup pipeline
    */
-  getUserData(opts?: { localField?: string; keepType?: boolean }) {
+  getUserData(opts?: {
+    localField?: string;
+    keepType?: boolean;
+    keepUserId?: boolean;
+  }) {
     this.lookup({
       from: DBCollection.USER,
       localField: opts?.localField ?? 'userId',
@@ -263,7 +267,11 @@ export class PipelineBuilder<T = any> {
       });
     }
 
-    this.project({ __v: 0, user: 0, userId: 0, createdAt: 0, updatedAt: 0 });
+    this.project({ __v: 0, user: 0, createdAt: 0, updatedAt: 0 });
+
+    if (!opts?.keepUserId) {
+      this.project({ userId: 0 });
+    }
 
     return this;
   }

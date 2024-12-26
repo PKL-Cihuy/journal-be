@@ -50,7 +50,7 @@ export class BaseRepository<T> {
     return await this._model.findOne(filter, projection, options).exec();
   }
 
-  async create(data: T | T[]) {
+  async create(data: T | T[] | Partial<T> | Partial<T>[]) {
     return await this._model.create(data);
   }
 

@@ -4,6 +4,7 @@ import { existsSync, unlinkSync, writeFileSync } from 'fs';
 import * as mkdirp from 'mkdirp';
 import * as path from 'path';
 
+import { FileMessage } from '@/message';
 import { InternalServerError } from '@/util/response.util';
 
 // NOTE: SEE ALSO
@@ -11,7 +12,8 @@ import { InternalServerError } from '@/util/response.util';
 
 @Injectable()
 export class FileService {
-  protected DEFAULT_FILE_PREFIX = 'file';
+  protected readonly DEFAULT_FILE_PREFIX = 'file';
+  public readonly PKL_FOLDER_NAME = 'pkl';
 
   /**
    * Method to get the base directory
@@ -19,9 +21,7 @@ export class FileService {
    * @returns {string} The base directory
    */
   getBaseDir(): string {
-    const baseDir = path.resolve(__dirname);
-
-    return baseDir;
+    return process.cwd();
   }
 
   /**
@@ -31,8 +31,8 @@ export class FileService {
    *
    * @returns {string} The uploads directory (baseDir + folderName)
    */
-  getUploadsDir(folderName: string): string {
-    return path.resolve(this.getBaseDir(), folderName);
+  getUploadsDir(folderName?: string): string {
+    return path.resolve(this.getBaseDir(), 'uploads', folderName ?? '');
   }
 
   /**
@@ -52,8 +52,11 @@ export class FileService {
     // Get the extension
     const [_, extension] = originalname.split('.');
 
+    const _prefix = prefix ?? this.DEFAULT_FILE_PREFIX;
+    const filePrefix = _prefix ? `${_prefix}_` : '';
+
     // Generate the fileName
-    const fileNameBase = `${prefix ?? this.DEFAULT_FILE_PREFIX}_${Date.now()}`;
+    const fileNameBase = `${filePrefix}${Date.now()}`;
     let fileName = `${fileNameBase}.${extension}`;
 
     // Ensure the fileName is unique
@@ -123,10 +126,7 @@ export class FileService {
       return uploadedFilePaths;
     } catch (error) {
       console.error(error);
-      throw new InternalServerError(
-        'FileService: Failed to save file',
-        error.message,
-      );
+      throw new InternalServerError(FileMessage.FAIL_SAVE_FILE, error.message);
     }
   }
 
@@ -143,7 +143,7 @@ export class FileService {
    * @note
    * Optionally should check if the amount of deleted files is equal to the amount of target files
    */
-  deleteFiles(folderName: string, fileNames: string[]): number {
+  deleteFiles(folderName: string, fileNames: (string | undefined)[]): number {
     let deleted = 0;
 
     try {
@@ -151,6 +151,15 @@ export class FileService {
       const uploadsDir = this.getUploadsDir(folderName);
 
       for (const fileName of fileNames || []) {
+        if (
+          !fileName ||
+          fileName === 'undefined' ||
+          fileName === 'null' ||
+          fileName === 'false'
+        ) {
+          continue;
+        }
+
         // Get the file path
         const filePath = path.resolve(uploadsDir, fileName);
 
@@ -167,9 +176,175 @@ export class FileService {
     } catch (error) {
       console.error(error);
       throw new InternalServerError(
-        'FileService: Failed to delete file',
+        FileMessage.FAIL_DELETE_FILE,
         error.message,
       );
     }
+  }
+
+  private dirExist(folder?: string) {
+    try {
+      // Get the uploads directory
+      const uploadsDir = this.getUploadsDir(folder ?? '');
+
+      // Check if upload directory exists
+      if (!existsSync(uploadsDir)) {
+        // Create the directory if it doesn't exist
+        mkdirp.sync(uploadsDir);
+      }
+
+      return uploadsDir;
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerError(
+        FileMessage.FAIL_CREATE_DIRECTORY,
+        error.message,
+      );
+    }
+  }
+
+  extractFileMetadata(file: Express.Multer.File) {
+    const { originalname } = file;
+
+    const fileParts = originalname.split('.');
+    const extension = fileParts.pop();
+    const fileName = fileParts.join('.');
+
+    return { ...file, fileName, extension };
+  }
+
+  uploadFileRaw(
+    fileName: string,
+    file: Express.Multer.File,
+    opts: {
+      folderName: string;
+      uploadsDir?: string;
+    },
+  ): string;
+  uploadFileRaw(
+    fileName: string,
+    file: Express.Multer.File,
+    opts: {
+      folderName?: string;
+      uploadsDir: string;
+    },
+  ): string;
+  uploadFileRaw(
+    fileName: string,
+    file: Express.Multer.File,
+    opts: {
+      folderName?: string;
+      uploadsDir?: string;
+    },
+  ) {
+    const { folderName, uploadsDir } = opts ?? {};
+
+    let actualUploadsDir: string;
+    if (folderName) {
+      actualUploadsDir = this.dirExist(folderName);
+    } else {
+      actualUploadsDir = uploadsDir!;
+    }
+
+    const fileMetadata = this.extractFileMetadata(file);
+
+    try {
+      // Save the file to the folder
+      const filePath = path.resolve(
+        actualUploadsDir,
+        `${fileName}.${fileMetadata.extension}`,
+      );
+      writeFileSync(filePath, file.buffer);
+
+      return filePath.replaceAll(this.getUploadsDir(), '');
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerError(FileMessage.FAIL_SAVE_FILE, error.message);
+    }
+  }
+
+  uploadDokumenAwal(
+    pklId: string,
+    files: {
+      dokumenDiterima?: Express.Multer.File;
+      dokumenMentor?: Express.Multer.File;
+      dokumenPimpinan?: Express.Multer.File;
+    },
+  ) {
+    const uploadsDir = this.dirExist(this.PKL_FOLDER_NAME);
+
+    let file1, file2, file3: string | undefined;
+
+    if (files.dokumenDiterima) {
+      file1 = this.uploadFileRaw(
+        `${pklId}_dokumen_diterima`,
+        files.dokumenDiterima,
+        { uploadsDir },
+      );
+    }
+
+    if (files.dokumenMentor) {
+      file2 = this.uploadFileRaw(
+        `${pklId}_dokumen_mentor`,
+        files.dokumenMentor,
+        { uploadsDir },
+      );
+    }
+
+    if (files.dokumenPimpinan) {
+      file3 = this.uploadFileRaw(
+        `${pklId}_dokumen_pimpinan`,
+        files.dokumenPimpinan,
+        { uploadsDir },
+      );
+    }
+    return {
+      dokumenDiterima: file1,
+      dokumenMentor: file2,
+      dokumenPimpinan: file3,
+    };
+  }
+
+  uploadDokumenAkhir(
+    pklId: string,
+    files: {
+      dokumenSelesai?: Express.Multer.File;
+      dokumenLaporan?: Express.Multer.File;
+      dokumenPenilaian?: Express.Multer.File;
+    },
+  ) {
+    const uploadsDir = this.dirExist(this.PKL_FOLDER_NAME);
+
+    let file1, file2, file3: string | undefined;
+
+    if (files.dokumenSelesai) {
+      file1 = this.uploadFileRaw(
+        `${pklId}_dokumen_selesai`,
+        files.dokumenSelesai,
+        { uploadsDir },
+      );
+    }
+
+    if (files.dokumenLaporan) {
+      file2 = this.uploadFileRaw(
+        `${pklId}_dokumen_laporan`,
+        files.dokumenLaporan,
+        { uploadsDir },
+      );
+    }
+
+    if (files.dokumenPenilaian) {
+      file3 = this.uploadFileRaw(
+        `${pklId}_dokumen_penilaian`,
+        files.dokumenPenilaian,
+        { uploadsDir },
+      );
+    }
+
+    return {
+      dokumenSelesai: file1,
+      dokumenLaporan: file2,
+      dokumenPenilaian: file3,
+    };
   }
 }

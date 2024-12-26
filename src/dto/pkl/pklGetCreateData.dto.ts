@@ -8,6 +8,7 @@ export class PKLGetCreateDataResponseDTO {
     type: Object,
     example: {
       _id: '67697c4ece2a4f39e4dce1b1',
+      userId: '67697c4ece2a4f39e4dce1b1',
       namaLengkap: 'Mahasiswa',
       nim: '4754400587',
       email: 'mhs@mhs.com',
@@ -15,7 +16,15 @@ export class PKLGetCreateDataResponseDTO {
       nomorHandphone: '+6276733226044',
     },
   })
-  mahasiswa: object;
+  mahasiswa: {
+    _id: string;
+    userId: string;
+    namaLengkap: string;
+    nim: string;
+    email: string;
+    semester: number;
+    nomorHandphone: string;
+  };
 
   @ApiProperty({
     type: Object,
@@ -25,7 +34,11 @@ export class PKLGetCreateDataResponseDTO {
       initial: 'F2',
     },
   })
-  fakultas: object;
+  fakultas: {
+    _id: string;
+    nama: string;
+    initial: string;
+  };
 
   @ApiProperty({
     type: Object,
@@ -34,17 +47,28 @@ export class PKLGetCreateDataResponseDTO {
       nama: 'Program Studi F2 3',
     },
   })
-  programStudi: object;
+  programStudi: {
+    _id: string;
+    nama: string;
+  };
 
   @ApiProperty({
     type: Object,
     example: {
       _id: '67697c4ece2a4f39e4dce19a',
+      userId: '67697c4ece2a4f39e4dce1b1',
       nomorInduk: '8365793752',
       email: 'Paramita.Ardiyanti@yahoo.com',
       namaLengkap: 'Galang Firmansyah',
       nomorHandphone: '+6290808107020',
     },
   })
-  koordinator: object;
+  koordinator: {
+    _id: string;
+    userId: string;
+    nomorInduk: string;
+    email: string;
+    namaLengkap: string;
+    nomorHandphone: string;
+  };
 }

@@ -1,9 +1,19 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
+import { Types } from 'mongoose';
 
-import { EUserType } from '@/db/interface';
-import { PKLListQueryDTO } from '@/dto/pkl';
+import { EPKLStatus, EUserType } from '@/db/interface';
+import { PaginatedDTO } from '@/dto/global/paginated.dto';
+import {
+  PKLCreateDTO,
+  PKLCreateFilesDTO,
+  PKLDetailResponseDTO,
+  PKLGetCreateDataResponseDTO,
+  PKLListQueryDTO,
+  PKLListResponseDTO,
+  PKLTimelineListResponseDTO,
+} from '@/dto/pkl';
 import { PKLMessage } from '@/message';
 import {
   PKLGetCreateDataPipeline,
@@ -17,7 +27,7 @@ import {
   PKLTimelineRepository,
 } from '@/repository';
 import { formatPaginationResponse } from '@/util/formatResponse.util';
-import { Forbidden, NotFound } from '@/util/response.util';
+import { Forbidden, InternalServerError, NotFound } from '@/util/response.util';
 
 import { FileService } from './file.service';
 
@@ -40,7 +50,9 @@ export class PKLService {
    *
    * @returns List of populated PKL data
    */
-  async listPKL(query: PKLListQueryDTO) {
+  async listPKL(
+    query: PKLListQueryDTO,
+  ): Promise<PaginatedDTO<PKLListResponseDTO>> {
     const { mhsId, dosenId } = this.req.user!;
 
     // List all populated PKL data or by filter
@@ -63,7 +75,7 @@ export class PKLService {
    * @throws {Forbidden} User is not Mahasiswa
    * @throws {NotFound} Mahasiswa not found
    */
-  async getCreateData() {
+  async getCreateData(): Promise<PKLGetCreateDataResponseDTO> {
     const { type, mhsId } = this.req.user!;
 
     // Check if user is Mahasiswa
@@ -85,6 +97,76 @@ export class PKLService {
   }
 
   /**
+   * Create PKL for the current user Mahasiswa
+   *
+   * @param {PKLCreateDTO} data PKL data
+   * @param {PKLCreateFilesDTO} files PKL files
+   *
+   * @throws {Forbidden} User is not Mahasiswa
+   * @throws {NotFound} Mahasiswa not found
+   * @throws {InternalServerError} Failed to create PKL, likely from FileService errors
+   */
+  async createPKL(data: PKLCreateDTO, files: PKLCreateFilesDTO) {
+    // Get data for creating PKL for the current user mahasiswa
+    const pklCreateData = await this.getCreateData();
+
+    // Generate new PKL id
+    const newPKLId = new Types.ObjectId();
+
+    // Upload dokumen awal
+    const { dokumenDiterima, dokumenMentor, dokumenPimpinan } =
+      this.fileService.uploadDokumenAwal(String(newPKLId), {
+        dokumenDiterima: files.dokumenDiterima,
+        dokumenMentor: files.dokumenMentor,
+        dokumenPimpinan: files.dokumenPimpinan,
+      });
+
+    try {
+      // Create PKL
+      await this.PKLRepository.create({
+        _id: newPKLId,
+        mahasiswaId: pklCreateData.mahasiswa._id as any,
+        koordinatorId: pklCreateData.koordinator._id as any,
+        fakultasId: pklCreateData.fakultas._id as any,
+        prodiId: pklCreateData.programStudi._id as any,
+        namaInstansi: data.namaInstansi,
+        tanggalMulai: new Date(data.tanggalMulai),
+        tanggalSelesai: new Date(data.tanggalSelesai),
+        dokumenDiterima: dokumenDiterima!,
+        dokumenMentor: dokumenMentor!,
+        dokumenPimpinan: dokumenPimpinan!,
+        status: EPKLStatus.MENUNGGU_PERSETUJUAN,
+      });
+
+      // Create PKL timeline
+      await this.PKLTimelineRepository.create({
+        pklId: newPKLId,
+        userId: pklCreateData.mahasiswa.userId as any,
+        deskripsi: 'PKL diajukan',
+        status: EPKLStatus.MENUNGGU_PERSETUJUAN,
+      });
+    } catch (error) {
+      // Rollback if failed to create PKL
+      console.error(error);
+
+      // Delete created PKL
+      await this.PKLRepository.deleteOne({ _id: newPKLId });
+
+      // Delete uploaded files
+      this.fileService.deleteFiles(this.fileService.PKL_FOLDER_NAME, [
+        dokumenDiterima?.split(/[\\/]/)?.pop(),
+        dokumenMentor?.split(/[\\/]/)?.pop(),
+        dokumenPimpinan?.split(/[\\/]/)?.pop(),
+      ]);
+
+      throw new InternalServerError(
+        PKLMessage.CREATE_FAIL_GENERIC,
+        error.message,
+      );
+    }
+  }
+
+  /**
    * Get PKL detail by PKL id
    *
    * @param {string} pklId PKL id
@@ -94,7 +176,7 @@ export class PKLService {
    * @throws {NotFound} PKL with id {pklId} not found
    * @throws {NotFound} User does not have access to PKL with id {pklId}
    */
-  async getPKLDetail(pklId: string) {
+  async getPKLDetail(pklId: string): Promise<PKLDetailResponseDTO> {
     const { mhsId, dosenId } = this.req.user!;
 
     // Check if PKL exist
@@ -122,7 +204,7 @@ export class PKLService {
    * @throws {NotFound} PKL with id {pklId} not found
    * @throws {NotFound} User does not have access to PKL with id {pklId}
    */
-  async listPKLTimeline(pklId: string) {
+  async listPKLTimeline(pklId: string): Promise<PKLTimelineListResponseDTO[]> {
     const { mhsId, dosenId } = this.req.user!;
 
     // Check if PKL exist

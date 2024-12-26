@@ -9,10 +9,8 @@ import { PipelineBuilder } from '../builder/pipeline.builder';
  */
 export function PKLGetCreateDataPipeline(mhsId: Types.ObjectId) {
   const pipelineBuilder = new PipelineBuilder()
-    .match({
-      _id: mhsId,
-    })
-    .getUserData()
+    .match({ _id: mhsId })
+    .getUserData({ keepUserId: true })
     .addFields({
       mahasiswa: {
         _id: '$_id',
@@ -56,9 +54,10 @@ export function PKLGetCreateDataPipeline(mhsId: Types.ObjectId) {
       foreignField: '_id',
       as: 'koordinator',
       unwind: true,
-      pipeline: new PipelineBuilder().getUserData().build() as any,
+      pipeline: new PipelineBuilder()
+        .getUserData({ keepUserId: true })
+        .build() as any,
     })
-
     .project({
       _id: 0,
       namaLengkap: 0,

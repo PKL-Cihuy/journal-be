@@ -1,14 +1,35 @@
-import { Controller, Get, Param, Query, Res } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseFilePipeBuilder,
+  Post,
+  Query,
+  Res,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Response } from 'express';
 
 import {
+  ApiResponseCreated,
   ApiResponseForbidden,
+  ApiResponseInternalServerError,
   ApiResponseList,
   ApiResponseOk,
   ApiResponsePaginated,
 } from '@/decorator/response.decorator';
 import {
+  PKLCreateDTO,
+  PKLCreateFilesDTO,
   PKLDetailResponseDTO,
   PKLGetCreateDataResponseDTO,
   PKLListQueryDTO,
@@ -17,9 +38,16 @@ import {
 } from '@/dto/pkl';
 import { PKLMessage } from '@/message';
 import { IsValidObjectIdPipe } from '@/pipe/isValidMongoId.pipe';
+import { ParseFilesPipe } from '@/pipe/parseFiles.pipe';
 import { ParseQueryPipe } from '@/pipe/parseQuery.pipe';
+import { ParseSingleFilePositionPipe } from '@/pipe/parseSingleFilePosition.pipe';
 import { PKLService } from '@/service';
-import { Success, errorResponse, sendResponse } from '@/util/response.util';
+import {
+  Created,
+  Success,
+  errorResponse,
+  sendResponse,
+} from '@/util/response.util';
 
 @Controller('/pkl')
 @ApiTags('PKL')
@@ -47,14 +75,14 @@ export class PKLController {
   }
 
   @Get('/create')
-  @ApiOperation({
-    summary: 'Get data for creating PKL (intended for UI data)',
-  })
+  @ApiOperation({ summary: 'Get data for creating PKL (intended for UI data)' })
   @ApiResponseOk({
     responseDTO: PKLGetCreateDataResponseDTO,
     message: PKLMessage.GET_CREATE_DATA_SUCCESS,
   })
-  @ApiResponseForbidden({ message: PKLMessage.CREATE_PKL_NOT_MAHASISWA })
+  @ApiResponseForbidden({
+    message: PKLMessage.CREATE_PKL_NOT_MAHASISWA,
+  })
   async getCreateData(@Res() response: Response) {
     try {
       const data = await this.PKLService.getCreateData();
@@ -62,6 +90,62 @@ export class PKLController {
       return sendResponse(
         response,
         new Success(PKLMessage.GET_CREATE_DATA_SUCCESS, data),
+      );
+    } catch (error) {
+      console.error(error);
+      return errorResponse(error);
+    }
+  }
+
+  @Post('/')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'dokumenDiterima', maxCount: 1 },
+      { name: 'dokumenMentor', maxCount: 1 },
+      { name: 'dokumenPimpinan', maxCount: 1 },
+    ]),
+  )
+  @ApiOperation({ summary: 'Submit a new PKL for approval' })
+  @ApiConsumes('multipart/form-data')
+  @ApiResponseCreated({
+    message: PKLMessage.CREATE_SUCCESS,
+  })
+  @ApiResponseForbidden({
+    message: PKLMessage.CREATE_PKL_NOT_MAHASISWA,
+  })
+  @ApiResponseInternalServerError({
+    message: PKLMessage.CREATE_FAIL_GENERIC,
+  })
+  async createPKL(
+    @Res() response: Response,
+    @Body()
+    body: PKLCreateDTO,
+    @UploadedFiles(
+      new ParseFilesPipe(
+        new ParseFilePipeBuilder()
+          .addFileTypeValidator({
+            fileType: /(pdf)/,
+          })
+          .addMaxSizeValidator({
+            // Size: 10 MiB
+            maxSize: 1024 * 1024 * 10,
+          })
+          .build(),
+      ),
+      new ParseSingleFilePositionPipe([
+        'dokumenDiterima',
+        'dokumenMentor',
+        'dokumenPimpinan',
+      ]),
+    )
+    files: PKLCreateFilesDTO,
+  ) {
+    try {
+      const data = await this.PKLService.createPKL(body, files);
+
+      return sendResponse(
+        response,
+        new Created(PKLMessage.CREATE_SUCCESS, data),
       );
     } catch (error) {
       console.error(error);
