@@ -11,3 +11,4 @@ export {
   JournalCreateResponseDTO,
 } from './journalCreate.dto';
 export { JournalTimelineListResponseDTO } from './journalTimelineList.dto';
+export { JournalUpdateStatusDTO } from './journalUpdateStatus.dto';

@@ -353,11 +353,11 @@ export class PKLService {
     // Update PKL status
     await this.PKLRepository.updateOne({ _id: pkl._id }, updateData);
 
-    // Create PKL timeline
+    // Create PKL Timeline
     await this.PKLTimelineRepository.create({
       pklId: pkl._id,
       userId: id as any,
-      deskripsi: data.deskripsi ?? '',
+      deskripsi: data.deskripsi,
       status: data.status,
     });
   }

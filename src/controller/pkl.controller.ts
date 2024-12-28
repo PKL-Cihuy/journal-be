@@ -251,7 +251,13 @@ export class PKLController {
   @Post('/:pklId/status')
   @ApiOperation({ summary: 'Update PKL status' })
   @ApiResponseCreated({
-    message: PKLMessage.SUCCESS_DETAIL,
+    message: PKLMessage.SUCCESS_UPDATE_STATUS,
+  })
+  @ApiResponseBadRequest({
+    message: PKLMessage.FAIL_UPDATE_PKL_STATUS_INCORRECT_TRANSITION,
+  })
+  @ApiResponseForbidden({
+    message: PKLMessage.FAIL_UPDATE_PKL_STATUS_NOT_DOSEN,
   })
   async updatePKLStatus(
     @Res() response: Response,

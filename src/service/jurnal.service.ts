@@ -1,15 +1,16 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
-import { Types } from 'mongoose';
+import { Types, UpdateQuery } from 'mongoose';
 
-import { EJournalStatus, EPKLStatus } from '@/db/interface';
+import { EJournalStatus, EPKLStatus, IJournal } from '@/db/interface';
 import {
   JournalCreateDTO,
   JournalCreateFilesDTO,
   JournalListQueryDTO,
   JournalUpdateDTO,
   JournalUpdateFilesDTO,
+  JournalUpdateStatusDTO,
 } from '@/dto/journal';
 import { JournalMessage } from '@/message';
 import {
@@ -94,6 +95,11 @@ export class JournalService {
       throw new Forbidden(JournalMessage.FAIL_CREATE_JOURNAL_NOT_MAHASISWA);
     }
 
+    // Throw BadRequest if no attachment
+    if (!files.attachments?.length) {
+      throw new BadRequest(JournalMessage.FAIL_CREATE_JOURNAL_NO_ATTACHMENT);
+    }
+
     // Check if PKL exist
     const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
       mhsId,
@@ -104,18 +110,18 @@ export class JournalService {
       throw new BadRequest(JournalMessage.FAIL_CREATE_JOURNAL_INCORRECT_STATUS);
     }
 
-    const newJurnalId = new Types.ObjectId();
+    const newJournalId = new Types.ObjectId();
 
     // Upload attachments
     const attachments = this.fileService.uploadJournalAttachments(
-      String(newJurnalId),
+      String(newJournalId),
       files.attachments,
     );
 
     try {
       // Create Journal
       const journal = await this.journalRepository.create({
-        _id: newJurnalId,
+        _id: newJournalId,
         pklId: pkl.id,
         konten: data.konten,
         attachments: attachments,
@@ -137,7 +143,7 @@ export class JournalService {
       console.error(error);
 
       // Rollback if failed to fully create Journal
-      await this.journalRepository.deleteOne({ _id: newJurnalId });
+      await this.journalRepository.deleteOne({ _id: newJournalId });
 
       // Delete attachments if failed to create Journal
       this.fileService.deleteFiles(
@@ -284,6 +290,66 @@ export class JournalService {
 
     // Return first data since aggregation always return array
     return data[0];
+  }
+
+  /**
+   * Update Jurnal status
+   *
+   * @param {string} pklId PKL id
+   * @param {string} journalId Journal id
+   * @param {JournalUpdateStatusDTO} data Journal status data
+   *
+   * @throws {Forbidden} User not Dosen or Admin
+   */
+  async updateJournalStatus(
+    pklId: string,
+    journalId: string,
+    data: JournalUpdateStatusDTO,
+  ) {
+    const { id, dosenId, type } = this.req.user!;
+
+    // Throw Forbidden if user is not Dosen or Admin
+    if (type !== 'Admin' && type !== 'Dosen') {
+      throw new Forbidden(JournalMessage.FAIL_UPDATE_JOURNAL_STATUS_NOT_DOSEN);
+    }
+
+    // Check if PKL exist
+    const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
+      dosenId,
+    });
+
+    // Check if Journal exist
+    const journal = await this.journalRepository.getOneOrFail({
+      _id: journalId,
+      pklId: pkl.id,
+    });
+
+    // Validate status transition
+    if (journal.status !== EJournalStatus.DIPROSES) {
+      throw new BadRequest(
+        JournalMessage.FAIL_UPDATE_PKL_STATUS_INCORRECT_TRANSITION,
+      );
+    }
+
+    const updateData: UpdateQuery<IJournal> = {
+      status: data.status,
+    };
+
+    // Handle specific status
+    if (data.status === EJournalStatus.DITERIMA) {
+      updateData.tanggalDiterima = new Date();
+    }
+
+    // Update Journal status
+    await this.journalRepository.updateOne({ _id: journal._id }, updateData);
+
+    // Create Journal Timeline
+    await this.journalTimelineRepository.create({
+      journalId: pkl._id,
+      userId: id as any,
+      deskripsi: data.deskripsi,
+      status: data.status,
+    });
   }
 
   /**

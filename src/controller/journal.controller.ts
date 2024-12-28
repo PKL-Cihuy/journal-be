@@ -21,7 +21,10 @@ import {
 import { Response } from 'express';
 
 import {
+  ApiResponseBadRequest,
   ApiResponseCreated,
+  ApiResponseForbidden,
+  ApiResponseInternalServerError,
   ApiResponseList,
   ApiResponseOk,
   ApiResponsePaginated,
@@ -37,6 +40,7 @@ import {
   JournalUpdateDTO,
   JournalUpdateFilesDTO,
   JournalUpdateResponseDTO,
+  JournalUpdateStatusDTO,
 } from '@/dto/journal';
 import { JournalMessage } from '@/message';
 import { IsValidObjectIdPipe } from '@/pipe/isValidMongoId.pipe';
@@ -54,7 +58,7 @@ import {
 @ApiTags('Journal')
 @ApiBearerAuth('access-token')
 export class JournalController {
-  constructor(private readonly JournalService: JournalService) {}
+  constructor(private readonly journalService: JournalService) {}
 
   @Get('/')
   @ApiOperation({ summary: 'List Journal' })
@@ -67,7 +71,7 @@ export class JournalController {
     @Query(new ParseQueryPipe(JournalListQueryDTO)) query: JournalListQueryDTO,
   ) {
     try {
-      const data = await this.JournalService.listJournal(pklId, query);
+      const data = await this.journalService.listJournal(pklId, query);
 
       return sendResponse(
         response,
@@ -89,6 +93,16 @@ export class JournalController {
     responseDTO: JournalCreateResponseDTO,
     message: JournalMessage.SUCCESS_LIST,
   })
+  @ApiResponseForbidden({
+    message: JournalMessage.FAIL_CREATE_JOURNAL_NOT_MAHASISWA,
+  })
+  @ApiResponseBadRequest(
+    { message: JournalMessage.FAIL_CREATE_JOURNAL_NO_ATTACHMENT },
+    { message: JournalMessage.FAIL_CREATE_JOURNAL_INCORRECT_STATUS },
+  )
+  @ApiResponseInternalServerError({
+    message: JournalMessage.FAIL_CREATE_GENERIC,
+  })
   async createJournal(
     @Res() response: Response,
     @Param('pklId', IsValidObjectIdPipe) pklId: string,
@@ -109,7 +123,7 @@ export class JournalController {
     files: JournalCreateFilesDTO,
   ) {
     try {
-      const data = await this.JournalService.createJournal(pklId, body, files);
+      const data = await this.journalService.createJournal(pklId, body, files);
 
       return sendResponse(
         response,
@@ -122,7 +136,7 @@ export class JournalController {
   }
 
   @Get('/:journalId')
-  @ApiOperation({ summary: 'Get Journal Detail' })
+  @ApiOperation({ summary: 'Get Journal detail' })
   @ApiResponseOk({
     responseDTO: JournalDetailResponseDTO,
     message: JournalMessage.SUCCESS_DETAIL,
@@ -133,7 +147,7 @@ export class JournalController {
     @Param('journalId', IsValidObjectIdPipe) journalId: string,
   ) {
     try {
-      const data = await this.JournalService.getJournalDetail(pklId, journalId);
+      const data = await this.journalService.getJournalDetail(pklId, journalId);
 
       return sendResponse(
         response,
@@ -178,7 +192,7 @@ export class JournalController {
     files: JournalUpdateFilesDTO,
   ) {
     try {
-      const data = await this.JournalService.updateJournal(
+      const data = await this.journalService.updateJournal(
         pklId,
         journalId,
         body,
@@ -188,6 +202,36 @@ export class JournalController {
       return sendResponse(
         response,
         new Created(JournalMessage.SUCCESS_UPDATE, data),
+      );
+    } catch (error) {
+      console.error(error);
+      return errorResponse(error);
+    }
+  }
+
+  @Post('/:journalId/status')
+  @ApiOperation({ summary: 'Update Journal status' })
+  @ApiResponseCreated({
+    message: JournalMessage.SUCCESS_UPDATE_STATUS,
+  })
+  @ApiResponseBadRequest({
+    message: JournalMessage.FAIL_UPDATE_PKL_STATUS_INCORRECT_TRANSITION,
+  })
+  @ApiResponseForbidden({
+    message: JournalMessage.FAIL_UPDATE_JOURNAL_STATUS_NOT_DOSEN,
+  })
+  async updateJournalStatus(
+    @Res() response: Response,
+    @Param('pklId', IsValidObjectIdPipe) pklId: string,
+    @Param('journalId', IsValidObjectIdPipe) journalId: string,
+    @Body() body: JournalUpdateStatusDTO,
+  ) {
+    try {
+      await this.journalService.updateJournalStatus(pklId, journalId, body);
+
+      return sendResponse(
+        response,
+        new Created(JournalMessage.SUCCESS_UPDATE_STATUS),
       );
     } catch (error) {
       console.error(error);
@@ -206,7 +250,7 @@ export class JournalController {
     @Param('journalId', IsValidObjectIdPipe) journalId: string,
   ) {
     try {
-      const data = await this.JournalService.listJournalTimeline(
+      const data = await this.journalService.listJournalTimeline(
         pklId,
         journalId,
       );
