@@ -36,14 +36,15 @@ import {
   UserRepository,
 } from '@/repository';
 import { TokenRepository } from '@/repository/token.repository';
-import { validateConfig } from '@/util/validateConfig.util';
+import { validateEnv } from '@/util/validateEnv.util';
 
 @Global()
 @Module({
   imports: [
-    ConfigModule.forRoot({ cache: true, validate: validateConfig }),
+    // Register and validate environment variable
+    ConfigModule.forRoot({ cache: true, validate: validateEnv }),
 
-    // Should already be validated by validateConfig
+    // Should already be validated by validateEnv
     MongooseModule.forRoot(process.env.DATABASE_URI as string),
 
     // Register all model and schema

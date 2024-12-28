@@ -74,14 +74,17 @@ export class PKLService {
    * @returns Data for creating PKL
    *
    * @throws {Forbidden} User is not Mahasiswa
-   * @throws {NotFound} Mahasiswa not found
    */
-  async getCreateData(): Promise<PKLGetCreateDataResponseDTO> {
+  async getCreateData(isUpdate?: true): Promise<PKLGetCreateDataResponseDTO> {
     const { type, mhsId } = this.req.user!;
 
     // Check if user is Mahasiswa
     if ((type as EUserType) !== EUserType.MAHASISWA || !mhsId) {
-      throw new Forbidden(PKLMessage.FAIL_CREATE_PKL_NOT_MAHASISWA);
+      if (isUpdate) {
+        throw new Forbidden(PKLMessage.FAIL_UPDATE_PKL_NOT_MAHASISWA);
+      } else {
+        throw new Forbidden(PKLMessage.FAIL_CREATE_PKL_NOT_MAHASISWA);
+      }
     }
 
     // Check if Mahasiswa exist
@@ -103,8 +106,8 @@ export class PKLService {
    * @param {PKLCreateDTO} data PKL data
    * @param {PKLCreateFilesDTO} files PKL files
    *
-   * @throws {Forbidden} User is not Mahasiswa
-   * @throws {NotFound} Mahasiswa not found
+   * @returns Created PKL data
+   *
    * @throws {InternalServerError} Failed to create PKL, likely from FileService errors
    */
   async createPKL(data: PKLCreateDTO, files: PKLCreateFilesDTO) {
@@ -116,7 +119,7 @@ export class PKLService {
 
     // Upload dokumen awal
     const { dokumenDiterima, dokumenMentor, dokumenPimpinan } =
-      this.fileService.uploadDokumenAwal(String(newPKLId), {
+      this.fileService.uploadPKLDokumenAwal(String(newPKLId), {
         dokumenDiterima: files.dokumenDiterima,
         dokumenMentor: files.dokumenMentor,
         dokumenPimpinan: files.dokumenPimpinan,
@@ -176,13 +179,14 @@ export class PKLService {
    * @param {PKLCreateDTO} data PKL data
    * @param {PKLCreateFilesDTO} files PKL files
    *
-   * @throws {Forbidden} User is not Mahasiswa
-   * @throws {NotFound} Mahasiswa not found
+   * @returns Updated PKL data
+   *
+   * @throws {BadRequest} PKL status is incorrect for update operation
    * @throws {InternalServerError} Failed to update PKL, likely from FileService errors
    */
   async updatePKL(pklId: string, data: PKLUpdateDTO, files: PKLUpdateFilesDTO) {
     // Get data for creating PKL for the current user mahasiswa
-    const pklCreateData = await this.getCreateData();
+    const pklCreateData = await this.getCreateData(true);
 
     // Check if PKL exist
     const pkl = await this.PKLRepository.getOneOrFail(pklId);
@@ -197,14 +201,14 @@ export class PKLService {
 
     // Upload dokumen awal
     const { dokumenDiterima, dokumenMentor, dokumenPimpinan } =
-      this.fileService.uploadDokumenAwal(pkl.id, {
+      this.fileService.uploadPKLDokumenAwal(pkl.id, {
         dokumenDiterima: files.dokumenDiterima,
         dokumenMentor: files.dokumenMentor,
         dokumenPimpinan: files.dokumenPimpinan,
       });
 
     try {
-      // Update PKL
+      // Update PKL with new data if available
       const updated = await this.PKLRepository.findOneAndUpdate(
         { _id: pkl.id },
         {
@@ -226,7 +230,6 @@ export class PKLService {
       // Create PKL timeline
       await this.PKLTimelineRepository.create({
         pklId: pkl.id,
-        // pklId: pkl.id,
         userId: pklCreateData.mahasiswa.userId as any,
         deskripsi: 'PKL diajukan ulang',
         status: EPKLStatus.MENUNGGU_PERSETUJUAN,
@@ -238,10 +241,7 @@ export class PKLService {
       console.error(error);
 
       // Rollback updated PKL
-      await this.PKLRepository.updateOne(
-        { _id: pkl.id },
-        { ...pkl.toObject() },
-      );
+      await this.PKLRepository.updateOne({ _id: pkl.id }, pkl.toObject());
 
       // Delete uploaded files
       this.fileService.deleteFiles(this.fileService.PKL_FOLDER_NAME, [

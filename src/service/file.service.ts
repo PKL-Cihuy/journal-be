@@ -14,6 +14,7 @@ import { InternalServerError } from '@/util/response.util';
 export class FileService {
   protected readonly DEFAULT_FILE_PREFIX = 'file';
   public readonly PKL_FOLDER_NAME = 'pkl';
+  public readonly JURNAL_FOLDER_NAME = 'jurnal';
 
   /**
    * Method to get the base directory
@@ -269,7 +270,8 @@ export class FileService {
     }
   }
 
-  uploadDokumenAwal(
+  // REVIEW: Don't overwrite old files in case a rollback happens
+  uploadPKLDokumenAwal(
     pklId: string,
     files: {
       dokumenDiterima?: Express.Multer.File;
@@ -311,7 +313,8 @@ export class FileService {
     };
   }
 
-  uploadDokumenAkhir(
+  // REVIEW: Don't overwrite old files in case a rollback happens
+  uploadPKLDokumenAkhir(
     pklId: string,
     files: {
       dokumenSelesai?: Express.Multer.File;
@@ -352,5 +355,22 @@ export class FileService {
       dokumenLaporan: file2,
       dokumenPenilaian: file3,
     };
+  }
+
+  // REVIEW: Don't overwrite old files in case a rollback happens
+  uploadJournalAttachments(jurnalId: string, files?: Express.Multer.File[]) {
+    if (!files || files.length === 0) {
+      return [];
+    }
+
+    const uploadsDir = this.dirExist(this.JURNAL_FOLDER_NAME);
+
+    const uploadedFiles = files.map((file, index) => {
+      return this.uploadFileRaw(`${jurnalId}_attachment_${index + 1}`, file, {
+        uploadsDir,
+      });
+    });
+
+    return uploadedFiles;
   }
 }

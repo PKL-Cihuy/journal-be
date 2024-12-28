@@ -4,7 +4,8 @@ import { FilterQuery, Model, Types } from 'mongoose';
 
 import { IPKL } from '@/db/interface';
 import { PKL } from '@/db/schema';
-import { NotFound } from '@/util/response.util';
+import { PKLMessage } from '@/message';
+import { Forbidden, NotFound } from '@/util/response.util';
 
 import { BaseRepository } from './base.repository';
 
@@ -33,7 +34,8 @@ export class PKLRepository extends BaseRepository<IPKL> {
    *
    * @returns PKL data
    *
-   * @throws {NotFound} PKL with id {pklId} not found or does not have access
+   * @throws {NotFound} PKL with id {pklId} not found
+   * @throws {Forbidden} User not in PKL
    */
   async getPKLByUserType(
     pklId: string,
@@ -41,13 +43,17 @@ export class PKLRepository extends BaseRepository<IPKL> {
   ) {
     const { mhsId, dosenId } = ids;
 
-    const q: FilterQuery<IPKL> = {
+    const pkl = await this.getOneOrFail({
       _id: pklId,
-    };
+    });
 
-    if (mhsId) q['mahasiswaId'] = mhsId;
-    if (dosenId) q['koordinatorId'] = dosenId;
+    if (
+      (mhsId && String(pkl.mahasiswaId) !== mhsId) ||
+      (dosenId && String(pkl.koordinatorId) !== dosenId)
+    ) {
+      throw new Forbidden(PKLMessage.FAIL_USER_NOT_IN_PKL);
+    }
 
-    return await this.getOneOrFail(q);
+    return pkl;
   }
 }

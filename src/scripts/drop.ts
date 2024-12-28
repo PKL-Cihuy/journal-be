@@ -12,11 +12,11 @@ import {
   ProgramStudiModel,
   UserModel,
 } from '@/db/schema';
-import { validateConfig } from '@/util/validateConfig.util';
+import { validateEnv } from '@/util/validateEnv.util';
 
 async function main() {
-  validateConfig(process.env);
-  await mongoose.connect(process.env.DATABASE_URI as string);
+  const env = validateEnv(process.env);
+  await mongoose.connect(env.DATABASE_URI);
 
   console.time('Drop');
   console.log('Dropping all collections...');

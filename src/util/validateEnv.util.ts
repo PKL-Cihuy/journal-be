@@ -6,7 +6,7 @@ export function validatePort(port: string | number) {
       return parseInt(process.env.PORT ?? '3000');
     }
   } catch (error) {
-    console.error(error);
+    console.warn('PORT is not defined or invalid, using default port 3000');
 
     return 3000;
   }
@@ -21,11 +21,13 @@ export function validateDBUri(dbUri: string) {
 }
 
 export function validateJWTSecret(jwtSecret: string) {
+  console.warn('JWT_SECRET is not defined, using default secret');
+
   return jwtSecret ?? 'secret';
 }
 
-export function validateConfig(config: Record<string, any>) {
-  const { PORT, DATABASE_URI, JWT_SECRET } = config;
+export function validateEnv(_env: Record<string, any>) {
+  const { PORT, DATABASE_URI, JWT_SECRET } = _env;
 
   return {
     PORT: validatePort(PORT),

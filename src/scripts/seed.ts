@@ -32,7 +32,7 @@ import {
   UserDocument,
   UserModel,
 } from '@/db/schema';
-import { validateConfig } from '@/util/validateConfig.util';
+import { validateEnv } from '@/util/validateEnv.util';
 
 const argv = process.argv.slice(2);
 const isConst = argv.includes('--const');
@@ -131,8 +131,8 @@ function generateRejectedAtDate(statusCategory: EPKLStatusCategory) {
 }
 
 async function main() {
-  validateConfig(process.env);
-  await mongoose.connect(process.env.DATABASE_URI as string);
+  const env = validateEnv(process.env);
+  await mongoose.connect(env.DATABASE_URI);
 
   console.time('Seed');
   if (isConst) {
