@@ -331,6 +331,7 @@ async function main() {
             fakultasId: mhs.fakultasId,
             prodiId: mhs.prodiId,
             namaInstansi: fk.company.name(),
+            alamatInstansi: fk.location.streetAddress(),
             tanggalMulai: fk.date.recent(),
             tanggalSelesai: fk.date.future(),
             status: status,

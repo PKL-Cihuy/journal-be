@@ -148,7 +148,7 @@ export class FileService {
 
     try {
       // Get the uploads directory
-      const uploadsDir = this.getUploadsDir(folderName);
+      const uploadsDir = this.dirExist(folderName);
 
       for (const fileName of fileNames || []) {
         if (

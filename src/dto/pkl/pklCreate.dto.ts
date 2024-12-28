@@ -13,6 +13,11 @@ export class PKLCreateDTO {
   @IsNotEmpty()
   namaInstansi: string;
 
+  @ApiProperty({ type: String })
+  @IsString()
+  @IsNotEmpty()
+  alamatInstansi: string;
+
   @ApiProperty({ type: Number })
   @IsNumber()
   @IsNotEmpty()

@@ -52,6 +52,12 @@ export class PKL implements IPKL {
   namaInstansi: string;
 
   @Prop({
+    type: String,
+    required: true,
+  })
+  alamatInstansi: string;
+
+  @Prop({
     type: Date,
     required: true,
   })

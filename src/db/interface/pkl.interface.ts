@@ -54,6 +54,11 @@ export interface IPKL {
    */
   namaInstansi: string;
 
+  /**
+   * @description Alamat instansi/organisasi tempat PKL
+   */
+  alamatInstansi: string;
+
   tanggalMulai: Date;
 
   tanggalSelesai: Date;

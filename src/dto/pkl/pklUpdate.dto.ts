@@ -10,6 +10,11 @@ export class PKLUpdateDTO {
   @IsOptional()
   namaInstansi?: string;
 
+  @ApiPropertyOptional({ type: String })
+  @IsString()
+  @IsOptional()
+  alamatInstansi?: string;
+
   @ApiPropertyOptional({ type: Number })
   @IsNumber()
   @IsOptional()

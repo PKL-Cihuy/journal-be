@@ -123,7 +123,6 @@ export class PKLService {
       });
 
     try {
-      // TODO: add address field
       // Create PKL
       const created = await this.PKLRepository.create({
         _id: newPKLId,
@@ -132,6 +131,7 @@ export class PKLService {
         fakultasId: pklCreateData.fakultas._id as any,
         prodiId: pklCreateData.programStudi._id as any,
         namaInstansi: data.namaInstansi,
+        alamatInstansi: data.alamatInstansi,
         tanggalMulai: new Date(data.tanggalMulai),
         tanggalSelesai: new Date(data.tanggalSelesai),
         dokumenDiterima: dokumenDiterima!,
@@ -204,12 +204,12 @@ export class PKLService {
       });
 
     try {
-      // TODO: add address field
       // Update PKL
       const updated = await this.PKLRepository.findOneAndUpdate(
         { _id: pkl.id },
         {
-          namaInstansi: data.namaInstansi,
+          namaInstansi: data.namaInstansi ?? pkl.namaInstansi,
+          alamatInstansi: data.alamatInstansi ?? pkl.alamatInstansi,
           tanggalMulai: data.tanggalMulai
             ? new Date(data.tanggalMulai)
             : pkl.tanggalMulai,
@@ -237,9 +237,11 @@ export class PKLService {
       // Rollback if failed to update PKL
       console.error(error);
 
-      // TODO: override timetstamp
-      // Delete created PKL
-      await this.PKLRepository.updateOne({ _id: pkl.id }, pkl);
+      // Rollback updated PKL
+      await this.PKLRepository.updateOne(
+        { _id: pkl.id },
+        { ...pkl.toObject() },
+      );
 
       // Delete uploaded files
       this.fileService.deleteFiles(this.fileService.PKL_FOLDER_NAME, [
