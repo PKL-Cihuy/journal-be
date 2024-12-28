@@ -8,7 +8,7 @@ import { sendResponse } from '@/util/response.util';
 
 export interface JWTPayload extends jwt.JwtPayload {
   id: string;
-  type: 'Mahasiwa' | 'Dosen' | 'Admin';
+  type: 'Mahasiswa' | 'Dosen' | 'Admin';
   mhsId: string;
   dosenId: string;
 }

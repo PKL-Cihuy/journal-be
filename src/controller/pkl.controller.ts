@@ -256,9 +256,6 @@ export class PKLController {
   @ApiResponseBadRequest({
     message: PKLMessage.FAIL_UPDATE_PKL_STATUS_INCORRECT_TRANSITION,
   })
-  @ApiResponseForbidden({
-    message: PKLMessage.FAIL_UPDATE_PKL_STATUS_NOT_DOSEN,
-  })
   async updatePKLStatus(
     @Res() response: Response,
     @Param('pklId', IsValidObjectIdPipe) pklId: string,

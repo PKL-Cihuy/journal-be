@@ -296,39 +296,20 @@ export class PKLService {
    * @throws {Forbidden} User is not Dosen or Admin
    */
   async updatePKLStatus(pklId: string, data: PKLUpdateStatusDTO) {
-    const { id, dosenId, type } = this.req.user!;
-
-    // Throw Forbidden if user is not Dosen or Admin
-    if (type !== 'Admin' && type !== 'Dosen') {
-      throw new Forbidden(PKLMessage.FAIL_UPDATE_PKL_STATUS_NOT_DOSEN);
-    }
+    const { id, mhsId, dosenId, type } = this.req.user!;
 
     // Check if PKL exist
     const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
+      mhsId,
       dosenId,
     });
 
     // Validate status transition
     if (
-      // This should come from mahasiswa, not dosen
-      data.status === EPKLStatus.MENUNGGU_PERSETUJUAN ||
-      data.status === EPKLStatus.MULAI_FINALISASI ||
-      // Initial Stage
-      (pkl.status === EPKLStatus.MENUNGGU_PERSETUJUAN &&
-        data.status !== EPKLStatus.PENGAJUAN_DITOLAK &&
-        data.status !== EPKLStatus.MENUNGGU_VERIFIKASI) ||
-      // Execution Stage
-      (pkl.status === EPKLStatus.MENUNGGU_VERIFIKASI &&
-        data.status !== EPKLStatus.VERIFIKASI_GAGAL &&
-        data.status !== EPKLStatus.DITOLAK &&
-        data.status !== EPKLStatus.GAGAL &&
-        data.status !== EPKLStatus.DITERIMA) ||
-      // Final Stage
-      ((pkl.status === EPKLStatus.MULAI_FINALISASI ||
-        pkl.status === EPKLStatus.PROSES_FINALISASI) &&
-        data.status !== EPKLStatus.FINALISASI_DITOLAK &&
-        data.status !== EPKLStatus.GAGAL &&
-        data.status !== EPKLStatus.SELESAI)
+      (type === 'Mahasiswa' &&
+        this.validateStatusTransitionMhs(pkl.status, data.status)) ||
+      ((type === 'Dosen' || type === 'Admin') &&
+        this.validateStatusTransitionDosen(pkl.status, data.status))
     ) {
       throw new BadRequest(
         PKLMessage.FAIL_UPDATE_PKL_STATUS_INCORRECT_TRANSITION,
@@ -389,5 +370,76 @@ export class PKLService {
 
     // Return timeline data
     return timeline;
+  }
+
+  /**
+   * Validate status transition for Mahasiswa.
+   *
+   * @param userType User type
+   * @param pklStatus Current PKL status
+   * @param targetStatus Target PKL status
+   *
+   * @returns True if status transition is invalid, false otherwise
+   */
+  validateStatusTransitionMhs(pklStatus: EPKLStatus, targetStatus: EPKLStatus) {
+    if (pklStatus !== EPKLStatus.DITERIMA) return true;
+
+    return targetStatus !== EPKLStatus.MULAI_FINALISASI;
+  }
+
+  /**
+   * Validate status transition for Dosen.
+   *
+   * @param userType User type
+   * @param pklStatus Current PKL status
+   * @param targetStatus Target PKL status
+   *
+   * @returns True if status transition is invalid, false otherwise
+   */
+  validateStatusTransitionDosen(
+    pklStatus: EPKLStatus,
+    targetStatus: EPKLStatus,
+  ) {
+    const allowedPKLStatus = [
+      EPKLStatus.MENUNGGU_PERSETUJUAN,
+      EPKLStatus.MENUNGGU_VERIFIKASI,
+      EPKLStatus.MULAI_FINALISASI,
+      EPKLStatus.PROSES_FINALISASI,
+    ];
+
+    if (!allowedPKLStatus.includes(pklStatus)) return true;
+
+    const allowedInitialStage = [
+      EPKLStatus.PENGAJUAN_DITOLAK,
+      EPKLStatus.MENUNGGU_VERIFIKASI,
+    ];
+
+    const allowedExecutionStage = [
+      EPKLStatus.VERIFIKASI_GAGAL,
+      EPKLStatus.DITOLAK,
+      EPKLStatus.GAGAL,
+      EPKLStatus.DITERIMA,
+    ];
+
+    const allowedFinalStage = [
+      EPKLStatus.FINALISASI_DITOLAK,
+      EPKLStatus.GAGAL,
+      EPKLStatus.SELESAI,
+    ];
+
+    const isValidInitialStage =
+      pklStatus === EPKLStatus.MENUNGGU_PERSETUJUAN &&
+      allowedInitialStage.includes(targetStatus);
+
+    const isValidExecutionStage =
+      pklStatus === EPKLStatus.MENUNGGU_VERIFIKASI &&
+      allowedExecutionStage.includes(targetStatus);
+
+    const isValidFinalStage =
+      (pklStatus === EPKLStatus.MULAI_FINALISASI ||
+        pklStatus === EPKLStatus.PROSES_FINALISASI) &&
+      allowedFinalStage.includes(targetStatus);
+
+    return isValidInitialStage && isValidExecutionStage && isValidFinalStage;
   }
 }

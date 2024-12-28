@@ -13,7 +13,7 @@ export class PKLUpdateStatusDTO {
       EPKLStatus.VERIFIKASI_GAGAL,
       EPKLStatus.DITOLAK,
       EPKLStatus.DITERIMA,
-      // EPKLStatus.MULAI_FINALISASI,
+      EPKLStatus.MULAI_FINALISASI,
       EPKLStatus.PROSES_FINALISASI,
       EPKLStatus.FINALISASI_DITOLAK,
       EPKLStatus.GAGAL,
@@ -23,11 +23,7 @@ export class PKLUpdateStatusDTO {
   @IsEnum(
     Object.entries(EPKLStatus).reduce((acc, [key, value]) => {
       // Exclude a few select statuses
-      if (
-        value === EPKLStatus.MENUNGGU_PERSETUJUAN ||
-        value === EPKLStatus.MULAI_FINALISASI
-      )
-        return acc;
+      if (value === EPKLStatus.MENUNGGU_PERSETUJUAN) return acc;
 
       return { ...acc, [key]: value };
     }, {}),
