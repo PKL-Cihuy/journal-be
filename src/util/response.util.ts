@@ -107,7 +107,7 @@ export const errorResponse = (error: {
 };
 
 export async function sendResponse(res: Response, data: IResponseBody) {
-  res.status(data.status).json({
+  return res.status(data.status).json({
     status: data.status,
     message: data.message,
     data: data.data ?? undefined,

@@ -1,9 +1,9 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
-import { Types } from 'mongoose';
+import { Types, UpdateQuery } from 'mongoose';
 
-import { EPKLStatus, EUserType } from '@/db/interface';
+import { EPKLStatus, EUserType, IPKL } from '@/db/interface';
 import {
   PKLCreateDTO,
   PKLCreateFilesDTO,
@@ -11,6 +11,7 @@ import {
   PKLListQueryDTO,
   PKLUpdateDTO,
   PKLUpdateFilesDTO,
+  PKLUpdateStatusDTO,
 } from '@/dto/pkl';
 import { PKLMessage } from '@/message';
 import {
@@ -283,6 +284,82 @@ export class PKLService {
 
     // Return first data since aggregation always return array
     return data[0];
+  }
+
+  /**
+   * Update PKL status by PKL id
+   *
+   * @param {string} pklId PKL id
+   * @param {PKLUpdateStatusDTO} data PKL status data
+   *
+   * @throws {BadRequest} Status transition is incorrect
+   * @throws {Forbidden} User is not Dosen or Admin
+   */
+  async updatePKLStatus(pklId: string, data: PKLUpdateStatusDTO) {
+    const { id, dosenId, type } = this.req.user!;
+
+    // Throw Forbidden if user is not Dosen or Admin
+    if (type !== 'Admin' && type !== 'Dosen') {
+      throw new Forbidden(PKLMessage.FAIL_UPDATE_PKL_STATUS_NOT_DOSEN);
+    }
+
+    // Check if PKL exist
+    const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
+      dosenId,
+    });
+
+    // Validate status transition
+    if (
+      // This should come from mahasiswa, not dosen
+      data.status === EPKLStatus.MENUNGGU_PERSETUJUAN ||
+      data.status === EPKLStatus.MULAI_FINALISASI ||
+      // Initial Stage
+      (pkl.status === EPKLStatus.MENUNGGU_PERSETUJUAN &&
+        data.status !== EPKLStatus.PENGAJUAN_DITOLAK &&
+        data.status !== EPKLStatus.MENUNGGU_VERIFIKASI) ||
+      // Execution Stage
+      (pkl.status === EPKLStatus.MENUNGGU_VERIFIKASI &&
+        data.status !== EPKLStatus.VERIFIKASI_GAGAL &&
+        data.status !== EPKLStatus.DITOLAK &&
+        data.status !== EPKLStatus.GAGAL &&
+        data.status !== EPKLStatus.DITERIMA) ||
+      // Final Stage
+      ((pkl.status === EPKLStatus.MULAI_FINALISASI ||
+        pkl.status === EPKLStatus.PROSES_FINALISASI) &&
+        data.status !== EPKLStatus.FINALISASI_DITOLAK &&
+        data.status !== EPKLStatus.GAGAL &&
+        data.status !== EPKLStatus.SELESAI)
+    ) {
+      throw new BadRequest(
+        PKLMessage.FAIL_UPDATE_PKL_STATUS_INCORRECT_TRANSITION,
+      );
+    }
+
+    const updateData: UpdateQuery<IPKL> = {
+      status: data.status,
+    };
+
+    // Handle specific status
+    if (data.status === EPKLStatus.DITERIMA) {
+      updateData.approvedAt = new Date();
+    } else if (data.status === EPKLStatus.DITOLAK) {
+      const mhs = await this.mahasiswaRepository.getOneOrFail(pkl.mahasiswaId);
+      updateData.rejectedAt = new Date();
+      updateData.rejectedAtSemester = mhs.semester;
+    } else if (data.status === EPKLStatus.SELESAI) {
+      updateData.finishedAt = new Date();
+    }
+
+    // Update PKL status
+    await this.PKLRepository.updateOne({ _id: pkl._id }, updateData);
+
+    // Create PKL timeline
+    await this.PKLTimelineRepository.create({
+      pklId: pkl._id,
+      userId: id as any,
+      deskripsi: data.deskripsi ?? '',
+      status: data.status,
+    });
   }
 
   /**

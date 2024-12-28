@@ -38,12 +38,11 @@ import {
   PKLListQueryDTO,
   PKLListResponseDTO,
   PKLTimelineListResponseDTO,
-} from '@/dto/pkl';
-import {
   PKLUpdateDTO,
   PKLUpdateFilesDTO,
   PKLUpdateResponseDTO,
-} from '@/dto/pkl/pklUpdate.dto';
+  PKLUpdateStatusDTO,
+} from '@/dto/pkl';
 import { PKLMessage } from '@/message';
 import { IsValidObjectIdPipe } from '@/pipe/isValidMongoId.pipe';
 import { ParseFilesPipe } from '@/pipe/parseFiles.pipe';
@@ -242,6 +241,29 @@ export class PKLController {
       return sendResponse(
         response,
         new Created(PKLMessage.SUCCESS_UPDATE, data),
+      );
+    } catch (error) {
+      console.error(error);
+      return errorResponse(error);
+    }
+  }
+
+  @Post('/:pklId/status')
+  @ApiOperation({ summary: 'Update PKL status' })
+  @ApiResponseCreated({
+    message: PKLMessage.SUCCESS_DETAIL,
+  })
+  async updatePKLStatus(
+    @Res() response: Response,
+    @Param('pklId', IsValidObjectIdPipe) pklId: string,
+    @Body() body: PKLUpdateStatusDTO,
+  ) {
+    try {
+      await this.PKLService.updatePKLStatus(pklId, body);
+
+      return sendResponse(
+        response,
+        new Created(PKLMessage.SUCCESS_UPDATE_STATUS),
       );
     } catch (error) {
       console.error(error);

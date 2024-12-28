@@ -11,5 +11,6 @@ export enum JournalMessage {
   FAIL_CREATE_JOURNAL_NOT_MAHASISWA = 'Hanya mahasiswa yang dapat membuat jurnal',
   FAIL_UPDATE_JOURNAL_NOT_MAHASISWA = 'Hanya mahasiswa yang dapat memperbarui jurnal',
 
+  FAIL_CREATE_JOURNAL_INCORRECT_STATUS = "PKL harus berstatus 'Diterima' untuk membuat jurnal",
   FAIL_UPDATE_JOURNAL_INCORRECT_STATUS = "Hanya jurnal berstatus 'Ditolak' yang dapat diperbarui",
 }

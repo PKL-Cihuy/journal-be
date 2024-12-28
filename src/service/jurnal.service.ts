@@ -3,7 +3,7 @@ import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { Types } from 'mongoose';
 
-import { EJournalStatus } from '@/db/interface';
+import { EJournalStatus, EPKLStatus } from '@/db/interface';
 import {
   JournalCreateDTO,
   JournalCreateFilesDTO,
@@ -98,6 +98,11 @@ export class JournalService {
     const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
       mhsId,
     });
+
+    // Throw BadRequest if PKL status is not 'Diterima'
+    if (pkl.status !== EPKLStatus.DITERIMA) {
+      throw new BadRequest(JournalMessage.FAIL_CREATE_JOURNAL_INCORRECT_STATUS);
+    }
 
     const newJurnalId = new Types.ObjectId();
 
