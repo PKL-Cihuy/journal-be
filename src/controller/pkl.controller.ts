@@ -34,6 +34,8 @@ import {
   PKLCreateFilesDTO,
   PKLCreateResponseDTO,
   PKLDetailResponseDTO,
+  PKLFinalizeDTO,
+  PKLFinalizeFilesDTO,
   PKLGetCreateDataResponseDTO,
   PKLListQueryDTO,
   PKLListResponseDTO,
@@ -268,6 +270,67 @@ export class PKLController {
         response,
         new Created(PKLMessage.SUCCESS_UPDATE_STATUS),
       );
+    } catch (error) {
+      console.error(error);
+      return errorResponse(error);
+    }
+  }
+
+  @Post('/:pklId/finalisasi')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'dokumenLaporan', maxCount: 1 },
+      { name: 'dokumenPenilaian', maxCount: 1 },
+      { name: 'dokumenSelesai', maxCount: 1 },
+    ]),
+  )
+  @ApiOperation({ summary: 'Finalisasi PKL' })
+  @ApiConsumes('multipart/form-data')
+  @ApiResponseCreated({
+    message: PKLMessage.SUCCESS_FINALIZE,
+  })
+  @ApiResponseBadRequest(
+    { message: PKLMessage.FAIL_PKL_FINALIZE_INCORRECT_STATUS },
+    { message: PKLMessage.FAIL_PKL_FINALIZE_MISSING_FILES },
+  )
+  @ApiResponseForbidden({
+    message: PKLMessage.FAIL_PKL_FINALIZE_NOT_MAHASISWA,
+  })
+  @ApiResponseInternalServerError({
+    message: PKLMessage.FAIL_FINALIZE_GENERIC,
+  })
+  async finalizePKL(
+    @Res() response: Response,
+    @Param('pklId', IsValidObjectIdPipe) pklId: string,
+    // Unused body, only used for swagger documentation
+    @Body() body: PKLFinalizeDTO,
+    @UploadedFiles(
+      new ParseFilesPipe(
+        new ParseFilePipeBuilder()
+          .addFileTypeValidator({
+            fileType: /(pdf)/,
+          })
+          .addMaxSizeValidator({
+            // Size: 5 MiB
+            maxSize: 1024 * 1024 * 5,
+          })
+          .build({
+            // Allow empty files for resubmission
+            fileIsRequired: false,
+          }),
+      ),
+      new ParseSingleFilePositionPipe([
+        'dokumenLaporan',
+        'dokumenPenilaian',
+        'dokumenSelesai',
+      ]),
+    )
+    files: PKLFinalizeFilesDTO,
+  ) {
+    try {
+      await this.PKLService.finalizePKL(pklId, files);
+
+      return sendResponse(response, new Created(PKLMessage.SUCCESS_FINALIZE));
     } catch (error) {
       console.error(error);
       return errorResponse(error);

@@ -7,6 +7,7 @@ import { EPKLStatus, EUserType, IPKL } from '@/db/interface';
 import {
   PKLCreateDTO,
   PKLCreateFilesDTO,
+  PKLFinalizeFilesDTO,
   PKLGetCreateDataResponseDTO,
   PKLListQueryDTO,
   PKLUpdateDTO,
@@ -338,9 +339,96 @@ export class PKLService {
     await this.PKLTimelineRepository.create({
       pklId: pkl._id,
       userId: id as any,
-      deskripsi: data.deskripsi,
+      deskripsi:
+        type === 'Mahasiswa'
+          ? 'PKL memasuki proses finalisasi'
+          : data.deskripsi,
       status: data.status,
     });
+  }
+
+  /**
+   * Finalize PKL by PKL id
+   *
+   * @param {string} pklId PKL id
+   * @param {PKLFinalizeFilesDTO} files PKL finalize files
+   */
+  async finalizePKL(pklId: string, files: PKLFinalizeFilesDTO) {
+    const { id, mhsId } = this.req.user!;
+
+    // Throw Forbidden if user is not Mahasiswa
+    if (!mhsId) {
+      throw new Forbidden(PKLMessage.FAIL_PKL_FINALIZE_NOT_MAHASISWA);
+    }
+
+    // Check if PKL exist
+    const pkl = await this.PKLRepository.getPKLByUserType(pklId, {
+      mhsId,
+    });
+
+    // throw BadRequest if PKL status is incorrect
+    if (
+      pkl.status !== EPKLStatus.MULAI_FINALISASI &&
+      pkl.status !== EPKLStatus.FINALISASI_DITOLAK
+    ) {
+      throw new BadRequest(PKLMessage.FAIL_PKL_FINALIZE_INCORRECT_STATUS);
+    }
+
+    // Throw BadRequest if files are missing
+    if (
+      (!pkl.dokumenLaporan && !files?.dokumenLaporan) ||
+      (!pkl.dokumenPenilaian && !files?.dokumenPenilaian) ||
+      (!pkl.dokumenSelesai && !files?.dokumenSelesai)
+    ) {
+      throw new BadRequest(PKLMessage.FAIL_PKL_FINALIZE_MISSING_FILES);
+    }
+
+    // Upload dokumen final
+    const { dokumenLaporan, dokumenPenilaian, dokumenSelesai } =
+      this.fileService.uploadPKLDokumenAkhir(pkl.id, {
+        dokumenLaporan: files.dokumenLaporan,
+        dokumenPenilaian: files.dokumenPenilaian,
+        dokumenSelesai: files.dokumenSelesai,
+      });
+
+    try {
+      // Update PKL with final files
+      await this.PKLRepository.updateOne(
+        { _id: pkl.id },
+        {
+          dokumenLaporan: dokumenLaporan ?? pkl.dokumenLaporan,
+          dokumenPenilaian: dokumenPenilaian ?? pkl.dokumenPenilaian,
+          dokumenSelesai: dokumenSelesai ?? pkl.dokumenSelesai,
+          status: EPKLStatus.PROSES_FINALISASI,
+        },
+      );
+
+      // Create PKL Timeline
+      await this.PKLTimelineRepository.create({
+        pklId: pkl.id,
+        userId: id as any,
+        deskripsi: 'File finalisasi PKL diunggah',
+        status: EPKLStatus.PROSES_FINALISASI,
+      });
+    } catch (error) {
+      // Rollback if failed to finalize PKL
+      console.error(error);
+
+      // Rollback updated PKL
+      await this.PKLRepository.updateOne({ _id: pkl.id }, pkl.toObject());
+
+      // Delete uploaded files
+      this.fileService.deleteFiles(this.fileService.PKL_FOLDER_NAME, [
+        dokumenLaporan?.split('/')?.pop(),
+        dokumenPenilaian?.split('/')?.pop(),
+        dokumenSelesai?.split('/')?.pop(),
+      ]);
+
+      throw new InternalServerError(
+        PKLMessage.FAIL_FINALIZE_GENERIC,
+        error.message,
+      );
+    }
   }
 
   /**
