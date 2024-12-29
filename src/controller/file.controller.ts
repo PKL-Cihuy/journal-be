@@ -22,7 +22,6 @@ export class FileController {
         type.toLowerCase() as 'pkl' | 'jurnal',
         fileName,
       );
-      console.log(filePath);
 
       return res.sendFile(filePath);
     } catch (error) {

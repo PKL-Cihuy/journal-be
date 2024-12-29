@@ -61,7 +61,6 @@ export function PKLListPipeline(
     totalJurnal,
   } = query;
 
-  console.log(generateUserFilter(userData));
   const pipelineBuilder = new PipelineBuilder<IPKL>()
     .match(generateUserFilter(userData))
     .lookup({
