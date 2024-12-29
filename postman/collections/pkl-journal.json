@@ -684,13 +684,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{origin}}/pkl/67697c4ece2a4f39e4dce210/timeline",
+							"raw": "{{origin}}/pkl/676f89329045dff09532be53/timeline",
 							"host": [
 								"{{origin}}"
 							],
 							"path": [
 								"pkl",
-								"67697c4ece2a4f39e4dce210",
+								"676f89329045dff09532be53",
 								"timeline"
 							]
 						}
@@ -1028,6 +1028,242 @@
 							"body": "{\n    \"status\": 403,\n    \"message\": \"Hanya mahasiswa yang dapat membuat PKL\"\n}"
 						}
 					]
+				},
+				{
+					"name": "Update status",
+					"id": "b8370d28-2dfd-41dc-a16e-2e0689314d81",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"Selesai\",\r\n    \"deskripsi\": \"Ok\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{origin}}/pkl/676f89329045dff09532be53/status",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"pkl",
+								"676f89329045dff09532be53",
+								"status"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "a4dc9096-6d55-4950-9ba0-41c48948677d",
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"Pengajuan Ditolak\",\r\n    \"deskripsi\": \"asd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{origin}}/pkl/676f89329045dff09532be53/status",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"676f89329045dff09532be53",
+										"status"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"39-6VAb8HmTSwkNNumkf26VLcc/IF4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 28 Dec 2024 12:37:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 201,\n    \"message\": \"Status PKL berhasil diperbarui\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Finalize PKL",
+					"id": "fae43b34-bcbb-4426-bde6-18a44d49fb45",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "dokumenLaporan",
+									"type": "file",
+									"src": "/C:/Users/Andrien/Pictures/Cisco Networking Academy.pdf"
+								},
+								{
+									"key": "dokumenPenilaian",
+									"type": "file",
+									"src": "/C:/Users/Andrien/Pictures/Cisco Networking Academy.pdf"
+								},
+								{
+									"key": "dokumenSelesai",
+									"type": "file",
+									"src": "/C:/Users/Andrien/Pictures/Cisco Networking Academy.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{origin}}/pkl/676f89329045dff09532be53/finalisasi",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"pkl",
+								"676f89329045dff09532be53",
+								"finalisasi"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "60aa8eb7-d0cd-43ca-b77d-ff697ff6b498",
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "dokumenLaporan",
+											"type": "file",
+											"src": [
+												"/C:/Users/Andrien/Pictures/Cisco Networking Academy.pdf"
+											]
+										},
+										{
+											"key": "dokumenPenilaian",
+											"type": "file",
+											"src": [
+												"/C:/Users/Andrien/Pictures/Cisco Networking Academy.pdf"
+											]
+										},
+										{
+											"key": "dokumenSelesai",
+											"type": "file",
+											"src": [
+												"/C:/Users/Andrien/Pictures/Cisco Networking Academy.pdf"
+											]
+										}
+									]
+								},
+								"url": {
+									"raw": "{{origin}}/pkl/676f89329045dff09532be53/finalisasi",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"676f89329045dff09532be53",
+										"finalisasi"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"35-iN7+cgPbxkNeJbCCZ9dyZGHJ/dw\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 29 Dec 2024 02:54:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 201,\n    \"message\": \"PKL berhasil di finalisasi\"\n}"
+						}
+					]
 				}
 			],
 			"id": "8003ac81-9066-4883-b9ec-609f6e38a461",
@@ -1205,7 +1441,7 @@
 					]
 				},
 				{
-					"name": "Get Journal Detail",
+					"name": "Get Journal detail",
 					"id": "9dcf532c-0660-4a49-a1a7-d51de500ea7d",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1484,7 +1720,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{origin}}/pkl/676f89329045dff09532be53/jurnal/676fa1dae30d435ce3b5fa9a",
+							"raw": "{{origin}}/pkl/676f89329045dff09532be53/jurnal/677012a489d8c511f4c1c2b6",
 							"host": [
 								"{{origin}}"
 							],
@@ -1492,7 +1728,7 @@
 								"pkl",
 								"676f89329045dff09532be53",
 								"jurnal",
-								"676fa1dae30d435ce3b5fa9a"
+								"677012a489d8c511f4c1c2b6"
 							]
 						}
 					},
@@ -1685,6 +1921,114 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"status\": 200,\n    \"message\": \"Timeline Jurnal berhasil didapatkan\",\n    \"data\": [\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce792\",\n            \"journalId\": \"67697c4ece2a4f39e4dce434\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Argentum fugiat vobis consequuntur speciosus virgo adinventitias auditor denuo versus.\",\n            \"createdAt\": \"2024-12-23T15:05:50.685Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce12f\",\n                \"email\": \"Nasrullah8@gmail.co.id\",\n                \"type\": \"Mahasiswa\",\n                \"namaLengkap\": \"Endah Endah Ardiyanti\",\n                \"nomorHandphone\": \"+6257055116365\"\n            }\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce793\",\n            \"journalId\": \"67697c4ece2a4f39e4dce434\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Perspiciatis vorago volo aliquam doloremque aegre.\",\n            \"createdAt\": \"2024-12-23T15:05:50.685Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce166\",\n                \"email\": \"Nilam91@yahoo.co.id\",\n                \"type\": \"Dosen\",\n                \"namaLengkap\": \"Uyainah Wulandari\",\n                \"nomorHandphone\": \"+6292780985734\"\n            }\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce794\",\n            \"journalId\": \"67697c4ece2a4f39e4dce434\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Vitium sufficio administratio.\",\n            \"createdAt\": \"2024-12-23T15:05:50.685Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce166\",\n                \"email\": \"Nilam91@yahoo.co.id\",\n                \"type\": \"Dosen\",\n                \"namaLengkap\": \"Uyainah Wulandari\",\n                \"nomorHandphone\": \"+6292780985734\"\n            }\n        },\n        {\n            \"_id\": \"67697c4ece2a4f39e4dce795\",\n            \"journalId\": \"67697c4ece2a4f39e4dce434\",\n            \"status\": \"Ditolak\",\n            \"deskripsi\": \"Laborum tametsi timor deorsum.\",\n            \"createdAt\": \"2024-12-23T15:05:50.685Z\",\n            \"user\": {\n                \"_id\": \"67697c4ece2a4f39e4dce166\",\n                \"email\": \"Nilam91@yahoo.co.id\",\n                \"type\": \"Dosen\",\n                \"namaLengkap\": \"Uyainah Wulandari\",\n                \"nomorHandphone\": \"+6292780985734\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Journal status",
+					"id": "fd4aea20-373e-4868-bbca-80f7f35c4319",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"Ditolak\",\r\n    \"deskripsi\": \"asd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{origin}}/pkl/676f89329045dff09532be53/jurnal/677012a489d8c511f4c1c2b6/status",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"pkl",
+								"676f89329045dff09532be53",
+								"jurnal",
+								"677012a489d8c511f4c1c2b6",
+								"status"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "7507b377-a176-4025-bedd-996b90ef53ad",
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"Ditolak\",\r\n    \"deskripsi\": \"asd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{origin}}/pkl/676f89329045dff09532be53/jurnal/677012a489d8c511f4c1c2b6/status",
+									"host": [
+										"{{origin}}"
+									],
+									"path": [
+										"pkl",
+										"676f89329045dff09532be53",
+										"jurnal",
+										"677012a489d8c511f4c1c2b6",
+										"status"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "60"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3c-9Has4p1xeGJdDRaHZAIjSCtNGuU\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 28 Dec 2024 15:03:24 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 201,\n    \"message\": \"Status jurnal berhasil diperbarui\"\n}"
 						}
 					]
 				}
@@ -2068,6 +2412,58 @@
 			"id": "9cb08c2a-9829-46b0-97f1-6896739e813c"
 		},
 		{
+			"name": "file",
+			"item": [
+				{
+					"name": "Serve Jurnal files",
+					"id": "508b634c-3ada-4bb8-841c-f67a8b06c3fb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/files/jurnal/677012a489d8c511f4c1c2b6_attachment_1.PNG",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"files",
+								"jurnal",
+								"677012a489d8c511f4c1c2b6_attachment_1.PNG"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Serve PKL files",
+					"id": "c525c255-ea5c-426e-a9c3-9e2c5cf1e22d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{origin}}/files/pkl/676f89329045dff09532be53_dokumen_selesai.pdf",
+							"host": [
+								"{{origin}}"
+							],
+							"path": [
+								"files",
+								"pkl",
+								"676f89329045dff09532be53_dokumen_selesai.pdf"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "39d759c7-f154-4952-bc3a-dffa4ad4a891"
+		},
+		{
 			"name": "Hello world",
 			"id": "095c23b1-e593-4cdb-b9bb-a540f186e971",
 			"protocolProfileBehavior": {
@@ -2350,25 +2746,25 @@
 	],
 	"variable": [
 		{
-			"id": "7f54a449-8b26-449d-9f9a-4c6a4fa6d4c2",
+			"id": "638b6980-e377-4efe-9ea5-b1659d0699e8",
 			"key": "origin",
 			"value": "http://localhost:3000",
 			"type": "string"
 		},
 		{
-			"id": "0ede6634-8f83-4aa6-9553-42ca266e193e",
+			"id": "5894220c-1d7d-446b-8e58-2039f101f126",
 			"key": "pklId",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "b5b1d86a-e305-4748-bd52-27a319dbc9f3",
+			"id": "fac60e71-c984-4ca5-a069-8de38568c0f7",
 			"key": "journalId",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "ec9a314e-49ca-4f6f-a58f-ebfc6e6e7fbb",
+			"id": "899ba7f3-6455-458d-918e-0bf48af1a256",
 			"key": "jwt",
 			"value": ""
 		}
