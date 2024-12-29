@@ -1,10 +1,5 @@
 import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiIAmATeapotResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiIAmATeapotResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { ApiResponseOk, GenericResponse } from '@/decorator/response.decorator';
@@ -13,7 +8,6 @@ import { Success, Teapot, sendResponse } from '@/util/response.util';
 
 @Controller('/')
 @ApiTags('Root')
-@ApiBearerAuth('access-token')
 export class AppController {
   constructor() {}
 

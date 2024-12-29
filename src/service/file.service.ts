@@ -37,98 +37,21 @@ export class FileService {
   }
 
   /**
-   * Method to generate a unique filename
+   * Helper method to get the uploads directory for PKL
    *
-   * @param {Set<string>} usedFilenames - The used filenames
-   * @param {string} originalname - The original name of the file
-   * @param {string} prefix - (optional) The prefix for the file name
-   *
-   * @returns {string} - The unique filename
+   * @returns {string} The uploads directory for PKL
    */
-  private generateUniqueFilename(
-    usedFilenames: Set<string>,
-    originalname: string,
-    prefix?: string,
-  ): string {
-    // Get the extension
-    const [_, extension] = originalname.split('.');
-
-    const _prefix = prefix ?? this.DEFAULT_FILE_PREFIX;
-    const filePrefix = _prefix ? `${_prefix}_` : '';
-
-    // Generate the fileName
-    const fileNameBase = `${filePrefix}${Date.now()}`;
-    let fileName = `${fileNameBase}.${extension}`;
-
-    // Ensure the fileName is unique
-    let counter = 1;
-    while (usedFilenames.has(fileName)) {
-      fileName = `${fileNameBase}_${counter++}.${extension}`;
-    }
-
-    // Add the fileName to the usedFilenames
-    // This is to ensure that the fileName is unique
-    usedFilenames.add(fileName);
-
-    // Return the fileName
-    return fileName;
+  getUploadsDirPKL(): string {
+    return this.getUploadsDir(this.PKL_FOLDER_NAME);
   }
 
   /**
-   * Method to upload files
+   * Helper method to get the uploads directory for Jurnal
    *
-   * @param {Express.Multer.File[]} files - The files to upload
-   * @param {string} folderName - The folder name
-   * @param {string} prefix - (optional) The prefix for the file name
-   *
-   * @returns {string[]} Truncated file paths
-   *
-   * @throws {InternalServerError} - If failed to save file
-   *
-   * @example
-   * uploadFiles('profiles', files, 'image') // returns ['/profiles/image_XXXXX.ext']
-   * uploadFiles('profiles', files); // returns ['/profiles/file_XXXXX.ext']
+   * @returns {string} The uploads directory for Jurnal
    */
-  uploadFiles(
-    folderName: string,
-    files: Express.Multer.File[],
-    prefix?: string,
-  ): string[] {
-    try {
-      const usedFilenames = new Set<string>();
-      const uploadedFilePaths: string[] = [];
-
-      for (const file of files || []) {
-        // Generate a unique filename
-        const fileName = this.generateUniqueFilename(
-          usedFilenames,
-          file.originalname,
-          prefix,
-        );
-
-        // Get the uploads directory
-        const uploadsDir = this.getUploadsDir(folderName);
-
-        // Check if upload directory exists
-        if (!existsSync(uploadsDir)) {
-          mkdirp.sync(uploadsDir);
-        }
-
-        // Save the file to the folder
-        const filePath = path.resolve(uploadsDir, fileName);
-        writeFileSync(filePath, file.buffer);
-
-        // Add the truncated filePath to the uploadedFilePaths
-        uploadedFilePaths.push(`/${folderName}/${fileName}`);
-      }
-
-      // Return the truncated uploaded file paths
-      // Ex: ['/folderName/fileName1.ext', '/folderName/fileName2.ext']
-      return uploadedFilePaths;
-    } catch (error) {
-      console.error(error);
-      throw new InternalServerError(FileMessage.FAIL_SAVE_FILE, error.message);
-    }
+  getUploadsDirJurnal(): string {
+    return this.getUploadsDir(this.JURNAL_FOLDER_NAME);
   }
 
   /**
